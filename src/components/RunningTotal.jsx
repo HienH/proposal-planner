@@ -7,15 +7,9 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
     <div style={{
       position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
       background: "linear-gradient(135deg,#3B2412,#5C3A1E)",
-      padding: "12px 20px", display: "flex", flexDirection: "column",
-      boxShadow: "0 -4px 24px rgba(0,0,0,0.3)", gap: 0,
+      padding: "12px 20px", display: "flex", justifyContent: "space-between",
+      alignItems: "center", boxShadow: "0 -4px 24px rgba(0,0,0,0.3)", gap: 12,
     }}>
-      {disabled && disabledHint && (
-        <div style={{ textAlign: "center", fontSize: 10, color: "rgba(245,230,200,0.5)", fontWeight: 600, paddingBottom: 8 }}>
-          {disabledHint}
-        </div>
-      )}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
       {showBack ? (
         <button
           onClick={onBack}
@@ -54,6 +48,11 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
         <div style={{ width: 70 }} />
       ) : (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+          {disabled && disabledHint && (
+            <div style={{ fontSize: 9, color: "rgba(245,230,200,0.5)", fontWeight: 600, whiteSpace: "nowrap" }}>
+              {disabledHint}
+            </div>
+          )}
           <button
             onClick={() => {
               if (!disabled) onNext();
@@ -71,7 +70,6 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
           </button>
         </div>
       )}
-      </div>
     </div>
   );
 }
