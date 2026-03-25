@@ -56,6 +56,18 @@ export default function ProposalBuilder() {
         .rdp-chevron{fill:#C4944A;}
         .rdp-month_caption{color:#3B2412;font-weight:700;}
         @keyframes fadeIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        @media(min-width:768px){
+          .review-hero-img{height:480px !important;}
+          .desktop-two-col{display:flex !important;flex-direction:row !important;gap:32px !important;align-items:flex-start !important;}
+          .desktop-two-col>div{flex:1 !important;min-width:0 !important;}
+          .venue-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:20px !important;}
+          .venue-grid .venue-card{max-width:none !important;flex:none !important;}
+          .item-grid{grid-template-columns:repeat(2,1fr) !important;max-width:700px !important;margin-left:auto !important;margin-right:auto !important;}
+          .addons-grid{max-width:700px !important;margin-left:auto !important;margin-right:auto !important;display:flex !important;gap:32px !important;align-items:flex-start !important;}
+          .addons-grid>div{flex:1 !important;min-width:0 !important;}
+          .enhancements-col{max-width:700px !important;margin-left:auto !important;margin-right:auto !important;}
+          .steps-container{padding-bottom:24px !important;}
+        }
       `}</style>
 
       {/* Modals */}
@@ -79,7 +91,7 @@ export default function ProposalBuilder() {
       {step === 1 && <PlanMode state={state} />}
 
       {showSteps && (
-        <div style={{ maxWidth: 920, margin: "0 auto", padding: "12px 20px 110px" }}>
+        <div className="steps-container" style={{ maxWidth: 920, margin: "0 auto", padding: "12px 20px 110px" }}>
           <StepIndicator current={step - 2} total={labels.length} labels={labels} />
           {planMode === "custom" && <CustomFlow state={state} />}
           {planMode === "premade" && <PremadeFlow state={state} />}
@@ -119,6 +131,7 @@ export default function ProposalBuilder() {
                 }, 400);
               }
             }}
+            isReviewStep={isReviewStep}
             hideTotal={planMode === "premade" && step === 3}
           />
         </div>

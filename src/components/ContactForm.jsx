@@ -201,11 +201,45 @@ export default function ContactForm({
         padding: "16px 28px 28px", display: "flex", flexDirection: "column",
         gap: 12, alignItems: "center",
       }}>
+        <style>{`
+          .send-inquiry-desktop{display:none;}
+          @media(min-width:768px){
+            .send-inquiry-desktop{display:flex !important;}
+          }
+        `}</style>
+
         {contactPhone.length < 4 && (
           <div style={{ textAlign: "center", fontSize: 12, color: "#C4944A", lineHeight: 1.5, maxWidth: 340 }}>
             Please fill in your phone number above to send your inquiry
           </div>
         )}
+
+        <a
+          className="send-inquiry-desktop"
+          href={inquiryReady ? `mailto:${BUSINESS_EMAIL}?subject=${buildEmailSubject()}&body=${buildMsg()}` : undefined}
+          onClick={(e) => {
+            if (!inquiryReady) {
+              e.preventDefault();
+              const el = document.getElementById("phone-input");
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                setTimeout(() => { el.focus(); }, 400);
+              }
+            }
+          }}
+          style={{
+            display: "none", alignItems: "center", justifyContent: "center", gap: 8,
+            padding: "16px 48px", borderRadius: 30, textDecoration: "none",
+            background: inquiryReady ? "linear-gradient(135deg,#C4944A,#D4AF37)" : "rgba(196,148,74,0.4)",
+            color: "#fff", fontSize: 15, fontWeight: 700,
+            boxShadow: inquiryReady ? "0 4px 20px rgba(196,148,74,0.35)" : "none",
+            width: "100%", maxWidth: 380, textAlign: "center",
+            cursor: inquiryReady ? "pointer" : "not-allowed",
+            opacity: inquiryReady ? 1 : 0.5, transition: "all 0.3s",
+          }}
+        >
+          Send Inquiry →
+        </a>
 
         <div style={{
           display: "flex", alignItems: "center", gap: 12,

@@ -31,7 +31,7 @@ export default function PremadeFlow({ state }) {
       <div style={anim}>
         <SectionTitle title="Add Extras" subtitle="Enhance your package with photography, video, or live music. Everything here is optional." />
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
-        <div style={{ maxWidth: 500, margin: "0 auto" }}>
+        <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
           <AddonSection title="📸 Capture the Moment" items={ADDONS.capture} selected={addons} onToggle={toggleAddon} popularIds={["photo-30", "photo-60"]} />
           <AddonSection title="🎵 Music" items={ADDONS.music} selected={addons} onToggle={toggleAddon} />
         </div>

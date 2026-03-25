@@ -153,6 +153,7 @@ export function VenueCard({ venue, selected, onSelect, onPreview }) {
 
   return (
     <div
+      className="venue-card"
       onClick={() => onSelect(venue.id)}
       style={{
         position: "relative", borderRadius: 16, overflow: "hidden", cursor: "pointer",

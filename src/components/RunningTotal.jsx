@@ -1,10 +1,41 @@
 import { fmt } from "../utils";
 
-export default function RunningTotal({ total, visible, showBack, onBack, onNext, nextLabel = "Next", disabled = false, hideNext = false, hideTotal = false, disabledHint = "", onDisabledClick }) {
+export default function RunningTotal({ total, visible, showBack, onBack, onNext, nextLabel = "Next", disabled = false, hideNext = false, hideTotal = false, disabledHint = "", onDisabledClick, isReviewStep = false }) {
   if (!visible) return null;
 
   return (
-    <div style={{
+    <>
+    <style>{`
+      @media(min-width:768px){
+        .running-total-bar{
+          position:static !important;
+          left:auto !important;
+          right:auto !important;
+          bottom:auto !important;
+          background:transparent !important;
+          box-shadow:none !important;
+          margin-top:20px !important;
+          padding:12px 0 !important;
+        }
+        .running-total-bar .back-btn{
+          border-color:#3B2412 !important;
+          color:#3B2412 !important;
+        }
+        .running-total-bar .total-label{
+          color:#8B7355 !important;
+        }
+        .running-total-bar .total-value{
+          color:#3B2412 !important;
+        }
+        .running-total-bar .disabled-hint{
+          color:#8B7355 !important;
+        }
+        .running-total-bar.review-step{
+          display:none !important;
+        }
+      }
+    `}</style>
+    <div className={`running-total-bar${isReviewStep ? " review-step" : ""}`} style={{
       position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
       background: "linear-gradient(135deg,#3B2412,#5C3A1E)",
       padding: "12px 20px", display: "flex", justifyContent: "space-between",
@@ -12,6 +43,7 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
     }}>
       {showBack ? (
         <button
+          className="back-btn"
           onClick={onBack}
           style={{
             padding: "10px 18px", borderRadius: 20,
@@ -29,13 +61,13 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
         <div style={{ flex: 1 }} />
       ) : (
         <div style={{ textAlign: "center" }}>
-          <div style={{
+          <div className="total-label" style={{
             fontSize: 10, color: "rgba(245,230,200,0.5)",
             fontWeight: 600, letterSpacing: 1, textTransform: "uppercase",
           }}>
             Total
           </div>
-          <div style={{
+          <div className="total-value" style={{
             fontSize: 24, fontWeight: 700, color: "#F5E6C8",
             fontFamily: "'Playfair Display',Georgia,serif",
           }}>
@@ -49,7 +81,7 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
       ) : (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
           {disabled && disabledHint && (
-            <div style={{ fontSize: 9, color: "rgba(245,230,200,0.5)", fontWeight: 600, whiteSpace: "nowrap" }}>
+            <div className="disabled-hint" style={{ fontSize: 9, color: "rgba(245,230,200,0.5)", fontWeight: 600, whiteSpace: "nowrap" }}>
               {disabledHint}
             </div>
           )}
@@ -71,5 +103,6 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
         </div>
       )}
     </div>
+    </>
   );
 }

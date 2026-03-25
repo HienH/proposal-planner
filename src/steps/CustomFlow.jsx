@@ -49,7 +49,7 @@ export default function CustomFlow({ state }) {
           title="Choose Your Setting"
           subtitle="Every location includes coordination, 1.5 hours, cocktail table, sparkling wine, personal server, and bluetooth speaker."
         />
-        <div style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
+        <div className="venue-grid" style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
           {VENUES.map((v) => (
             <VenueCard
               key={v.id}
@@ -74,19 +74,17 @@ export default function CustomFlow({ state }) {
           subtitle="This is the moment they'll replay forever. At least one statement prop is required."
         />
 
-        <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 4, textTransform: "uppercase", letterSpacing: 2 }}>
-          Decoratives
-        </h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
+        <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
+          <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 4, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
+            Decoratives
+          </h3>
           {CENTERPIECES.map((item) => (
             <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
           ))}
-        </div>
 
-        <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 28, textTransform: "uppercase", letterSpacing: 2 }}>
-          Activities
-        </h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
+          <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 16, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
+            Activities
+          </h3>
           {ACTIVITIES.map((item) => (
             <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
           ))}
@@ -102,7 +100,7 @@ export default function CustomFlow({ state }) {
     return (
       <div style={anim}>
         <SectionTitle title="Flowers & Roses" subtitle="Add romantic floral touches to your setup. Select as many as you like, or skip." />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
+        <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
           {FLOWERS.map((item) => {
             const sel = flowers.includes(item.id);
             const isQty = !!item.qty;
@@ -197,6 +195,7 @@ export default function CustomFlow({ state }) {
           subtitle="Add sparklers and structures to elevate your proposal. Select as many as you like, or skip."
         />
 
+        <div className="enhancements-col">
         {/* Sparklers */}
         <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 4, textTransform: "uppercase", letterSpacing: 2 }}>
           Sparklers
@@ -312,6 +311,7 @@ export default function CustomFlow({ state }) {
             Please select a message for your Neon Sign above
           </div>
         )}
+        </div>
       </div>
     );
   }
@@ -322,7 +322,7 @@ export default function CustomFlow({ state }) {
       <div style={anim}>
         <SectionTitle title="Capture & Music" subtitle="Add photography, video, or live music. Everything here is optional." />
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
-        <div style={{ maxWidth: 500, margin: "0 auto" }}>
+        <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
           <AddonSection title="📸 Capture the Moment" items={ADDONS.capture} selected={addons} onToggle={toggleAddon} popularIds={["photo-30", "photo-60"]} />
           <AddonSection title="🎵 Music" items={ADDONS.music} selected={addons} onToggle={toggleAddon} />
         </div>

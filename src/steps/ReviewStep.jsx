@@ -143,7 +143,7 @@ function CustomTop({ state }) {
             style={{ position: "relative", cursor: "pointer" }}
             onClick={() => setPreview({ img: current.img, name: `Similar setup ${idx + 1}` })}
           >
-            <div style={{
+            <div className="review-hero-img" style={{
               height: 320, backgroundImage: `url(${current.img})`,
               backgroundSize: "cover", backgroundPosition: "center",
               transition: "background-image 0.3s ease",
@@ -196,7 +196,7 @@ function CustomTop({ state }) {
           </div>
         ) : (
           <div style={{ position: "relative" }}>
-            <div style={{ height: 320, backgroundImage: `url(${fallbackImg})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+            <div className="review-hero-img" style={{ height: 320, backgroundImage: `url(${fallbackImg})`, backgroundSize: "cover", backgroundPosition: "center" }} />
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "50px 16px 16px", background: "linear-gradient(transparent,rgba(0,0,0,0.8))" }}>
               <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>Your Setup</div>
               <div style={{ fontSize: 16, color: "#fff", fontWeight: 600, fontFamily: "'Playfair Display',Georgia,serif", marginTop: 4 }}>
@@ -262,7 +262,7 @@ function PremadeTop({ state }) {
   const pkg = PACKAGES.find((p) => p.id === selectedPackage);
 
   return (
-    <div style={{ position: "relative", height: 320, backgroundImage: `url(${pkg?.imgs[0]})`, backgroundSize: "cover", backgroundPosition: "center" }}>
+    <div className="review-hero-img" style={{ position: "relative", height: 320, backgroundImage: `url(${pkg?.imgs[0]})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 40%,rgba(0,0,0,0.8))" }}>
         <div style={{ position: "absolute", bottom: 20, left: 20, right: 20 }}>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>{pkg?.badge}</div>
