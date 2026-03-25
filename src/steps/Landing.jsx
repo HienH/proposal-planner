@@ -1,0 +1,69 @@
+import { btnMain } from "../utils";
+
+export default function Landing({ state }) {
+  const { anim, go } = state;
+
+  return (
+    <div style={{
+      ...anim,
+      minHeight: "100vh", display: "flex", flexDirection: "column",
+      justifyContent: "center", alignItems: "center", textAlign: "center",
+      background: "linear-gradient(160deg,#1A0E06,#3B2412 40%,#5C3A1E)",
+      padding: 28, position: "relative", overflow: "hidden",
+    }}>
+      <div style={{
+        position: "absolute", top: -80, right: -80, width: 300, height: 300,
+        borderRadius: "50%", background: "radial-gradient(circle,rgba(196,148,74,0.15),transparent 70%)",
+      }} />
+      <div style={{
+        position: "absolute", bottom: -60, left: -60, width: 250, height: 250,
+        borderRadius: "50%", background: "radial-gradient(circle,rgba(196,148,74,0.1),transparent 70%)",
+      }} />
+
+      <div style={{
+        fontSize: 12, color: "#C4944A", fontWeight: 700,
+        letterSpacing: 4, marginBottom: 24, textTransform: "uppercase",
+      }}>
+        CANCUN PROPOSAL PLANNER
+      </div>
+
+      <h1 style={{
+        fontSize: "clamp(44px,10vw,80px)", color: "#FFF8EE", margin: "0 0 20px",
+        fontFamily: "'Playfair Display',Georgia,serif", fontWeight: 700,
+        lineHeight: 1.05, maxWidth: 550,
+      }}>
+        They're going to say <em style={{ color: "#D4AF37", fontStyle: "italic" }}>yes.</em>
+      </h1>
+
+      <p style={{
+        fontSize: 17, color: "rgba(255,248,238,0.75)", margin: "0 0 44px",
+        maxWidth: 420, lineHeight: 1.7,
+      }}>
+        Build your dream Cancun proposal in under 3 minutes.
+        We handle every detail — you just show up and ask.
+      </p>
+
+      <button onClick={() => go(1)} style={{ ...btnMain(true), padding: "20px 64px", fontSize: 18 }}>
+        Start Planning
+      </button>
+
+      <div style={{ marginTop: 56, display: "flex", gap: 40, flexWrap: "wrap", justifyContent: "center" }}>
+        {[
+          ["1,500+", "Successful Proposals"],
+          ["Since 2018", "Years of Experience"],
+          ["5.0 ★", "Client Rating"],
+        ].map(([n, l]) => (
+          <div key={l} style={{ textAlign: "center" }}>
+            <div style={{
+              fontSize: 24, fontWeight: 700, color: "#D4AF37",
+              fontFamily: "'Playfair Display',Georgia,serif",
+            }}>
+              {n}
+            </div>
+            <div style={{ fontSize: 11, color: "rgba(255,248,238,0.5)", marginTop: 4 }}>{l}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

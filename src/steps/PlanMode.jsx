@@ -1,0 +1,110 @@
+import { IMG } from "../data";
+import { fmt } from "../utils";
+import { SectionTitle } from "../components/ui";
+
+export default function PlanMode({ state }) {
+  const { anim, goToStep, setPlanMode, selectPlanMode, topRef } = state;
+
+  return (
+    <div style={{ ...anim, maxWidth: 920, margin: "0 auto", padding: "40px 20px 60px" }}>
+      <button
+        onClick={() => goToStep(0, () => setPlanMode(null))}
+        style={{
+          background: "none", border: "none", color: "#B0A090",
+          fontSize: 14, fontWeight: 600, cursor: "pointer", marginBottom: 24, padding: 0,
+        }}
+      >
+        ← Back
+      </button>
+
+      <SectionTitle
+        title="How Would You Like to Plan?"
+        subtitle="Choose your path — build every detail yourself, or pick one of our expertly curated packages."
+      />
+
+      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
+        {/* Premade Packages */}
+        <div
+          onClick={() => selectPlanMode("premade")}
+          style={{
+            position: "relative", borderRadius: 16, overflow: "hidden", cursor: "pointer",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.08)", transition: "all 0.3s ease",
+            flex: "1 1 320px", maxWidth: 420, background: "#fff",
+          }}
+        >
+          <div style={{
+            position: "relative", height: 260,
+            backgroundImage: `url(${IMG.rooftop})`, backgroundSize: "cover", backgroundPosition: "center",
+          }}>
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 30%,rgba(0,0,0,0.75))" }}>
+              <div style={{ position: "absolute", bottom: 16, left: 20, right: 20 }}>
+                <div style={{
+                  fontSize: 24, fontWeight: 700, color: "#FFF8EE",
+                  fontFamily: "'Playfair Display',Georgia,serif",
+                }}>
+                  Premade Packages
+                </div>
+                <div style={{ fontSize: 13, color: "rgba(255,248,238,0.8)", marginTop: 4 }}>
+                  Curated by Jill — ready to book
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ padding: "16px 20px 20px" }}>
+            <p style={{ margin: "0 0 12px", fontSize: 14, color: "#6B5744", lineHeight: 1.6 }}>
+              Choose from three expertly designed packages.
+              Everything is included — just add optional extras and you're set.
+            </p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 13, color: "#B0A090" }}>
+                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(1000)}</strong>
+              </span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>Browse Packages →</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Build Your Own */}
+        <div
+          onClick={() => selectPlanMode("custom")}
+          style={{
+            position: "relative", borderRadius: 16, overflow: "hidden", cursor: "pointer",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.08)", transition: "all 0.3s ease",
+            flex: "1 1 320px", maxWidth: 420, background: "#fff",
+          }}
+        >
+          <div style={{
+            position: "relative", height: 260,
+            backgroundImage: `url(${IMG.beach})`, backgroundSize: "cover", backgroundPosition: "center",
+          }}>
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 30%,rgba(0,0,0,0.75))" }}>
+              <div style={{ position: "absolute", bottom: 16, left: 20, right: 20 }}>
+                <div style={{
+                  fontSize: 24, fontWeight: 700, color: "#FFF8EE",
+                  fontFamily: "'Playfair Display',Georgia,serif",
+                }}>
+                  Build Your Own
+                </div>
+                <div style={{ fontSize: 13, color: "rgba(255,248,238,0.8)", marginTop: 4 }}>
+                  Full creative control over every detail
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ padding: "16px 20px 20px" }}>
+            <p style={{ margin: "0 0 12px", fontSize: 14, color: "#6B5744", lineHeight: 1.6 }}>
+              Pick your venue, statement props, flowers, structures, and more.
+              Perfect for those who want to customize everything.
+            </p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 13, color: "#B0A090" }}>
+                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(350)}</strong>
+              </span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>Customize →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
