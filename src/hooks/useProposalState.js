@@ -208,7 +208,10 @@ export default function useProposalState() {
     photo.flowers.forEach((id) => {
       if (!flowers.includes(id)) {
         const item = FLOWERS.find((f) => f.id === id);
-        if (item) upsells.push({ id: item.id, name: item.name, price: item.price, type: "flower" });
+        if (item) {
+          const price = item.qty ? (item.unitMin || 1) * item.pricePerUnit : item.price;
+          upsells.push({ id: item.id, name: item.name, price, type: "flower" });
+        }
       }
     });
     photo.wow.forEach((id) => {
