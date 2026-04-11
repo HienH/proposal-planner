@@ -152,7 +152,7 @@ function CustomTop({ state }) {
               {currentUpsells.length > 0 ? (
                 <div style={{ padding: "60px 16px 16px" }}>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 }}>
-                    Want it exactly like this? Add:
+                    To make it exact, add:
                   </div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                     {currentUpsells.map((item) => (
@@ -185,7 +185,7 @@ function CustomTop({ state }) {
               ) : (
                 <div style={{ padding: "50px 16px 16px" }}>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>
-                    Your setup matches this photo
+                    A similar setup from our portfolio
                   </div>
                   <div style={{ fontSize: 16, color: "#fff", fontWeight: 600, fontFamily: "'Playfair Display',Georgia,serif", marginTop: 4 }}>
                     {VENUES.find((v) => v.id === venue)?.name} · Sunset

@@ -137,7 +137,19 @@ export default function useProposalState() {
 
   const findBestMatches = useCallback(() => {
     const sameVenue = PORTFOLIO.filter((p) => p.venue === venue);
-    const pool = sameVenue.length > 0 ? sameVenue : PORTFOLIO;
+    const rawPool = sameVenue.length > 0 ? sameVenue : PORTFOLIO;
+
+    // Dedupe by tag signature: photos with identical centerpiece/time/flowers/wow
+    // are functional duplicates (same score, same upsells) — usually variants of
+    // the same shoot (e.g. -1, -2 filename suffixes).
+    const seen = new Set();
+    const pool = rawPool.filter((p) => {
+      const sig = `${p.centerpiece}|${p.time}|${[...p.flowers].sort().join(",")}|${[...p.wow].sort().join(",")}`;
+      if (seen.has(sig)) return false;
+      seen.add(sig);
+      return true;
+    });
+
     return pool
       .map((photo) => {
         let score = 0;
