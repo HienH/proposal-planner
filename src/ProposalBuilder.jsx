@@ -16,6 +16,7 @@ export default function ProposalBuilder() {
     toast, total, labels, structures, structureNeonMsg,
     centerpieces, flowers, addons, sparklerQty,
     selectedPackage, setSelectedPackage, setPkgCarouselIdx,
+    soloInstrument,
     contactPhone,
   } = state;
 
@@ -31,7 +32,11 @@ export default function ProposalBuilder() {
   const hasSelection = stepHasSelection[step] || false;
   const statementPropRequired = step === 3 && planMode === "custom" && centerpieces.length === 0;
   const premadeNeedsPackage = step === 2 && planMode === "premade" && !selectedPackage;
-  const isDisabled = (step === 5 && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage;
+  const soloNeedsInstrument =
+    addons.includes("solo-musician") &&
+    !soloInstrument &&
+    ((planMode === "custom" && step === 6) || (planMode === "premade" && step === 3));
+  const isDisabled = (step === 5 && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage || soloNeedsInstrument;
   const nextLabel = step === 6 ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
 
   const isReviewStep = (planMode === "custom" && step === 7) || (planMode === "premade" && step === 4);

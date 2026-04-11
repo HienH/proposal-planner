@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fmt } from "../utils";
+import { SOLO_INSTRUMENTS } from "../data";
 
 export function ProofBar({ pct, label }) {
   return (
@@ -266,7 +267,7 @@ export function AddonToggle({ item, active, onToggle, popular }) {
   );
 }
 
-export function AddonSection({ title, items, selected, onToggle, popularIds = [] }) {
+export function AddonSection({ title, items, selected, onToggle, popularIds = [], renderExtra }) {
   return (
     <div style={{ marginBottom: 24 }}>
       <h3 style={{
@@ -276,15 +277,63 @@ export function AddonSection({ title, items, selected, onToggle, popularIds = []
         {title}
       </h3>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {items.map((item) => (
-          <AddonToggle
-            key={item.id}
-            item={item}
-            active={selected.includes(item.id)}
-            onToggle={() => onToggle(item.id)}
-            popular={popularIds.includes(item.id)}
-          />
-        ))}
+        {items.map((item) => {
+          const active = selected.includes(item.id);
+          return (
+            <div key={item.id}>
+              <AddonToggle
+                item={item}
+                active={active}
+                onToggle={() => onToggle(item.id)}
+                popular={popularIds.includes(item.id)}
+              />
+              {active && renderExtra && renderExtra(item)}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function InstrumentPicker({ selected, onSelect }) {
+  return (
+    <div style={{
+      marginTop: 8, padding: "16px 18px", background: "rgba(196,148,74,0.07)",
+      borderRadius: 12, marginLeft: 4, marginRight: 4,
+    }}>
+      <p style={{ margin: "0 0 12px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>
+        Choose your instrument:
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+        {SOLO_INSTRUMENTS.map((inst) => {
+          const sel = selected === inst.id;
+          return (
+            <button
+              key={inst.id}
+              onClick={() => onSelect(inst.id)}
+              style={{
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                padding: 8, borderRadius: 12,
+                border: sel ? "2px solid #C4944A" : "2px solid transparent",
+                background: sel ? "rgba(196,148,74,0.12)" : "#fff",
+                cursor: "pointer", transition: "all 0.2s",
+                width: 78,
+              }}
+            >
+              <div style={{
+                width: 56, height: 56, borderRadius: 10,
+                backgroundImage: `url(${inst.img})`, backgroundSize: "cover", backgroundPosition: "center",
+              }} />
+              <span style={{
+                fontSize: 11, fontWeight: 600,
+                color: sel ? "#C4944A" : "#6B5744",
+              }}>
+                {inst.name}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

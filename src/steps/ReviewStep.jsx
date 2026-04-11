@@ -1,6 +1,6 @@
 import {
   VENUES, CENTERPIECES, ACTIVITIES, FLOWERS, STRUCTURES,
-  WOW, SPARKLER_PRICES, ADDONS, PACKAGES,
+  WOW, SPARKLER_PRICES, ADDONS, PACKAGES, SOLO_INSTRUMENTS,
 } from "../data";
 import { fmt } from "../utils";
 import { SectionTitle, SummaryItem } from "../components/ui";
@@ -281,7 +281,7 @@ function CustomLineItems({ state }) {
     flowers, toggleFlower, flowerQtys,
     structures, toggleStructure, structureNeonMsg,
     wow, toggleWow, sparklerQty, setSparklerQty,
-    addons, toggleAddon,
+    addons, toggleAddon, soloInstrument,
   } = state;
 
   return (
@@ -319,7 +319,18 @@ function CustomLineItems({ state }) {
       {addons.map((id) => {
         const all = [...ADDONS.music, ...ADDONS.capture];
         const item = all.find((x) => x.id === id);
-        return item ? <SummaryItem key={id} label={item.name} price={item.price} onRemove={() => toggleAddon(id)} /> : null;
+        if (!item) return null;
+        const inst = id === "solo-musician" && soloInstrument
+          ? SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument)
+          : null;
+        return (
+          <SummaryItem
+            key={id}
+            label={inst ? `${item.name} — ${inst.name}` : item.name}
+            price={item.price}
+            onRemove={() => toggleAddon(id)}
+          />
+        );
       })}
     </div>
   );
@@ -328,7 +339,7 @@ function CustomLineItems({ state }) {
 // --- Premade: line items ---
 
 function PremadeLineItems({ state }) {
-  const { selectedPackage, addons, toggleAddon } = state;
+  const { selectedPackage, addons, toggleAddon, soloInstrument } = state;
   const pkg = PACKAGES.find((p) => p.id === selectedPackage);
   const all = [...ADDONS.music, ...ADDONS.capture];
 
@@ -353,7 +364,18 @@ function PremadeLineItems({ state }) {
       </div>
       {addons.map((id) => {
         const item = all.find((x) => x.id === id);
-        return item ? <SummaryItem key={id} label={item.name} price={item.price} onRemove={() => toggleAddon(id)} /> : null;
+        if (!item) return null;
+        const inst = id === "solo-musician" && soloInstrument
+          ? SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument)
+          : null;
+        return (
+          <SummaryItem
+            key={id}
+            label={inst ? `${item.name} — ${inst.name}` : item.name}
+            price={item.price}
+            onRemove={() => toggleAddon(id)}
+          />
+        );
       })}
     </div>
   );

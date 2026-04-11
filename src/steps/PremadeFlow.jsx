@@ -1,6 +1,6 @@
 import { PACKAGES, ADDONS, SOCIAL_PROOF } from "../data";
 import { fmt, btnMain, btnBack } from "../utils";
-import { SectionTitle, AddonSection } from "../components/ui";
+import { SectionTitle, AddonSection, InstrumentPicker } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
 export default function PremadeFlow({ state }) {
@@ -9,6 +9,7 @@ export default function PremadeFlow({ state }) {
     selectedPackage, setSelectedPackage,
     pkgCarouselIdx, setPkgCarouselIdx,
     addons, toggleAddon,
+    soloInstrument, setSoloInstrument,
     total,
     contactEmail, setContactEmail, contactPhone, setContactPhone,
     countryCode, setCountryCode, proposalDate, setProposalDate,
@@ -33,7 +34,26 @@ export default function PremadeFlow({ state }) {
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
         <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
           <AddonSection title="📸 Capture the Moment" items={ADDONS.capture} selected={addons} onToggle={toggleAddon} popularIds={["photo-30", "photo-60"]} />
-          <AddonSection title="🎵 Music" items={ADDONS.music} selected={addons} onToggle={toggleAddon} />
+          <AddonSection
+            title="🎵 Music"
+            items={ADDONS.music}
+            selected={addons}
+            onToggle={toggleAddon}
+            renderExtra={(item) =>
+              item.id === "solo-musician"
+                ? <InstrumentPicker selected={soloInstrument} onSelect={setSoloInstrument} />
+                : null
+            }
+          />
+          {addons.includes("solo-musician") && !soloInstrument && (
+            <div style={{
+              textAlign: "center", marginTop: 4, padding: "10px 16px",
+              background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
+              fontSize: 13, color: "#8B6914", fontWeight: 600,
+            }}>
+              Please pick an instrument for your Solo Musician above
+            </div>
+          )}
         </div>
       </div>
     );

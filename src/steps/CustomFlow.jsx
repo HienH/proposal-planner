@@ -6,7 +6,7 @@ import {
 import { fmt, btnMain, btnBack } from "../utils";
 import {
   SectionTitle, SocialProofCard, VenueCard,
-  AddonSection,
+  AddonSection, InstrumentPicker,
 } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
@@ -19,6 +19,7 @@ export default function CustomFlow({ state }) {
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
+    soloInstrument, setSoloInstrument,
     wow, toggleWow,
     total, frozenMatches, carouselIdx, setCarouselIdx,
     getExtras, getUpsells, showToast,
@@ -47,7 +48,7 @@ export default function CustomFlow({ state }) {
         </div>
         <SectionTitle
           title="Choose Your Setting"
-          subtitle="Every location includes coordination, 1.5 hours, cocktail table, sparkling wine, personal server, and bluetooth speaker."
+          subtitle="Every location includes a cocktail table and sparkling wine. Each venue has its own unique inclusions — see details below."
         />
         <div className="venue-grid" style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
           {VENUES.map((v) => (
@@ -324,7 +325,26 @@ export default function CustomFlow({ state }) {
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
         <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
           <AddonSection title="📸 Capture the Moment" items={ADDONS.capture} selected={addons} onToggle={toggleAddon} popularIds={["photo-30", "photo-60"]} />
-          <AddonSection title="🎵 Music" items={ADDONS.music} selected={addons} onToggle={toggleAddon} />
+          <AddonSection
+            title="🎵 Music"
+            items={ADDONS.music}
+            selected={addons}
+            onToggle={toggleAddon}
+            renderExtra={(item) =>
+              item.id === "solo-musician"
+                ? <InstrumentPicker selected={soloInstrument} onSelect={setSoloInstrument} />
+                : null
+            }
+          />
+          {addons.includes("solo-musician") && !soloInstrument && (
+            <div style={{
+              textAlign: "center", marginTop: 4, padding: "10px 16px",
+              background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
+              fontSize: 13, color: "#8B6914", fontWeight: 600,
+            }}>
+              Please pick an instrument for your Solo Musician above
+            </div>
+          )}
         </div>
       </div>
     );

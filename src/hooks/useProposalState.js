@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import {
   VENUES, CENTERPIECES, ACTIVITIES, FLOWERS, STRUCTURES, WOW,
   SPARKLER_PRICES, SPARKLER_MAX, PORTFOLIO, ADDONS, NEON_MESSAGES,
-  PACKAGES, BUSINESS_EMAIL, PHONE, COUNTRY_CODES,
+  PACKAGES, BUSINESS_EMAIL, PHONE, COUNTRY_CODES, SOLO_INSTRUMENTS,
 } from "../data";
 import { fmt } from "../utils";
 
@@ -24,6 +24,7 @@ export default function useProposalState() {
   const [wow, setWow] = useState([]);
   const [sparklerQty, setSparklerQty] = useState(0);
   const [addons, setAddons] = useState([]);
+  const [soloInstrument, setSoloInstrument] = useState(null);
 
   // Premade flow
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -84,7 +85,13 @@ export default function useProposalState() {
   }, []);
 
   const toggleAddon = useCallback((id) => {
-    setAddons((p) => p.includes(id) ? p.filter((a) => a !== id) : [...p, id]);
+    setAddons((p) => {
+      const next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
+      if (id === "solo-musician" && p.includes(id) && !next.includes(id)) {
+        setSoloInstrument(null);
+      }
+      return next;
+    });
   }, []);
 
   const toggleFlower = useCallback((id) => {
@@ -261,7 +268,14 @@ export default function useProposalState() {
       }
       if (sel.length) {
         m += `\n🎶 Add-ons:\n`;
-        sel.forEach((a) => m += `- ${a.name} (${fmt(a.price)})\n`);
+        sel.forEach((a) => {
+          m += `- ${a.name} (${fmt(a.price)})`;
+          if (a.id === "solo-musician" && soloInstrument) {
+            const inst = SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument);
+            if (inst) m += ` — ${inst.name}`;
+          }
+          m += `\n`;
+        });
       }
       m += `\n💰 Est. Total: ${fmt(total)}\n`;
       if (proposalDate) m += `\n📅 Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
@@ -313,7 +327,14 @@ export default function useProposalState() {
     }
     if (sel.length) {
       m += `\n🎶 Add-ons:\n`;
-      sel.forEach((a) => m += `- ${a.name} (${fmt(a.price)})\n`);
+      sel.forEach((a) => {
+        m += `- ${a.name} (${fmt(a.price)})`;
+        if (a.id === "solo-musician" && soloInstrument) {
+          const inst = SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument);
+          if (inst) m += ` — ${inst.name}`;
+        }
+        m += `\n`;
+      });
     }
     m += `\n💰 Est. Total: ${fmt(total)}\n`;
     if (proposalDate) m += `\n📅 Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
@@ -357,6 +378,7 @@ export default function useProposalState() {
       setWow([]);
       setSparklerQty(0);
       setAddons([]);
+      setSoloInstrument(null);
       setSelectedPackage(null);
       setPkgCarouselIdx(0);
       setProposalDate(null);
@@ -408,6 +430,7 @@ export default function useProposalState() {
     wow, toggleWow,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
+    soloInstrument, setSoloInstrument,
 
     // Premade flow
     selectedPackage, setSelectedPackage,
