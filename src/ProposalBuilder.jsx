@@ -137,7 +137,6 @@ export default function ProposalBuilder() {
               }
             }}
             isReviewStep={isReviewStep}
-            hideTotal={planMode === "premade" && step === 3}
           />
         </div>
       )}

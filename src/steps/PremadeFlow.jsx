@@ -129,7 +129,7 @@ function PackageDetail({ state }) {
       <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.12)", marginBottom: 28 }}>
         <div
           style={{
-            height: 360, backgroundImage: `url(${pkg.imgs[imgIdx]})`,
+            aspectRatio: "4/3", backgroundImage: `url(${pkg.imgs[imgIdx]})`,
             backgroundSize: "cover", backgroundPosition: "center",
             transition: "background-image 0.3s ease", cursor: "pointer",
           }}
