@@ -34,7 +34,7 @@ export default function PlanMode({ state }) {
         >
           <div style={{
             position: "relative", height: 260,
-            backgroundImage: `url(${IMG.rooftop})`, backgroundSize: "cover", backgroundPosition: "center",
+            backgroundImage: `url(${IMG.premadeCard})`, backgroundSize: "cover", backgroundPosition: "center",
           }}>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 30%,rgba(0,0,0,0.75))" }}>
               <div style={{ position: "absolute", bottom: 16, left: 20, right: 20 }}>
@@ -75,7 +75,7 @@ export default function PlanMode({ state }) {
         >
           <div style={{
             position: "relative", height: 260,
-            backgroundImage: `url(${IMG.beach})`, backgroundSize: "cover", backgroundPosition: "center",
+            backgroundImage: `url(${IMG.customCard})`, backgroundSize: "cover", backgroundPosition: "center",
           }}>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 30%,rgba(0,0,0,0.75))" }}>
               <div style={{ position: "absolute", bottom: 16, left: 20, right: 20 }}>

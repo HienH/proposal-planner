@@ -121,6 +121,10 @@ const CLD_TRANSFORMS = "f_auto,q_auto,w_1200";
 export const cld = (p) => `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${CLD_TRANSFORMS}/cancun-proposals/${p}`;
 
 export const IMG = {
+  // Landing — used on the "How would you like to plan?" mode picker
+  premadeCard:     cld("landing/premade-card.webp"),
+  customCard:      cld("landing/custom-card.webp"),
+
   // Hero / venues
   hero:            cld("beach/hero.webp"),
   keepSimple:      cld("beach/hero.webp"),
