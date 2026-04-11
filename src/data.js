@@ -107,50 +107,88 @@ export const COUNTRY_CODES = [
   { code: "+357", country: "CY", flag: "🇨🇾", label: "Cyprus" },
 ];
 
+// Cloudinary URL builder. Cloud name comes from .env (VITE_CLOUDINARY_CLOUD_NAME).
+// All images live under the cancun-proposals/ folder on Cloudinary, mirroring
+// the local folder layout in /Users/hienhang/Downloads/cancun-proposals.
+//
+// Transformations applied to every image:
+//   f_auto — auto-serve WebP/AVIF to browsers that support it
+//   q_auto — auto-pick the best quality/size tradeoff
+//   w_1200 — cap width at 1200px (plenty for retina; PhotoPreviewModal caps at 800)
+// Result: a 24 MB source file gets delivered as ~150-300 KB. ~100x faster loads.
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const CLD_TRANSFORMS = "f_auto,q_auto,w_1200";
+export const cld = (p) => `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${CLD_TRANSFORMS}/cancun-proposals/${p}`;
+
 export const IMG = {
-  hero: "https://cancunpicnic.com/wp-content/uploads/2023/07/Cancun-Photographer_3031.jpg",
-  beach: "https://cancunpicnic.com/wp-content/uploads/2023/07/Cancun-Photographer_3028-768x512.jpg",
-  lagoon: "https://cancunpicnic.com/wp-content/uploads/2023/07/Cancun-Photographer_3024-1-scaled.jpg",
-  rooftop: "https://cancunpicnic.com/wp-content/uploads/2023/07/Cancun-Photographer_3025-1.jpg",
-  bigLetters: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&q=80",
-  medLettersFull: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-  medLettersShort: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-  stackedLetters: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=600&q=80",
-  flowerHeart: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  candleHeart: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80",
-  neonSign: "https://images.unsplash.com/photo-1516967124798-10656f7dca28?w=600&q=80",
-  keepSimple: "https://cancunpicnic.com/wp-content/uploads/2023/07/Cancun-Photographer_3031.jpg",
-  picnic: "https://images.unsplash.com/photo-1526234362653-3b75a0c07438?w=600&q=80",
-  dinner: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80",
-  musician: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=600&q=80",
-  mariachi: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80",
-  photo30: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-  photo60: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-  video30: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80",
-  video60: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80",
-  drone: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&q=80",
-  bouquet: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  petals: "https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=600&q=80",
-  arr4: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  arr8: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  roses50: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  roses100: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  woodenFrame: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80",
-  gazeboStructure: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-  metalStructure: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&q=80",
-  structureNeon: "https://images.unsplash.com/photo-1516967124798-10656f7dca28?w=600&q=80",
-  sparklers2: "https://images.unsplash.com/photo-1481162854517-d9e353af153d?w=600&q=80",
-  sparklers4: "https://images.unsplash.com/photo-1481162854517-d9e353af153d?w=600&q=80",
-  sparklers6: "https://images.unsplash.com/photo-1481162854517-d9e353af153d?w=600&q=80",
-  sparklers8: "https://images.unsplash.com/photo-1481162854517-d9e353af153d?w=600&q=80",
-  gazebo: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80",
-  teepee: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=80",
+  // Hero / venues
+  hero:            cld("beach/hero.webp"),
+  keepSimple:      cld("beach/hero.webp"),
+  beach:           cld("venues/beach.webp"),
+  lagoon:          cld("venues/lagoon.webp"),
+  rooftop:         cld("venues/rooftop.webp"),
+  cenote:          cld("venues/cenote.webp"),
+  yacht:           cld("yacht/yacht1.webp"),
+  gazebo:          cld("structures/gazebo.webp"),
+
+  // Centerpieces
+  bigLetters:      cld("focalpieces/big-letters.webp"),
+  medLettersFull:  cld("focalpieces/med-letters-willyoumarryme.webp"),
+  medLettersShort: cld("focalpieces/med-letters-marryme.webp"),
+  stackedLetters:  cld("focalpieces/stacked-letters.webp"),
+  flowerHeart:     cld("focalpieces/flower-design-heart-red.webp"),
+
+  // Flowers
+  candleHeart:     cld("flowers/candle-heart.webp"),
+  bouquet:         cld("flowers/bouquet.webp"),
+  petals:          cld("flowers/petals.webp"),
+  arr4:            cld("flowers/flower-arrangement.webp"),
+  arr8:            cld("flowers/flower-arrangement-2.webp"),
+  roses50:         cld("flowers/standing-roses.webp"),
+  roses100:        cld("flowers/standing-roses-2.webp"),
+
+  // Structures
+  woodenFrame:     cld("structures/wooden-structure.webp"),
+  gazeboStructure: cld("structures/gazebo.webp"),
+  metalStructure:  cld("structures/metal-heart-structure.webp"),
+  // No dedicated neon-sign product shot — using a rooftop scene that features one prominently.
+  // To swap: rename any other file to rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.jpg
+  neonSign:        cld("rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.webp"),
+  structureNeon:   cld("rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.webp"),
+
+  // Activities
+  picnic:          cld("activities/picnic.webp"),
+  dinner:          cld("activities/dinner.webp"),
+
+  // Music
+  musician:        cld("musicians/solo-musician.webp"),
+  mariachi:        cld("musicians/mariachi.webp"),
+  violin:          cld("musicians/violin.webp"),
+  sax:             cld("musicians/sax.webp"),
+  guitar:          cld("musicians/guitar.webp"),
+  cello:           cld("musicians/cello.webp"),
+  harp:            cld("musicians/harp.webp"),
+
+  // Capture (single file each — reused across size tiers)
+  photo30:         cld("capture/photo.webp"),
+  photo60:         cld("capture/photo.webp"),
+  video30:         cld("capture/video.webp"),
+  video60:         cld("capture/video.webp"),
+  drone:           cld("capture/drone.webp"),
+
+  // Sparklers (single file reused for all qty tiers)
+  sparklers2:      cld("sparklers/sparklers.webp"),
+  sparklers4:      cld("sparklers/sparklers.webp"),
+  sparklers6:      cld("sparklers/sparklers.webp"),
+  sparklers8:      cld("sparklers/sparklers.webp"),
 };
 
 export const VENUES = [
   { id: "beach", name: "Beach", price: 450, img: IMG.beach, badge: "SIGNATURE", desc: "Our beachfront location with stunning ocean views. Weekdays recommended for a more intimate experience.", priv: false },
   { id: "lagoon", name: "Lagoon", price: 350, img: IMG.lagoon, badge: "BEST VALUE", desc: "A private waterfront setting with the best sunset view in Cancun.", priv: true },
   { id: "rooftop", name: "Rooftop", price: 450, img: IMG.rooftop, badge: "PRIVATE", desc: "City skyline, ferris wheel, and panoramic sunset views. Truly unforgettable.", priv: true },
+  { id: "yacht", name: "Yacht", price: 1250, img: IMG.yacht, badge: "PRIVATE", desc: "Pop the question at sea on a private yacht with Caribbean views and total seclusion. Includes captain & crew.", priv: true },
+  { id: "cenote", name: "Cenote", price: 1600, img: IMG.cenote, badge: "EXCLUSIVE", desc: "A breathtaking private cenote — crystal turquoise water framed by jungle. Truly one-of-a-kind in Cancún.", priv: true },
 ];
 
 export const CENTERPIECES = [
@@ -179,7 +217,6 @@ export const STRUCTURES = [
   { id: "gazebo-structure", name: "Gazebo Structure", price: 200, img: IMG.gazeboStructure, desc: "Wooden Gazebo w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
   { id: "metal-structure", name: "Metal Structures (Heart, Circle or Rectangle)", price: 100, img: IMG.metalStructure, desc: "Choose from our selection of metal structures. This simple structure can be taken to the next level with fabric, Neon sign and florals" },
   { id: "structure-neon", name: "Neon Sign", price: 125, img: IMG.structureNeon, desc: "Add a glowing neon sign to your structure" },
-  { id: "teepee", name: "Boho TeePee", price: 150, img: IMG.teepee, desc: "12ft teepee with hanging spheres and boho arrangement" },
 ];
 
 export const STRUCTURE_NEON_MESSAGES = [
@@ -193,27 +230,260 @@ export const WOW = [];
 export const SPARKLER_PRICES = { 0: 0, 2: 225, 4: 330, 6: 435, 8: 540 };
 export const SPARKLER_MAX = 8;
 
-export const PORTFOLIO = [
-  { img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80", venue: "beach", centerpiece: "big-letters", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=800&q=80", venue: "beach", centerpiece: "big-letters", time: "sunset", flowers: ["petals"], wow: ["sparklers-2"] },
-  { img: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80", venue: "beach", centerpiece: "big-letters", time: "evening", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800&q=80", venue: "beach", centerpiece: "flower-structure", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80", venue: "beach", centerpiece: "none", time: "evening", flowers: ["candle-heart"], wow: [] },
-  { img: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?w=800&q=80", venue: "beach", centerpiece: "none", time: "sunset", flowers: ["petals", "candle-heart"], wow: [] },
-  { img: "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=800&q=80", venue: "beach", centerpiece: "none", time: "evening", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=800&q=80", venue: "beach", centerpiece: "none", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&q=80", venue: "lagoon", centerpiece: "big-letters", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80", venue: "lagoon", centerpiece: "big-letters", time: "sunset", flowers: [], wow: ["sparklers-2"] },
-  { img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80", venue: "lagoon", centerpiece: "flower-structure", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=800&q=80", venue: "lagoon", centerpiece: "none", time: "evening", flowers: ["bouquet", "candle-heart"], wow: [] },
-  { img: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&q=80", venue: "lagoon", centerpiece: "stacked-letters", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1444492417251-9c84a5fa18e0?w=800&q=80", venue: "lagoon", centerpiece: "none", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80", venue: "rooftop", centerpiece: "big-letters", time: "evening", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80", venue: "rooftop", centerpiece: "big-letters", time: "evening", flowers: [], wow: ["sparklers-2"] },
-  { img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80", venue: "rooftop", centerpiece: "none", time: "evening", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80", venue: "rooftop", centerpiece: "none", time: "evening", flowers: ["candle-heart"], wow: [], structures: ["teepee"] },
-  { img: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=800&q=80", venue: "rooftop", centerpiece: "flower-structure", time: "sunset", flowers: [], wow: [] },
-  { img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", venue: "rooftop", centerpiece: "none", time: "evening", flowers: [], wow: [] },
+// Portfolio gallery used by `findBestMatches` in useProposalState.js.
+//
+// Every scene photo is auto-tagged from its filename, so adding/removing a
+// photo is a 1-line change to `_portfolioPaths` below. Tag categories:
+//   venue       — first path segment
+//   centerpiece — matches CENTERPIECES ids (big-letters, stacked-letters,
+//                 med-letters-short, med-letters-full, flower-structure, or "none")
+//   time        — "evening" if filename mentions dinner/evening, else "sunset"
+//   flowers     — any of: petals, candle-heart, standing-roses, arrangements, bouquet
+//   wow         — "sparklers-2" if filename mentions sparklers
+//
+// To rewire a photo's tags, rename the file — the tags update automatically.
+const _portfolioPaths = [
+  // --- Beach (85) ---
+  "beach/beach-big-letters-marryme-walkway2-heart-candle-petals-1.webp",
+  "beach/beach-big-letters-marryme-walkway2-heart-candle-petals.webp",
+  "beach/beach-big-letters-walkway1-red-carpet-standing-roses-heart-candle-petals.webp",
+  "beach/beach-big-letters-walkway2-gazebo-dinner-petals.webp",
+  "beach/beach-big-letters-walkway2-petals-candle-heart.webp",
+  "beach/beach-big-letters-walkway2-petals-standing-roses-candle-heart.webp",
+  "beach/beach-big-letters-walkway2-petals.webp",
+  "beach/beach-big-letters-walkway2-solo-musician-petals.webp",
+  "beach/beach-circle-metal-structure-mid-letters-marryme-bundle-flowers-red-carpet-petals.webp",
+  "beach/beach-circle-metal-structure-mid-letters-marryme-red-carpet-petals-bundle-flowers.webp",
+  "beach/beach-gazebo-bundle-flowers-hanging-roses-neon-sign.webp",
+  "beach/beach-gazebo-dinner-1.webp",
+  "beach/beach-gazebo-dinner-2.webp",
+  "beach/beach-gazebo-dinner-candlestick-hanging-roses-neon-sign-petals-solo-musician.webp",
+  "beach/beach-gazebo-dinner-hanging-roses.webp",
+  "beach/beach-gazebo-dinner-mid-letters-marryme-walkway2-petals.webp",
+  "beach/beach-gazebo-dinner-petals-hanging-roses.webp",
+  "beach/beach-gazebo-dinner.webp",
+  "beach/beach-gazebo-flowers-bundle-picnic-hanging-roses-petals.webp",
+  "beach/beach-gazebo-walkway1-petals-flowers-bundle.webp",
+  "beach/beach-giant-frame-structure-2-flowers-bundle-big-flowers-candlestick-standing-roses.webp",
+  "beach/beach-heart-design-flowers-neon-sign-candlestick-palms-petals-solo-musician.webp",
+  "beach/beach-heart-design-flowers-neon-sign-custom-walkway-red-carpet-petals.webp",
+  "beach/beach-heart-design-flowers-walkway1-white-carpet-candlestick-petals.webp",
+  "beach/beach-heart-design-flowers-walkway1-white-carpet-standing-roses.webp",
+  "beach/beach-heart-flowers-structure-neon-sign-white-carpet-standing-roses-walkway1-petals-candlestick.webp",
+  "beach/beach-heart-flowers-structure-picnic-neon-sign-bundle-flowers-palms.webp",
+  "beach/beach-heart-metal-structure-flowers-bundle-neon-sign-petals-1.webp",
+  "beach/beach-heart-metal-structure-flowers-bundle-neon-sign-petals.webp",
+  "beach/beach-heart-metal-structure-mariachi-palms-walkway1-bundle-flowers.webp",
+  "beach/beach-heart-metal-structure-walkway1-heart-candle-petals-standing-roses-neon-sign-flowers-bundle.webp",
+  "beach/beach-mid-letters-marryme-1.webp",
+  "beach/beach-mid-letters-marryme-2.webp",
+  "beach/beach-mid-letters-marryme-3.webp",
+  "beach/beach-mid-letters-marryme-candle-heart-solo-musician-petals.webp",
+  "beach/beach-mid-letters-marryme-flowers-bundle-custom-walkway-red-carpet.webp",
+  "beach/beach-mid-letters-marryme-heart-flowers-structure-red-carpet-petals-mariachi-bundle-flowers.webp",
+  "beach/beach-mid-letters-marryme-mid-circle-structure-flowers-bundle-red-carpet-petals.webp",
+  "beach/beach-mid-letters-marryme-picnic-petals-palms.webp",
+  "beach/beach-mid-letters-marryme-walkway1-heart-candle-petals-standing-roses-red-carpet.webp",
+  "beach/beach-mid-letters-marryme-walkway1-heart-candle-standing-roses-petals.webp",
+  "beach/beach-mid-letters-marryme-walkway1-petals-standing-roses.webp",
+  "beach/beach-mid-letters-marryme-walkway1-round-carpet-petals-1.webp",
+  "beach/beach-mid-letters-marryme-walkway1-round-carpet-petals-2.webp",
+  "beach/beach-mid-letters-marryme-walkway1-round-carpet-petals.webp",
+  "beach/beach-mid-letters-marryme-walkway1-standing-roses-petals.webp",
+  "beach/beach-mid-letters-marryme-walkway1-white-carpet-palms-petals.webp",
+  "beach/beach-mid-letters-marryme.webp",
+  "beach/beach-mid-letters-willyoumarryme-1.webp",
+  "beach/beach-mid-letters-willyoumarryme-candle-heart-walkway1-roses-carpet-petals-1.webp",
+  "beach/beach-mid-letters-willyoumarryme-candle-heart-walkway1-roses-carpet-petals-2.webp",
+  "beach/beach-mid-letters-willyoumarryme-candle-heart-walkway1-roses-carpet-petals.webp",
+  "beach/beach-mid-letters-willyoumarryme-gazebo-dinner-petals-walkway2.webp",
+  "beach/beach-mid-letters-willyoumarryme-heart-candle-petals-walkway2-flowers-bundle-1.webp",
+  "beach/beach-mid-letters-willyoumarryme-heart-candle-petals-walkway2-flowers-bundle.webp",
+  "beach/beach-mid-letters-willyoumarryme-heart-candle-petals-walkway2-heart-design-flowers.webp",
+  "beach/beach-mid-letters-willyoumarryme-heart-design-flowers-neon-sign-walkway2-sparklers.webp",
+  "beach/beach-mid-letters-willyoumarryme-heart-design-flowers-petals-carpet.webp",
+  "beach/beach-mid-letters-willyoumarryme-walkway1-round-carpet-petals.webp",
+  "beach/beach-mid-letters-willyoumarryme.webp",
+  "beach/beach-middle-rectangular-structure-walkway2-flowers-bundle.webp",
+  "beach/beach-middle-structure-metal-flowers-bundle-neon-sign-walkway1-palms-petals.webp",
+  "beach/beach-picnic-flowers-bundle-petals.webp",
+  "beach/beach-picnic-heart-metal-structure-neon-sign-petals-palms.webp",
+  "beach/beach-small-rectangular-metal-structure-neon-sign-big-flowers.webp",
+  "beach/beach-small-rectangular-metal-structure.webp",
+  "beach/beach-stack-letters-standing-roses-flowers-bundle-petals.webp",
+  "beach/beach-stack-letters-walkway1-palms-petals.webp",
+  "beach/beach-stack-letters-walkway1-standing-roses-petals-palms.webp",
+  "beach/beach-stacked-letters-1.webp",
+  "beach/beach-stacked-letters-2.webp",
+  "beach/beach-stacked-letters-flowers-bundle-petals.webp",
+  "beach/beach-stacked-letters-standing-roses-flowers-bundle-red-carpet-petals-solo-musician.webp",
+  "beach/beach-stacked-letters-standing-roses-walkway1-petals-palms.webp",
+  "beach/beach-stacked-letters-standing-roses-walkway1-petals.webp",
+  "beach/beach-stacked-letters-walkway1-standing-roses-petals-palms.webp",
+  "beach/beach-stacked-letters.webp",
+  "beach/beach-standing-roses-carpet-palms-petals.webp",
+  "beach/beach-standing-roses-carpet-palms.webp",
+  "beach/beach-standing-roses-palms.webp",
+  "beach/beach-standing-roses.webp",
+  "beach/beach-wooden-structure-dinner-bundle-flowers-walkway1-petals-palms.webp",
+  "beach/beach-wooden-structure-flowers-bundle-dinner-walkway1-petals.webp",
+  "beach/beach-wooden-structure-walkway1-palms-neon-sign-flowers-bundle-petals.webp",
+  "beach/beach-wooden-structure.webp",
+  // --- Lagoon (8) ---
+  "lagoon/lagoon-heart-metal-structure-walkway1-flowers-bundle-neon-sign-petals-1.webp",
+  "lagoon/lagoon-heart-metal-structure-walkway1-flowers-bundle-neon-sign-petals-2.webp",
+  "lagoon/lagoon-heart-metal-structure-walkway1-flowers-bundle-neon-sign-petals.webp",
+  "lagoon/lagoon-heart-metal-structure-walkway1-palms-petals-neon-sign-1.webp",
+  "lagoon/lagoon-heart-metal-structure-walkway1-palms-petals-neon-sign-2.webp",
+  "lagoon/lagoon-heart-metal-structure-walkway1-palms-petals-neon-sign.webp",
+  "lagoon/lagoon-stacked-letters-walkway1-palms-petals-solo-musician.webp",
+  "lagoon/lagoon-stacked-letters-walkway1-palms-petals.webp",
+  // --- Rooftop (34) ---
+  "rooftop/rooftop-circle-design-flowers-flowers-bundle-dinner-white-carpet-1.webp",
+  "rooftop/rooftop-circle-design-flowers-flowers-bundle-dinner-white-carpet.webp",
+  "rooftop/rooftop-heart-design-flowers-dinner-flowers-bundle-neon-sign-custom-walkway-red-carpet-petals.webp",
+  "rooftop/rooftop-heart-design-flowers-dinner-flowers-bundle.webp",
+  "rooftop/rooftop-heart-design-flowers-flowers-bundle-candlestick-dinner-white-carpet.webp",
+  "rooftop/rooftop-heart-design-flowers-mid-letters-love-flowers-bundle-candlestick-neon-sign-dinner-mariachi.webp",
+  "rooftop/rooftop-heart-design-flowers-mid-letters-love-flowers-bundle-candlestick-neon-sign-dinner.webp",
+  "rooftop/rooftop-heart-design-flowers-mid-letters-love-flowers-bundle-candlestick-neon-sign.webp",
+  "rooftop/rooftop-heart-design-flowers-neon-sign-candlestick-flowers-bundle-white-carpet-dinner.webp",
+  "rooftop/rooftop-heart-design-flowers-neon-sign-candlestick-flowers-bundle-white-carpet.webp",
+  "rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet-1.webp",
+  "rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet-dinner-1.webp",
+  "rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet-dinner.webp",
+  "rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.webp",
+  "rooftop/rooftop-heart-design-flowers.webp",
+  "rooftop/rooftop-mid-letters-marryme-flowers-bundle-red-carpet.webp",
+  "rooftop/rooftop-mid-letters-marryme-mid-circle-structure-flowers-bundle-red-carpet-neon-sign-dinner-petals.webp",
+  "rooftop/rooftop-mid-letters-marryme-mid-circle-structure-flowers-bundle-red-carpet-neon-sign.webp",
+  "rooftop/rooftop-mid-letters-marryme.webp",
+  "rooftop/rooftop-mid-letters-willyoumarryme-flowers-bundle-dinner-red-carpet-mariachi.webp",
+  "rooftop/rooftop-wooden-structure-1.webp",
+  "rooftop/rooftop-wooden-structure-2.webp",
+  "rooftop/rooftop-wooden-structure-3.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-neon-sign-dinner-red-carpet-petals.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-neon-sign-dinner-white-carpet-1.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-neon-sign-dinner-white-carpet.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-neon-sign-white-carpet.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-neon-sign.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-red-carpet-dinner-neon-sign-1.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-red-carpet-dinner-neon-sign-2.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-red-carpet-dinner-neon-sign.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-solo-musician-neon-sign-dinner-white-carpet.webp",
+  "rooftop/rooftop-wooden-structure-flowers-bundle-solo-musician-neon-sign.webp",
+  "rooftop/rooftop-wooden-structure.webp",
+  // --- Cenote (10) ---
+  "cenote/cenote1.webp",
+  "cenote/cenote10.webp",
+  "cenote/cenote2.webp",
+  "cenote/cenote3.webp",
+  "cenote/cenote4.webp",
+  "cenote/cenote5.webp",
+  "cenote/cenote6.webp",
+  "cenote/cenote7.webp",
+  "cenote/cenote8.webp",
+  "cenote/cenote9.webp",
+  // --- Yacht (12) ---
+  "yacht/yacht1.webp",
+  "yacht/yacht10.webp",
+  "yacht/yacht11.webp",
+  "yacht/yacht12.webp",
+  "yacht/yacht2.webp",
+  "yacht/yacht3.webp",
+  "yacht/yacht4.webp",
+  "yacht/yacht5.webp",
+  "yacht/yacht6.webp",
+  "yacht/yacht7.webp",
+  "yacht/yacht8.webp",
+  "yacht/yacht9.webp",
+];
+
+function _parseTags(path) {
+  const file = path.split("/").pop();
+  const venue = path.split("/")[0];
+
+  let centerpiece = "none";
+  if (/big-letters/.test(file)) centerpiece = "big-letters";
+  else if (/willyoumarryme/.test(file)) centerpiece = "med-letters-full";
+  else if (/marryme/.test(file)) centerpiece = "med-letters-short";
+  else if (/stack(ed)?-letters/.test(file)) centerpiece = "stacked-letters";
+  else if (/heart-design-flowers|heart-flowers-structure|design-flowers|flower-structure/.test(file)) centerpiece = "flower-structure";
+
+  const time = /dinner|evening/.test(file) ? "evening" : "sunset";
+
+  const flowers = [];
+  if (/petals/.test(file)) flowers.push("petals");
+  if (/candle-heart|heart-candle|candlestick/.test(file)) flowers.push("candle-heart");
+  if (/standing-roses/.test(file)) flowers.push("standing-roses");
+  if (/flowers-bundle|bundle-flowers|hanging-roses/.test(file)) flowers.push("arrangements");
+  if (/bouquet/.test(file)) flowers.push("bouquet");
+
+  const wow = [];
+  if (/sparklers/.test(file)) wow.push("sparklers-2");
+
+  return { venue, centerpiece, time, flowers, wow };
+}
+
+export const PORTFOLIO = _portfolioPaths.map((p) => ({ img: cld(p), ..._parseTags(p) }));
+
+// --- UNUSED_PHOTOS -----------------------------------------------------------
+// Photos that exist on Cloudinary but aren't wired into any slot yet.
+// Use cases:
+//   1. Build a "More inspiration" gallery page
+//   2. Swap an IMG.* slot (e.g. IMG.sax = cld(UNUSED_PHOTOS.musicians[0].path))
+//   3. Give Jill alternate product shots to pick from
+//
+// Each entry has { path, note } so the dev (or Jill) knows what's in it.
+// To use one: import UNUSED_PHOTOS, then cld(entry.path).
+export const UNUSED_PHOTOS = {
+  // Scene shots that ended up in beach/ but aren't beach ambiance —
+  // could be moved to musicians/ and structures/ if you verify the content
+  misplaced: [
+    { path: "unused/beach/cello.webp",  note: "Cello — unclear if beach scene or product shot" },
+    { path: "unused/beach/gazebo.webp", note: "Gazebo — unclear if beach scene or product shot" },
+    { path: "unused/beach/sax.webp",    note: "Sax — unclear if beach scene or product shot" },
+  ],
+
+  // Alternate centerpiece shots — useful if you want variant thumbnails
+  centerpieces: [
+    { path: "unused/focalpieces/flower-design-heart-pink.webp",  note: "Pink heart flower design (alt color)" },
+    { path: "unused/focalpieces/flower-design-heart-white.webp", note: "White heart flower design (alt color)" },
+    { path: "unused/focalpieces/flower-design-ring.webp",         note: "Ring-shaped flower design" },
+  ],
+
+  // Alternate flower shots
+  flowers: [
+    { path: "unused/flowers/candle-heart-2.webp",   note: "Second candle-heart shot" },
+    { path: "unused/flowers/hanging-roses.webp",   note: "Hanging roses — could be a new FLOWERS item" },
+    { path: "unused/flowers/rose-bouquet-2.webp",  note: "Second bouquet shot" },
+  ],
+
+  // Alternate musician shots (the -1 versions are wired in IMG.*)
+  musicians: [
+    { path: "unused/musicians/sax-2.webp",       note: "Alternate sax player" },
+    { path: "unused/musicians/mariachi-2.webp",  note: "Alternate mariachi band" },
+    { path: "unused/musicians/violin-2.webp",    note: "Alternate violinist" },
+    { path: "unused/musicians/guitarist-2.webp",  note: "Alternate guitarist" },
+    { path: "unused/musicians/guitarist-3.webp",  note: "Third guitarist option" },
+  ],
+
+  // Alternate structure shots — IMG.metalStructure uses metal-heart-structure
+  structures: [
+    { path: "unused/structures/giant-frame-structure.webp",         note: "Giant frame (alternate to wooden)" },
+    { path: "unused/structures/metal-circle-structure.webp",        note: "Circle metal structure" },
+    { path: "unused/structures/metal-rectangular-structure.webp",   note: "Rectangular metal structure" },
+    { path: "unused/structures/metal-rectangular-structure-2.webp", note: "Alt rectangular metal structure" },
+  ],
+};
+// ----------------------------------------------------------------------------
+
+export const SOLO_INSTRUMENTS = [
+  { id: "violin", name: "Violin", img: IMG.violin },
+  { id: "sax", name: "Saxophone", img: IMG.sax },
+  { id: "guitar", name: "Guitar", img: IMG.guitar },
+  { id: "cello", name: "Cello", img: IMG.cello },
+  { id: "harp", name: "Harp", img: IMG.harp },
 ];
 
 export const ADDONS = {
@@ -262,9 +532,9 @@ export const PACKAGES = [
     desc: "An intimate and romantic proposal experience designed to let the moment speak for itself. Featuring soft candlelight, elegant roses, and a beautifully styled setting for just the two of you.",
     includes: ["Venue of your choice", "Candle Heart setup", "Rose Bouquet (3 dozen)", "Rose Petal Walkway", "Coordination · 1.5 hrs · Sparkling wine · Server"],
     imgs: [
-      "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80",
-      "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?w=800&q=80",
-      "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=800&q=80",
+      cld("packages/sweet-1.webp"),
+      cld("packages/sweet-2.webp"),
+      cld("packages/sweet-3.webp"),
     ],
   },
   {
@@ -275,9 +545,9 @@ export const PACKAGES = [
     desc: "A show-stopping proposal experience designed to leave a lasting impression. Featuring bold statement lettering, glowing sparklers, and elegantly styled roses, every detail is thoughtfully designed to take their breath away.",
     includes: ["Venue of your choice", 'Big Letters "MARRY ME"', "Rose Bouquet (3 dozen)", "Rose Petal Walkway", "Fountain Sparklers (x4)", "Coordination · 1.5 hrs · Sparkling wine · Server"],
     imgs: [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
-      "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=800&q=80",
-      "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80",
+      cld("packages/glamorous-4.webp"),
+      cld("packages/glamorous-5.webp"),
+      cld("packages/glamorous-6.webp"),
     ],
   },
   {
@@ -288,9 +558,9 @@ export const PACKAGES = [
     desc: "Our signature luxury experience, created for those who expect nothing but the exceptional. With over 10 years of expertise, we curate an unforgettable, bespoke moment for your special partner — one that will be remembered forever.",
     includes: ["Venue of your choice", 'Big Letters "MARRY ME"', "Flower Heart Design (400 roses)", "100 Standing Roses", "Fountain Sparklers (x4)", "Wooden Structure with lighting", "Coordination · 1.5 hrs · Sparkling wine · Server"],
     imgs: [
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80",
-      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&q=80",
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80",
+      cld("packages/artist-7.webp"),
+      cld("packages/artist-8.webp"),
+      cld("packages/artist-9.webp"),
     ],
   },
 ];
