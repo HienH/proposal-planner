@@ -210,7 +210,7 @@ export default function ContactForm({
 
         {contactPhone.length < 4 && (
           <div style={{ textAlign: "center", fontSize: 12, color: "#C4944A", lineHeight: 1.5, maxWidth: 340 }}>
-            Please fill in your phone number above to send your inquiry
+            Please fill in your phone number above to send your inquiry through email
           </div>
         )}
 

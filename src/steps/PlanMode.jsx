@@ -22,6 +22,7 @@ export default function PlanMode({ state }) {
         subtitle="Choose your path — build every detail yourself, or pick one of our expertly curated packages."
       />
 
+    {/* TODOCHANGE PHOTO */}
       <div style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
         {/* Premade Packages */}
         <div
@@ -30,6 +31,7 @@ export default function PlanMode({ state }) {
             position: "relative", borderRadius: 16, overflow: "hidden", cursor: "pointer",
             boxShadow: "0 4px 20px rgba(0,0,0,0.08)", transition: "all 0.3s ease",
             flex: "1 1 320px", maxWidth: 420, background: "#fff",
+            display: "flex", flexDirection: "column",
           }}
         >
           <div style={{
@@ -45,19 +47,19 @@ export default function PlanMode({ state }) {
                   Premade Packages
                 </div>
                 <div style={{ fontSize: 13, color: "rgba(255,248,238,0.8)", marginTop: 4 }}>
-                  Curated by Jill — ready to book
+                  Curated by Jill and her team — ready to book
                 </div>
               </div>
             </div>
           </div>
-          <div style={{ padding: "16px 20px 20px" }}>
+          <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
             <p style={{ margin: "0 0 12px", fontSize: 14, color: "#6B5744", lineHeight: 1.6 }}>
               Choose from three expertly designed packages.
               Everything is included — just add optional extras and you're set.
             </p>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto" }}>
               <span style={{ fontSize: 13, color: "#B0A090" }}>
-                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(1000)}</strong>
+                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(995)}</strong>
               </span>
               <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>Browse Packages →</span>
             </div>
@@ -71,6 +73,7 @@ export default function PlanMode({ state }) {
             position: "relative", borderRadius: 16, overflow: "hidden", cursor: "pointer",
             boxShadow: "0 4px 20px rgba(0,0,0,0.08)", transition: "all 0.3s ease",
             flex: "1 1 320px", maxWidth: 420, background: "#fff",
+            display: "flex", flexDirection: "column",
           }}
         >
           <div style={{
@@ -91,14 +94,14 @@ export default function PlanMode({ state }) {
               </div>
             </div>
           </div>
-          <div style={{ padding: "16px 20px 20px" }}>
+          <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
             <p style={{ margin: "0 0 12px", fontSize: 14, color: "#6B5744", lineHeight: 1.6 }}>
               Pick your venue, statement props, flowers, structures, and more.
               Perfect for those who want to customize everything.
             </p>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto" }}>
               <span style={{ fontSize: 13, color: "#B0A090" }}>
-                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(350)}</strong>
+                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(625)}</strong>
               </span>
               <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>Customize →</span>
             </div>

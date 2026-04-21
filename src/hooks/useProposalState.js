@@ -86,9 +86,14 @@ export default function useProposalState() {
 
   const toggleAddon = useCallback((id) => {
     setAddons((p) => {
-      const next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
+      let next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
       if (id === "solo-musician" && p.includes(id) && !next.includes(id)) {
         setSoloInstrument(null);
+      }
+      if ((id === "video-30" || id === "video-60") && p.includes(id) && !next.includes(id)) {
+        if (!next.includes("video-30") && !next.includes("video-60")) {
+          next = next.filter((a) => a !== "drone");
+        }
       }
       return next;
     });

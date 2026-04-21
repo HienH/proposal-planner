@@ -6,7 +6,7 @@ import {
 import { fmt, btnMain, btnBack } from "../utils";
 import {
   SectionTitle, SocialProofCard, VenueCard,
-  AddonSection, InstrumentPicker,
+  AddonSection, InstrumentPicker, DroneAddon, renderDesc,
 } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
@@ -146,7 +146,7 @@ export default function CustomFlow({ state }) {
                       {fmt(price)}
                     </span>
                   </div>
-                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{item.desc}</p>
+                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(item.desc)}</p>
                   {isQty && sel && (
                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
                       <button
@@ -324,12 +324,25 @@ export default function CustomFlow({ state }) {
         <SectionTitle title="Capture & Music" subtitle="Add photography, video, or live music. Everything here is optional." />
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
         <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
-          <AddonSection title="📸 Capture the Moment" items={ADDONS.capture} selected={addons} onToggle={toggleAddon} popularIds={["photo-30", "photo-60"]} />
           <AddonSection
-            title="🎵 Music"
+            title="📸 Capture the Moment"
+            items={ADDONS.capture.filter((a) => a.id !== "drone")}
+            selected={addons}
+            onToggle={toggleAddon}
+            popularIds={["photo-30", "video-30"]}
+            renderExtra={(item) => {
+              const showUnder = addons.includes("video-30") ? "video-30" : "video-60";
+              return item.id === showUnder
+                ? <DroneAddon selected={addons.includes("drone")} onToggle={() => toggleAddon("drone")} />
+                : null;
+            }}
+          />
+          <AddonSection
+            title="🎵 Live Music"
             items={ADDONS.music}
             selected={addons}
             onToggle={toggleAddon}
+            popularIds={["solo-musician"]}
             renderExtra={(item) =>
               item.id === "solo-musician"
                 ? <InstrumentPicker selected={soloInstrument} onSelect={setSoloInstrument} />
@@ -392,7 +405,7 @@ function ToggleItem({ item, selected, onToggle }) {
             {item.price === 0 ? "Free" : fmt(item.price)}
           </span>
         </div>
-        <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{item.desc}</p>
+        <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(item.desc)}</p>
       </div>
       <Checkbox checked={selected} />
     </div>

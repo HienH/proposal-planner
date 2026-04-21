@@ -18,7 +18,7 @@ export default function ReviewStep({ state }) {
 
   return (
     <div style={anim}>
-      <SectionTitle title="Your Perfect Proposal" subtitle="Review everything and book with Jill." />
+      <SectionTitle title="Your Perfect Proposal" subtitle="Review everything and book with Jill and her team." />
 
       <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.08)" }}>
         {/* Flow-specific top section */}
@@ -101,7 +101,7 @@ export default function ReviewStep({ state }) {
         ))}
       </div>
       <p style={{ textAlign: "center", fontSize: 11, color: "#C4B8A8", marginTop: 12, lineHeight: 1.5, maxWidth: 440, margin: "12px auto 0" }}>
-        Prices are estimates. Final pricing confirmed with Jill.
+        Prices are estimates. Final pricing confirmed with Jill and her team.
       </p>
     </div>
   );

@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { fmt } from "../utils";
-import { SOLO_INSTRUMENTS } from "../data";
+import { SOLO_INSTRUMENTS, ADDONS } from "../data";
+
+export function renderDesc(text) {
+  if (!text) return text;
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**")
+      ? <strong key={i} style={{ color: "#3B2412", fontWeight: 700 }}>{part.slice(2, -2)}</strong>
+      : part
+  );
+}
 
 export function ProofBar({ pct, label }) {
   return (
@@ -252,7 +261,7 @@ export function AddonToggle({ item, active, onToggle, popular }) {
             {fmt(item.price)}
           </span>
         </div>
-        <p style={{ margin: "3px 0 0", fontSize: 11, color: "#8B7355", lineHeight: 1.3 }}>{item.desc}</p>
+        <p style={{ margin: "3px 0 0", fontSize: 11, color: "#8B7355", lineHeight: 1.3 }}>{renderDesc(item.desc)}</p>
       </div>
       <div style={{
         width: 22, height: 22, borderRadius: 6, flexShrink: 0,
@@ -291,6 +300,49 @@ export function AddonSection({ title, items, selected, onToggle, popularIds = []
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+export function DroneAddon({ selected, onToggle }) {
+  const drone = ADDONS.capture.find((a) => a.id === "drone");
+  if (!drone) return null;
+  return (
+    <div
+      onClick={onToggle}
+      style={{
+        marginTop: 8, padding: "10px 12px",
+        background: selected ? "rgba(196,148,74,0.12)" : "rgba(196,148,74,0.05)",
+        border: selected ? "2px solid #C4944A" : "2px dashed #D4C5B0",
+        borderRadius: 12, marginLeft: 4, marginRight: 4,
+        cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
+        transition: "all 0.2s ease",
+      }}
+    >
+      <div style={{
+        width: 40, height: 40, borderRadius: 8, flexShrink: 0,
+        backgroundImage: `url(${drone.img})`, backgroundSize: "cover", backgroundPosition: "center",
+      }} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+          <span style={{ fontWeight: 600, fontSize: 12, color: "#3B2412" }}>
+            + Add {drone.name}
+          </span>
+          <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap" }}>
+            +{fmt(drone.price)}
+          </span>
+        </div>
+        <div style={{ fontSize: 11, color: "#8B7355", marginTop: 2, lineHeight: 1.3 }}>{drone.desc}</div>
+      </div>
+      <div style={{
+        width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+        border: selected ? "none" : "2px solid #D4C5B0",
+        background: selected ? "#C4944A" : "transparent",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        color: "#fff", fontSize: 12, fontWeight: 700,
+      }}>
+        {selected ? "✓" : ""}
       </div>
     </div>
   );

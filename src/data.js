@@ -493,13 +493,13 @@ export const SOLO_INSTRUMENTS = [
 export const ADDONS = {
   music: [
     { id: "solo-musician", name: "Solo Musician", price: 295, img: IMG.musician, desc: "Sax, guitar, violin, cello, or harp — 30-45 min" },
-    { id: "mariachi", name: "Mariachi Band", price: 325, img: IMG.mariachi, desc: "5-6 musicians, 7 songs — 25-30 min" },
+    { id: "mariachi", name: "Mariachi Band", price: 325, img: IMG.mariachi, desc: "4-5 musicians, 7 songs — 25-30 min" },
   ],
   capture: [
     { id: "photo-30", name: "Photography (30 min)", price: 295, img: IMG.photo30, desc: "50 digital images — proposal + mini engagement session" },
-    { id: "photo-60", name: "Photography (60 min)", price: 350, img: IMG.photo60, desc: "100 digital images — full proposal + extended shoot" },
-    { id: "video-30", name: "Video (30 min)", price: 325, img: IMG.video30, desc: "2-3 minute professionally edited proposal video" },
-    { id: "video-60", name: "Video (60 min)", price: 375, img: IMG.video60, desc: "5-8 minute cinematic proposal film" },
+    { id: "photo-60", name: "Photography (60 min)", price: 350, img: IMG.photo60, desc: "100 digital images — proposal + extended shoot" },
+    { id: "video-30", name: "Video Highlight (30 min on-site)", price: 325, img: IMG.video30, desc: "**2-3 minute** professionally edited proposal video" },
+    { id: "video-60", name: "Video Highlight (60 min on-site)", price: 375, img: IMG.video60, desc: "**4-5 minute** professionally edited proposal video" },
     { id: "drone", name: "Drone Footage", price: 150, img: IMG.drone, desc: "Aerial footage add-on — stunning bird's eye views" },
   ],
 };
@@ -531,10 +531,10 @@ export const PACKAGES = [
   {
     id: "simple",
     name: "Simple & Sweet",
-    price: 850,
+    price: 995,
     badge: "INTIMATE",
-    desc: "An intimate and romantic proposal experience designed to let the moment speak for itself. Featuring soft candlelight, elegant roses, and a beautifully styled setting for just the two of you.",
-    includes: ["Venue of your choice", "Candle Heart setup", "Rose Bouquet (3 dozen)", "Rose Petal Walkway", "Coordination · 1.5 hrs · Sparkling wine · Server"],
+    desc: "An intimate and minimalist proposal experience designed to let the moment speak for itself. Featuring soft candlelight, elegant flowers, and a beautifully styled setting for just the two of you.",
+    includes: ["Venue of your choice", "8 flower arrangements", "Glass-encased flameless candles", "Round boho rug", "Rose petals", "Coordination · 1.5 hrs · Sparkling wine · Server"],
     imgs: [
       cld("packages/sweet-1.webp"),
       cld("packages/sweet-2.webp"),
@@ -544,10 +544,10 @@ export const PACKAGES = [
   {
     id: "glamorous",
     name: "Glamorous",
-    price: 1500,
+    price: 1495,
     badge: "MOST POPULAR",
-    desc: "A show-stopping proposal experience designed to leave a lasting impression. Featuring bold statement lettering, glowing sparklers, and elegantly styled roses, every detail is thoughtfully designed to take their breath away.",
-    includes: ["Venue of your choice", 'Big Letters "MARRY ME"', "Rose Bouquet (3 dozen)", "Rose Petal Walkway", "Fountain Sparklers (x4)", "Coordination · 1.5 hrs · Sparkling wine · Server"],
+    desc: "A show-stopping proposal experience designed to leave a lasting impression. Featuring bold statement lettering, glowing sparklers, and elegantly styled flowers, every detail is thoughtfully designed to take their breath away.",
+    includes: ["Venue of your choice", 'Medium "MARRY ME" letters', "5 flower arrangements", "Metal circle structure", "Rose petal walkway", "Red or white carpet", "Flameless candles throughout", "Fountain sparklers (x2)", "Rose bouquet (3 dozen)", "Coordination · 1.5 hrs · Sparkling wine · Server"],
     imgs: [
       cld("packages/glamorous-4.webp"),
       cld("packages/glamorous-5.webp"),
@@ -557,10 +557,10 @@ export const PACKAGES = [
   {
     id: "artist",
     name: "Artist Touch",
-    price: 2200,
+    price: 1995,
     badge: "PREMIUM",
-    desc: "Our signature luxury experience, created for those who expect nothing but the exceptional. With over 10 years of expertise, we curate an unforgettable, bespoke moment for your special partner — one that will be remembered forever.",
-    includes: ["Venue of your choice", 'Big Letters "MARRY ME"', "Flower Heart Design (400 roses)", "100 Standing Roses", "Fountain Sparklers (x4)", "Wooden Structure with lighting", "Coordination · 1.5 hrs · Sparkling wine · Server"],
+    desc: "Our signature luxury experience, created for those who expect nothing but the exceptional. With over 10 years of expertise, we curate an unforgettable, bespoke moment for your special partner that will be remembered forever.",
+    includes: ["Venue of your choice", "Floral showpiece (heart, ring, or circle)", "Bespoke neon sign", '"The Moment" platform', "100 standing roses", "Glass-encased flameless candles", "Red or white carpet", "Fountain sparklers (x4)", "Rose bouquet (3 dozen)", "Coordination · 1.5 hrs · Sparkling wine · Server"],
     imgs: [
       cld("packages/artist-7.webp"),
       cld("packages/artist-8.webp"),

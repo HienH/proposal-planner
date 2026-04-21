@@ -2,7 +2,7 @@ export const fmt = (n) => "$" + n.toLocaleString("en-US");
 
 export function getBudgetLabel(t) {
   if (t < 800) return { label: "Intimate & Simple", color: "#8B7355", icon: "💛" };
-  if (t < 1500) return { label: "Popular Range", color: "#B8860B", icon: "🧡" };
+  if (t < 1495) return { label: "Popular Range", color: "#B8860B", icon: "🧡" };
   if (t < 2500) return { label: "Premium Experience", color: "#C4944A", icon: "❤️" };
   return { label: "Ultimate Proposal", color: "#D4AF37", icon: "💎" };
 }

@@ -1,6 +1,6 @@
 import { PACKAGES, ADDONS, SOCIAL_PROOF } from "../data";
 import { fmt, btnMain, btnBack } from "../utils";
-import { SectionTitle, AddonSection, InstrumentPicker } from "../components/ui";
+import { SectionTitle, AddonSection, InstrumentPicker, DroneAddon } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
 export default function PremadeFlow({ state }) {
@@ -33,12 +33,25 @@ export default function PremadeFlow({ state }) {
         <SectionTitle title="Add Extras" subtitle="Enhance your package with photography, video, or live music. Everything here is optional." />
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
         <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
-          <AddonSection title="📸 Capture the Moment" items={ADDONS.capture} selected={addons} onToggle={toggleAddon} popularIds={["photo-30", "photo-60"]} />
           <AddonSection
-            title="🎵 Music"
+            title="📸 Capture the Moment"
+            items={ADDONS.capture.filter((a) => a.id !== "drone")}
+            selected={addons}
+            onToggle={toggleAddon}
+            popularIds={["photo-30", "video-30"]}
+            renderExtra={(item) => {
+              const showUnder = addons.includes("video-30") ? "video-30" : "video-60";
+              return item.id === showUnder
+                ? <DroneAddon selected={addons.includes("drone")} onToggle={() => toggleAddon("drone")} />
+                : null;
+            }}
+          />
+          <AddonSection
+            title="🎵 Live Music"
             items={ADDONS.music}
             selected={addons}
             onToggle={toggleAddon}
+            popularIds={["solo-musician"]}
             renderExtra={(item) =>
               item.id === "solo-musician"
                 ? <InstrumentPicker selected={soloInstrument} onSelect={setSoloInstrument} />
@@ -74,7 +87,7 @@ function PackageList({ state }) {
 
   return (
     <div style={anim}>
-      <SectionTitle title="Choose Your Package" subtitle="Each package is designed by Jill with years of experience — everything you need for a perfect proposal." />
+      <SectionTitle title="Choose Your Package" subtitle="Each package is designed by Jill and her team with years of experience — everything you need for a perfect proposal." />
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {PACKAGES.map((pkg) => (
           <div
@@ -126,12 +139,13 @@ function PackageDetail({ state }) {
   return (
     <div style={anim}>
       {/* Hero carousel */}
-      <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.12)", marginBottom: 28 }}>
+      <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.12)", marginBottom: 28, maxWidth: 600, marginLeft: "auto", marginRight: "auto" }}>
         <div
           style={{
-            aspectRatio: "4/3", backgroundImage: `url(${pkg.imgs[imgIdx]})`,
+            aspectRatio: "4/3",
+            backgroundImage: `url(${pkg.imgs[imgIdx]})`,
             backgroundSize: "cover", backgroundPosition: "center",
-            transition: "background-image 0.3s ease", cursor: "pointer",
+            transition: "background-image 0.3s ease", cursor: "zoom-in",
           }}
           onClick={() => setPreview({ img: pkg.imgs[imgIdx], name: pkg.name })}
         />
@@ -155,13 +169,13 @@ function PackageDetail({ state }) {
       </div>
 
       {/* Thumbnails */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
+      <div style={{ display: "flex", gap: 10, marginBottom: 24, maxWidth: 600, marginLeft: "auto", marginRight: "auto" }}>
         {pkg.imgs.map((img, i) => (
           <div
             key={i}
-            onClick={() => setPkgCarouselIdx(i)}
+            onClick={() => { setPkgCarouselIdx(i); setPreview({ img, name: pkg.name }); }}
             style={{
-              flex: 1, height: 80, borderRadius: 12,
+              flex: 1, aspectRatio: "4/3", borderRadius: 12,
               backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center",
               cursor: "pointer", border: i === imgIdx ? "3px solid #C4944A" : "3px solid transparent",
               transition: "all 0.2s", opacity: i === imgIdx ? 1 : 0.6,
