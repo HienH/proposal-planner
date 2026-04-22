@@ -267,10 +267,6 @@ export default function ContactForm({
           Send via WhatsApp
         </a>
 
-        <div style={{ textAlign: "center", fontSize: 12, color: "#6B5744", lineHeight: 1.5, maxWidth: 340, padding: "4px 0" }}>
-          Jill typically responds within minutes on WhatsApp
-        </div>
-
         <button
           onClick={() => setShowSave(true)}
           style={{

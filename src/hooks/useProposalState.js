@@ -22,6 +22,7 @@ export default function useProposalState() {
   const [flowerQtys, setFlowerQtys] = useState({});
   const [structures, setStructures] = useState([]);
   const [structureNeonMsg, setStructureNeonMsg] = useState(null);
+  const [giantFrameNeonMsg, setGiantFrameNeonMsg] = useState(null);
   const [structureFlowerQtys, setStructureFlowerQtys] = useState({});
   const [wow, setWow] = useState([]);
   const [sparklerQty, setSparklerQty] = useState(0);
@@ -129,19 +130,18 @@ export default function useProposalState() {
 
   const toggleStructure = useCallback((id) => {
     const MAIN_IDS = ["wooden-frame", "gazebo-structure", "metal-structure"];
-    const giantFrameOn = centerpieces.includes("giant-frame-neon");
     setStructures((p) => {
       let next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
       if (MAIN_IDS.includes(id) && p.includes(id) && !next.includes(id)) {
         const anyMainLeft = MAIN_IDS.some((m) => next.includes(m));
         if (!anyMainLeft && next.includes("structure-neon")) {
           next = next.filter((a) => a !== "structure-neon");
-          if (!giantFrameOn) setStructureNeonMsg(null);
+          setStructureNeonMsg(null);
         }
       }
       return next;
     });
-    if (id === "structure-neon" && !giantFrameOn) setStructureNeonMsg(null);
+    if (id === "structure-neon") setStructureNeonMsg(null);
     if (id !== "structure-neon") {
       setStructureFlowerQtys((q) => {
         if (!(id in q)) return q;
@@ -150,7 +150,7 @@ export default function useProposalState() {
         return n;
       });
     }
-  }, [centerpieces]);
+  }, []);
 
   const adjustStructureFlowerQty = useCallback((id, delta) => {
     setStructureFlowerQtys((q) => {
@@ -174,21 +174,17 @@ export default function useProposalState() {
     const wasOn = centerpieces.includes(id);
     setCenterpieces((p) => p.includes(id) ? p.filter((a) => a !== id) : [...p, id]);
     if (id === "giant-frame-neon") {
-      if (!wasOn) {
-        setStructureNeonMsg(null);
-      } else {
+      setGiantFrameNeonMsg(null);
+      if (wasOn) {
         setStructureFlowerQtys((q) => {
           if (!(id in q)) return q;
           const n = { ...q };
           delete n[id];
           return n;
         });
-        if (!structures.includes("structure-neon")) {
-          setStructureNeonMsg(null);
-        }
       }
     }
-  }, [centerpieces, structures]);
+  }, [centerpieces]);
 
   // --- Portfolio matching ---
 
@@ -314,7 +310,8 @@ export default function useProposalState() {
       if (s) t += s.price;
     });
     Object.entries(structureFlowerQtys).forEach(([id, qty]) => {
-      if (structures.includes(id)) t += structureFlowerCost(qty);
+      const active = structures.includes(id) || (id === "giant-frame-neon" && centerpieces.includes(id));
+      if (active) t += structureFlowerCost(qty);
     });
     wow.forEach((id) => {
       const w = WOW.find((x) => x.id === id);
@@ -372,7 +369,15 @@ export default function useProposalState() {
 
     if (selCenterpieces.length) {
       m += `\n✨ Statement Prop:\n`;
-      selCenterpieces.forEach((c) => { m += `- ${c.name} (${fmt(c.price)})\n`; });
+      selCenterpieces.forEach((c) => {
+        m += `- ${c.name} (${fmt(c.price)})`;
+        if (c.id === "giant-frame-neon" && giantFrameNeonMsg) m += ` — "${giantFrameNeonMsg}"`;
+        m += `\n`;
+        const fq = structureFlowerQtys[c.id];
+        if (c.id === "giant-frame-neon" && fq > 0) {
+          m += `  + ${fq} Flower Arrangement${fq > 1 ? "s" : ""} (${fmt(structureFlowerCost(fq))})\n`;
+        }
+      });
     }
     if (selFlowers.length) {
       m += `\n🌹 Flowers:\n`;
@@ -454,6 +459,7 @@ export default function useProposalState() {
       setFlowerQtys({});
       setStructures([]);
       setStructureNeonMsg(null);
+      setGiantFrameNeonMsg(null);
       setStructureFlowerQtys({});
       setWow([]);
       setSparklerQty(0);
@@ -478,7 +484,7 @@ export default function useProposalState() {
   const handleSavePlan = ({ email, name }) => {
     console.log("LEAD CAPTURED:", {
       email, name, venue, centerpieces, neonMsg, flowers,
-      structures, structureNeonMsg, wow, addons, total,
+      structures, structureNeonMsg, giantFrameNeonMsg, wow, addons, total,
     });
     setPlanSaved(true);
   };
@@ -507,6 +513,7 @@ export default function useProposalState() {
     neonMsg, setNeonMsg,
     flowers, toggleFlower, flowerQtys, adjustFlowerQty,
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
+    giantFrameNeonMsg, setGiantFrameNeonMsg,
     structureFlowerQtys, adjustStructureFlowerQty,
     wow, toggleWow,
     sparklerQty, setSparklerQty,

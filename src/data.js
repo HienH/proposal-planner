@@ -238,8 +238,8 @@ export function structureFlowerCost(qty) {
 
 export const STRUCTURE_NEON_MESSAGES = [
   "Will you marry me?", "It was always you", "Te casas conmigo?",
-  "Will you be my Wife?", "This is our love story", "Let's grow old together",
-  "You & Me", "She said yes",
+  "Will you be my Wife?", "Let's grow old together",
+  "You & Me", "She said yes","This is our love story",
 ];
 
 export const WOW = [];
@@ -426,6 +426,7 @@ function _parseTags(path) {
   else if (/marryme/.test(file)) centerpiece = "med-letters-short";
   else if (/stack(ed)?-letters/.test(file)) centerpiece = "stacked-letters";
   else if (/heart-design-flowers|heart-flowers-structure|design-flowers|flower-structure/.test(file)) centerpiece = "flower-structure";
+  else if (/giant-frame/.test(file)) centerpiece = "giant-frame-neon";
 
   const time = /dinner|evening/.test(file) ? "evening" : "sunset";
 

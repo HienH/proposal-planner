@@ -19,12 +19,9 @@ export default function ReviewStep({ state }) {
 
   return (
     <div style={anim}>
-      <SectionTitle title="Your Perfect Proposal" subtitle="Review everything and book with Jill and her team." />
+      <SectionTitle title="Your Perfect Proposal" />
 
       <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.08)" }}>
-        {/* Flow-specific top section */}
-        {planMode === "custom" ? <CustomTop state={state} /> : <PremadeTop state={state} />}
-
         {/* Total banner */}
         <div style={{ padding: "24px 28px", textAlign: "center", background: "linear-gradient(135deg,#3B2412,#5C3A1E)" }}>
           <div style={{ fontSize: 11, color: "rgba(245,230,200,0.6)", fontWeight: 600, letterSpacing: 2, marginBottom: 8 }}>ESTIMATED TOTAL</div>
@@ -87,6 +84,11 @@ export default function ReviewStep({ state }) {
         />
       </div>
 
+      {/* Flow-specific top section — its own card, tight gap above */}
+      <div style={{ marginTop: 8, background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.08)" }}>
+        {planMode === "custom" ? <CustomTop state={state} /> : <PremadeTop state={state} />}
+      </div>
+
       {/* Footer */}
       <div style={{ marginTop: 24, padding: "16px 20px", background: "#fff", borderRadius: 12, border: "1px solid #EDE8E0", textAlign: "center" }}>
         <div style={{ fontSize: 13, color: "#6B5744", fontWeight: 600, marginBottom: 4 }}>
@@ -97,7 +99,7 @@ export default function ReviewStep({ state }) {
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 20, flexWrap: "wrap" }}>
-        {["No hidden fees", "1,500+ proposals since 2018", "Jill responds within hours"].map((t) => (
+        {["No hidden fees", "1,500+ proposals since 2018", "Jill's team responds within hours"].map((t) => (
           <span key={t} style={{ fontSize: 12, color: "#B0A090", fontWeight: 500 }}>✓ {t}</span>
         ))}
       </div>
@@ -153,7 +155,7 @@ function CustomTop({ state }) {
               {currentUpsells.length > 0 ? (
                 <div style={{ padding: "60px 16px 16px" }}>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 }}>
-                    To make it exact, add:
+                    To make it similar, add:
                   </div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                     {currentUpsells.map((item) => (
@@ -281,6 +283,7 @@ function CustomLineItems({ state }) {
     venue, centerpieces, toggleCenterpiece,
     flowers, toggleFlower, flowerQtys,
     structures, toggleStructure, structureNeonMsg,
+    giantFrameNeonMsg,
     structureFlowerQtys, adjustStructureFlowerQty,
     wow, toggleWow, sparklerQty, setSparklerQty,
     addons, toggleAddon, soloInstrument,
@@ -295,7 +298,28 @@ function CustomLineItems({ state }) {
       />
       {centerpieces.map((id) => {
         const item = CENTERPIECES.find((x) => x.id === id) || ACTIVITIES.find((x) => x.id === id);
-        return item && item.id !== "none" ? <SummaryItem key={id} label={item.name} price={item.price} onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined} /> : null;
+        if (!item || item.id === "none") return null;
+        if (id === "giant-frame-neon") {
+          const fq = structureFlowerQtys?.[id] || 0;
+          return (
+            <div key={id}>
+              <SummaryItem
+                label={item.name}
+                price={item.price}
+                sub={giantFrameNeonMsg ? `Message: "${giantFrameNeonMsg}"` : null}
+                onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined}
+              />
+              {fq > 0 && (
+                <SummaryItem
+                  label={`↳ ${fq} Flower Arrangement${fq > 1 ? "s" : ""}`}
+                  price={structureFlowerCost(fq)}
+                  onRemove={() => adjustStructureFlowerQty(id, -fq)}
+                />
+              )}
+            </div>
+          );
+        }
+        return <SummaryItem key={id} label={item.name} price={item.price} onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined} />;
       })}
       {flowers.map((id) => {
         const item = FLOWERS.find((x) => x.id === id);

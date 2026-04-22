@@ -123,7 +123,7 @@ export function StepIndicator({ current, total, labels }) {
 
 export function SectionTitle({ title, subtitle }) {
   return (
-    <div style={{ textAlign: "center", marginBottom: 28 }}>
+    <div style={{ textAlign: "center", marginBottom: 20 }}>
       <h2 style={{
         fontSize: "clamp(26px,5vw,36px)", fontWeight: 700, color: "#3B2412",
         margin: 0, fontFamily: "'Playfair Display',Georgia,serif", lineHeight: 1.2,
@@ -361,10 +361,10 @@ export function NeonMessagePicker({ selected, onSelect }) {
             key={msg}
             onClick={() => onSelect(msg)}
             style={{
-              padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer",
+              padding: "6px 12px", borderRadius: 18, border: "none", cursor: "pointer",
               background: selected === msg ? "#C4944A" : "#F5E6C8",
               color: selected === msg ? "#fff" : "#3B2412",
-              fontSize: 12, fontWeight: 600, transition: "all 0.2s",
+              fontSize: 10.5, fontWeight: 600, transition: "all 0.2s",
             }}
           >
             "{msg}"

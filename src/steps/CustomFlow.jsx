@@ -18,6 +18,7 @@ export default function CustomFlow({ state }) {
     centerpieces, toggleCenterpiece,
     flowers, toggleFlower, flowerQtys, adjustFlowerQty,
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
+    giantFrameNeonMsg, setGiantFrameNeonMsg,
     structureFlowerQtys, adjustStructureFlowerQty,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
@@ -89,7 +90,7 @@ export default function CustomFlow({ state }) {
                   <ToggleItem item={item} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
                   {sel && (
                     <div style={{ gridColumn: "1 / -1" }}>
-                      <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
+                      <NeonMessagePicker selected={giantFrameNeonMsg} onSelect={setGiantFrameNeonMsg} />
                       <StructureFlowerPicker
                         qty={structureFlowerQtys[item.id] || 0}
                         onAdjust={(delta) => adjustStructureFlowerQty(item.id, delta)}
@@ -111,6 +112,16 @@ export default function CustomFlow({ state }) {
             <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
           ))}
         </div>
+
+        {centerpieces.includes("giant-frame-neon") && !giantFrameNeonMsg && (
+          <div style={{
+            textAlign: "center", marginTop: 20, padding: "10px 16px",
+            background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
+            fontSize: 13, color: "#8B6914", fontWeight: 600,
+          }}>
+            Please select a message for your Giant Frame's Neon Sign above
+          </div>
+        )}
 
         {/* <SocialProofCard data={SOCIAL_PROOF.centerpiece} /> */}
       </div>

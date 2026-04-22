@@ -13,7 +13,7 @@ export default function ProposalBuilder() {
   const {
     step, topRef, planMode, setPlanMode, goToStep, go,
     preview, setPreview, showSave, setShowSave, handleSavePlan,
-    toast, total, labels, structures, structureNeonMsg,
+    toast, total, labels, structures, structureNeonMsg, giantFrameNeonMsg,
     centerpieces, flowers, addons, sparklerQty,
     selectedPackage, setSelectedPackage, setPkgCarouselIdx,
     soloInstrument,
@@ -22,12 +22,13 @@ export default function ProposalBuilder() {
   } = state;
 
   // RunningTotal computed props
+  const structureNeonNeedsMsg = structures.includes("structure-neon") && !structureNeonMsg;
+  const giantFrameNeedsMsg = centerpieces.includes("giant-frame-neon") && !giantFrameNeonMsg;
   const neonNeedsMsg =
-    (structures.includes("structure-neon") || centerpieces.includes("giant-frame-neon")) &&
-    !structureNeonMsg;
+    (step === 5 && structureNeonNeedsMsg) || (step === 3 && giantFrameNeedsMsg);
   const stepHasSelection = {
-    2: centerpieces.length > 0,
-    3: flowers.length > 0,
+    2: !!venue,
+    3: centerpieces.length > 0,
     4: flowers.length > 0,
     5: structures.length > 0 || sparklerQty > 0,
     6: addons.length > 0,
@@ -40,7 +41,7 @@ export default function ProposalBuilder() {
     addons.includes("solo-musician") &&
     !soloInstrument &&
     ((planMode === "custom" && step === 6) || (planMode === "premade" && step === 3));
-  const isDisabled = ((step === 3 || step === 5) && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
+  const isDisabled = neonNeedsMsg || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
 
   const disabledReason = customNeedsVenue
     ? "Pick a location"
@@ -48,7 +49,7 @@ export default function ProposalBuilder() {
     ? "Pick a package"
     : statementPropRequired
     ? "Pick a statement prop"
-    : (step === 3 || step === 5) && neonNeedsMsg
+    : neonNeedsMsg
     ? "Pick a neon message"
     : soloNeedsInstrument
     ? "Pick an instrument"
