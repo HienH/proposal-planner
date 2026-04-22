@@ -93,7 +93,7 @@ export default function ReviewStep({ state }) {
           📅 Sunset slots book 2-3 weeks in advance during peak season (Dec - April)
         </div>
         <div style={{ fontSize: 12, color: "#B0A090" }}>
-          Secure your date with a retainer — Jill will confirm everything.
+          Secure your date with a retainer — Jill's team will confirm everything.
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 20, flexWrap: "wrap" }}>

@@ -1,12 +1,13 @@
+import { Fragment } from "react";
 import {
   VENUES, CENTERPIECES, ACTIVITIES, FLOWERS, STRUCTURES,
-  STRUCTURE_NEON_MESSAGES, SPARKLER_PRICES, SPARKLER_MAX,
+  SPARKLER_PRICES, SPARKLER_MAX,
   ADDONS, SOCIAL_PROOF, IMG,
 } from "../data";
 import { fmt, btnMain, btnBack } from "../utils";
 import {
   SectionTitle, SocialProofCard, VenueCard,
-  AddonSection, InstrumentPicker, DroneAddon, NeonSignAddon, StructureFlowerPicker, renderDesc,
+  AddonSection, InstrumentPicker, DroneAddon, NeonSignAddon, NeonMessagePicker, StructureFlowerPicker, renderDesc,
 } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
@@ -80,9 +81,28 @@ export default function CustomFlow({ state }) {
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 4, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
             Decoratives
           </h3>
-          {CENTERPIECES.map((item) => (
-            <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
-          ))}
+          {CENTERPIECES.map((item) => {
+            if (item.id === "giant-frame-neon") {
+              const sel = centerpieces.includes(item.id);
+              return (
+                <Fragment key={item.id}>
+                  <ToggleItem item={item} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
+                  {sel && (
+                    <div style={{ gridColumn: "1 / -1" }}>
+                      <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
+                      <StructureFlowerPicker
+                        qty={structureFlowerQtys[item.id] || 0}
+                        onAdjust={(delta) => adjustStructureFlowerQty(item.id, delta)}
+                      />
+                    </div>
+                  )}
+                </Fragment>
+              );
+            }
+            return (
+              <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
+            );
+          })}
 
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 16, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
             Activities
@@ -286,28 +306,7 @@ export default function CustomFlow({ state }) {
                       onToggle={() => toggleStructure("structure-neon")}
                     />
                     {neonSelected && (
-                      <div style={{
-                        marginTop: 8, padding: "16px 20px", background: "rgba(196,148,74,0.07)",
-                        borderRadius: 14, marginLeft: 4, marginRight: 4,
-                      }}>
-                        <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>Choose your message:</p>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                          {STRUCTURE_NEON_MESSAGES.map((msg) => (
-                            <button
-                              key={msg}
-                              onClick={() => setStructureNeonMsg(msg)}
-                              style={{
-                                padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer",
-                                background: structureNeonMsg === msg ? "#C4944A" : "#F5E6C8",
-                                color: structureNeonMsg === msg ? "#fff" : "#3B2412",
-                                fontSize: 12, fontWeight: 600, transition: "all 0.2s",
-                              }}
-                            >
-                              "{msg}"
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                      <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
                     )}
                     <StructureFlowerPicker
                       qty={structureFlowerQtys[item.id] || 0}

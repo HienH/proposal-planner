@@ -201,6 +201,7 @@ export const CENTERPIECES = [
   { id: "med-letters-short", name: '"Marry Me?"', price: 350, img: IMG.medLettersShort, desc: "2ft letters on risers — clean and classic" },
   { id: "stacked-letters", name: "Stacked Letters", price: 350, img: IMG.stackedLetters, desc: "6ft tall stacked display — elegant and intimate" },
   { id: "flower-structure", name: "Flower Design", price: 625, img: IMG.flowerHeart, desc: "400 fresh roses shaped into a heart, ring, or circle" },
+  { id: "giant-frame-neon", name: "Giant Frame with Neon Sign", price: 275, img: IMG.woodenFrame, desc: "A bold freestanding frame with a custom-message neon sign included" },
 ];
 
 export const ACTIVITIES = [

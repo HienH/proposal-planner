@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { fmt } from "../utils";
-import { SOLO_INSTRUMENTS, ADDONS, STRUCTURES, STRUCTURE_FLOWER, structureFlowerCost } from "../data";
+import { SOLO_INSTRUMENTS, ADDONS, STRUCTURES, STRUCTURE_FLOWER, STRUCTURE_NEON_MESSAGES, structureFlowerCost } from "../data";
 
 export function renderDesc(text) {
   if (!text) return text;
@@ -343,6 +343,33 @@ export function DroneAddon({ selected, onToggle }) {
         color: "#fff", fontSize: 12, fontWeight: 700,
       }}>
         {selected ? "✓" : ""}
+      </div>
+    </div>
+  );
+}
+
+export function NeonMessagePicker({ selected, onSelect }) {
+  return (
+    <div style={{
+      marginTop: 8, padding: "16px 20px", background: "rgba(196,148,74,0.07)",
+      borderRadius: 14, marginLeft: 4, marginRight: 4,
+    }}>
+      <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>Choose your message:</p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        {STRUCTURE_NEON_MESSAGES.map((msg) => (
+          <button
+            key={msg}
+            onClick={() => onSelect(msg)}
+            style={{
+              padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer",
+              background: selected === msg ? "#C4944A" : "#F5E6C8",
+              color: selected === msg ? "#fff" : "#3B2412",
+              fontSize: 12, fontWeight: 600, transition: "all 0.2s",
+            }}
+          >
+            "{msg}"
+          </button>
+        ))}
       </div>
     </div>
   );

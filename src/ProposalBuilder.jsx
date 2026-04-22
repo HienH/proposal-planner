@@ -22,7 +22,9 @@ export default function ProposalBuilder() {
   } = state;
 
   // RunningTotal computed props
-  const neonNeedsMsg = structures.includes("structure-neon") && !structureNeonMsg;
+  const neonNeedsMsg =
+    (structures.includes("structure-neon") || centerpieces.includes("giant-frame-neon")) &&
+    !structureNeonMsg;
   const stepHasSelection = {
     2: centerpieces.length > 0,
     3: flowers.length > 0,
@@ -38,7 +40,19 @@ export default function ProposalBuilder() {
     addons.includes("solo-musician") &&
     !soloInstrument &&
     ((planMode === "custom" && step === 6) || (planMode === "premade" && step === 3));
-  const isDisabled = (step === 5 && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
+  const isDisabled = ((step === 3 || step === 5) && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
+
+  const disabledReason = customNeedsVenue
+    ? "Pick a location"
+    : premadeNeedsPackage
+    ? "Pick a package"
+    : statementPropRequired
+    ? "Pick a statement prop"
+    : (step === 3 || step === 5) && neonNeedsMsg
+    ? "Pick a neon message"
+    : soloNeedsInstrument
+    ? "Pick an instrument"
+    : "";
   const nextLabel = step === 6 ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : (step === 2 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
 
   const isReviewStep = (planMode === "custom" && step === 7) || (planMode === "premade" && step === 4);
@@ -136,7 +150,7 @@ export default function ProposalBuilder() {
             }}
             nextLabel={isReviewStep ? "Send Inquiry" : nextLabel}
             disabled={isReviewStep ? contactPhone.length < 4 : isDisabled}
-            disabledHint={isReviewStep && contactPhone.length < 4 ? "Enter phone number to send" : ""}
+            disabledHint={isReviewStep ? (contactPhone.length < 4 ? "Enter phone number to send" : "") : disabledReason}
             onDisabledClick={() => {
               const el = document.getElementById("phone-input");
               if (el) {

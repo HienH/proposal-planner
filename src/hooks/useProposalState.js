@@ -129,18 +129,19 @@ export default function useProposalState() {
 
   const toggleStructure = useCallback((id) => {
     const MAIN_IDS = ["wooden-frame", "gazebo-structure", "metal-structure"];
+    const giantFrameOn = centerpieces.includes("giant-frame-neon");
     setStructures((p) => {
       let next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
       if (MAIN_IDS.includes(id) && p.includes(id) && !next.includes(id)) {
         const anyMainLeft = MAIN_IDS.some((m) => next.includes(m));
         if (!anyMainLeft && next.includes("structure-neon")) {
           next = next.filter((a) => a !== "structure-neon");
-          setStructureNeonMsg(null);
+          if (!giantFrameOn) setStructureNeonMsg(null);
         }
       }
       return next;
     });
-    if (id === "structure-neon") setStructureNeonMsg(null);
+    if (id === "structure-neon" && !giantFrameOn) setStructureNeonMsg(null);
     if (id !== "structure-neon") {
       setStructureFlowerQtys((q) => {
         if (!(id in q)) return q;
@@ -149,7 +150,7 @@ export default function useProposalState() {
         return n;
       });
     }
-  }, []);
+  }, [centerpieces]);
 
   const adjustStructureFlowerQty = useCallback((id, delta) => {
     setStructureFlowerQtys((q) => {
@@ -170,8 +171,24 @@ export default function useProposalState() {
   }, []);
 
   const toggleCenterpiece = useCallback((id) => {
+    const wasOn = centerpieces.includes(id);
     setCenterpieces((p) => p.includes(id) ? p.filter((a) => a !== id) : [...p, id]);
-  }, []);
+    if (id === "giant-frame-neon") {
+      if (!wasOn) {
+        setStructureNeonMsg(null);
+      } else {
+        setStructureFlowerQtys((q) => {
+          if (!(id in q)) return q;
+          const n = { ...q };
+          delete n[id];
+          return n;
+        });
+        if (!structures.includes("structure-neon")) {
+          setStructureNeonMsg(null);
+        }
+      }
+    }
+  }, [centerpieces, structures]);
 
   // --- Portfolio matching ---
 
