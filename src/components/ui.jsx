@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { fmt } from "../utils";
-import { SOLO_INSTRUMENTS, ADDONS } from "../data";
+import { SOLO_INSTRUMENTS, ADDONS, STRUCTURES, STRUCTURE_FLOWER, structureFlowerCost } from "../data";
 
 export function renderDesc(text) {
   if (!text) return text;
@@ -346,6 +346,114 @@ export function DroneAddon({ selected, onToggle }) {
       </div>
     </div>
   );
+}
+
+export function NeonSignAddon({ selected, onToggle }) {
+  const neon = STRUCTURES.find((s) => s.id === "structure-neon");
+  if (!neon) return null;
+  return (
+    <div
+      onClick={onToggle}
+      style={{
+        marginTop: 8, padding: "10px 12px",
+        background: selected ? "rgba(196,148,74,0.12)" : "rgba(196,148,74,0.05)",
+        border: selected ? "2px solid #C4944A" : "2px dashed #D4C5B0",
+        borderRadius: 12, marginLeft: 4, marginRight: 4,
+        cursor: "pointer", display: "flex", alignItems: "center", gap: 10,
+        transition: "all 0.2s ease",
+      }}
+    >
+      <div style={{
+        width: 40, height: 40, borderRadius: 8, flexShrink: 0,
+        backgroundImage: `url(${neon.img})`, backgroundSize: "cover", backgroundPosition: "center",
+      }} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+          <span style={{ fontWeight: 600, fontSize: 12, color: "#3B2412" }}>
+            + Add {neon.name}
+          </span>
+          <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap" }}>
+            +{fmt(neon.price)}
+          </span>
+        </div>
+        <div style={{ fontSize: 11, color: "#8B7355", marginTop: 2, lineHeight: 1.3 }}>{neon.desc}</div>
+      </div>
+      <div style={{
+        width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+        border: selected ? "none" : "2px solid #D4C5B0",
+        background: selected ? "#C4944A" : "transparent",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        color: "#fff", fontSize: 12, fontWeight: 700,
+      }}>
+        {selected ? "✓" : ""}
+      </div>
+    </div>
+  );
+}
+
+export function StructureFlowerPicker({ qty, onAdjust }) {
+  const q = qty || 0;
+  const cost = structureFlowerCost(q);
+  return (
+    <div style={{
+      marginTop: 8, padding: "10px 12px",
+      background: q > 0 ? "rgba(196,148,74,0.12)" : "rgba(196,148,74,0.05)",
+      border: q > 0 ? "2px solid #C4944A" : "2px dashed #D4C5B0",
+      borderRadius: 12, marginLeft: 4, marginRight: 4,
+      display: "flex", flexDirection: "column", gap: 6,
+      transition: "all 0.2s ease",
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ flex: 1, minWidth: 0, fontWeight: 600, fontSize: 12, color: "#3B2412" }}>
+          + Add Flower Arrangement
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onAdjust(-1); }}
+              disabled={q === 0}
+              style={qtyBtnStyle(q === 0)}
+            >−</button>
+            <div style={{
+              minWidth: 22, textAlign: "center",
+              fontWeight: 700, fontSize: 14, color: "#3B2412",
+            }}>{q}</div>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onAdjust(1); }}
+              disabled={q >= STRUCTURE_FLOWER.maxQty}
+              style={qtyBtnStyle(q >= STRUCTURE_FLOWER.maxQty)}
+            >+</button>
+          </div>
+          {q > 0 && (
+            <div style={{
+              fontWeight: 700, fontSize: 12, color: "#C4944A",
+              whiteSpace: "nowrap", lineHeight: 1,
+            }}>
+              +{fmt(cost)}
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{ fontSize: 11, color: "#8B7355", lineHeight: 1.3 }}>
+        ${STRUCTURE_FLOWER.singlePrice} solo · ${STRUCTURE_FLOWER.bulkPrice} each when ordering 2 or more
+      </div>
+    </div>
+  );
+}
+
+function qtyBtnStyle(disabled) {
+  return {
+    width: 28, height: 28, borderRadius: "50%",
+    border: "2px solid #C4944A",
+    background: disabled ? "#F5EFE4" : "#fff",
+    color: disabled ? "#D4C5B0" : "#C4944A",
+    fontSize: 16, fontWeight: 700,
+    cursor: disabled ? "default" : "pointer",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    padding: 0, lineHeight: 1,
+  };
 }
 
 export function InstrumentPicker({ selected, onSelect }) {

@@ -1,6 +1,7 @@
 import {
   VENUES, CENTERPIECES, ACTIVITIES, FLOWERS, STRUCTURES,
   WOW, SPARKLER_PRICES, ADDONS, PACKAGES, SOLO_INSTRUMENTS,
+  structureFlowerCost,
 } from "../data";
 import { fmt } from "../utils";
 import { SectionTitle, SummaryItem } from "../components/ui";
@@ -280,6 +281,7 @@ function CustomLineItems({ state }) {
     venue, centerpieces, toggleCenterpiece,
     flowers, toggleFlower, flowerQtys,
     structures, toggleStructure, structureNeonMsg,
+    structureFlowerQtys, adjustStructureFlowerQty,
     wow, toggleWow, sparklerQty, setSparklerQty,
     addons, toggleAddon, soloInstrument,
   } = state;
@@ -309,7 +311,20 @@ function CustomLineItems({ state }) {
       })}
       {structures.map((id) => {
         const item = STRUCTURES.find((x) => x.id === id);
-        return item ? <SummaryItem key={id} label={item.name} price={item.price} sub={id === "structure-neon" ? `Message: "${structureNeonMsg}"` : null} onRemove={() => toggleStructure(id)} /> : null;
+        if (!item) return null;
+        const fq = structureFlowerQtys?.[id] || 0;
+        return (
+          <div key={id}>
+            <SummaryItem label={item.name} price={item.price} sub={id === "structure-neon" ? `Message: "${structureNeonMsg}"` : null} onRemove={() => toggleStructure(id)} />
+            {fq > 0 && (
+              <SummaryItem
+                label={`↳ ${fq} Flower Arrangement${fq > 1 ? "s" : ""}`}
+                price={structureFlowerCost(fq)}
+                onRemove={() => adjustStructureFlowerQty(id, -fq)}
+              />
+            )}
+          </div>
+        );
       })}
       {sparklerQty > 0 && <SummaryItem label={`Fountain Sparklers x${sparklerQty}`} price={SPARKLER_PRICES[sparklerQty]} onRemove={() => setSparklerQty(0)} />}
       {wow.map((id) => {

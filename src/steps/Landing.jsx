@@ -20,6 +20,18 @@ export default function Landing({ state }) {
         borderRadius: "50%", background: "radial-gradient(circle,rgba(196,148,74,0.1),transparent 70%)",
       }} />
 
+      <img
+        src={`${import.meta.env.BASE_URL}logo.png`}
+        alt="Cancun Proposal Planner logo"
+        style={{
+          width: "clamp(180px, 38vw, 260px)",
+          height: "auto",
+          marginBottom: 20,
+          display: "block",
+          filter: "invert(1) hue-rotate(180deg)",
+        }}
+      />
+
       <div style={{
         fontSize: 12, color: "#C4944A", fontWeight: 700,
         letterSpacing: 4, marginBottom: 24, textTransform: "uppercase",

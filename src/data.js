@@ -188,11 +188,11 @@ export const IMG = {
 };
 
 export const VENUES = [
-  { id: "beach", name: "Beach", price: 450, img: IMG.beach, badge: "SIGNATURE", desc: "Our beachfront location with stunning ocean views. Weekdays recommended for a more intimate experience.", priv: false },
+  { id: "beach", name: "Beach", price: 400, img: IMG.beach, badge: "SIGNATURE", desc: "Our beachfront location with stunning ocean views. Weekdays recommended for a more intimate experience.", priv: false },
   { id: "lagoon", name: "Lagoon", price: 350, img: IMG.lagoon, badge: "BEST VALUE", desc: "A private waterfront setting with the best sunset view in Cancun.", priv: true },
   { id: "rooftop", name: "Rooftop", price: 450, img: IMG.rooftop, badge: "PRIVATE", desc: "City skyline, ferris wheel, and panoramic sunset views. Truly unforgettable.", priv: true },
   { id: "yacht", name: "Yacht", price: 1250, img: IMG.yacht, badge: "PRIVATE", desc: "Pop the question at sea on a private yacht with Caribbean views and total seclusion. Includes captain & crew.", priv: true },
-  { id: "cenote", name: "Cenote", price: 1600, img: IMG.cenote, badge: "EXCLUSIVE", desc: "A breathtaking private cenote — crystal turquoise water framed by jungle. Truly one-of-a-kind in Cancún.", priv: true },
+  { id: "cenote", name: "Cenote", price: 1650, img: IMG.cenote, badge: "EXCLUSIVE", desc: "A breathtaking private cenote — crystal turquoise water framed by jungle. Truly one-of-a-kind in Cancún.", priv: true },
 ];
 
 export const CENTERPIECES = [
@@ -204,8 +204,8 @@ export const CENTERPIECES = [
 ];
 
 export const ACTIVITIES = [
-  { id: "picnic", name: "Romantic Picnic", price: 250, img: IMG.picnic, desc: "Curated charcuterie spread for two with a complimentary bottle of wine, styled at your venue" },
-  { id: "dinner", name: "Candlelit Dinner", price: 250, img: IMG.dinner, desc: "Intimate 3-course dinner for two with a complimentary glass of wine under the stars" },
+  { id: "picnic", name: "Romantic Picnic", price: 275, img: IMG.picnic, desc: "Curated charcuterie spread for two with a complimentary bottle of wine, styled at your venue" },
+  { id: "dinner", name: "Candlelit Dinner", price: 295, img: IMG.dinner, desc: "Intimate 3-course dinner for two with a complimentary glass of wine under the stars" },
 ];
 
 export const FLOWERS = [
@@ -223,6 +223,18 @@ export const STRUCTURES = [
   { id: "structure-neon", name: "Neon Sign", price: 125, img: IMG.structureNeon, desc: "Add a glowing neon sign to your structure" },
 ];
 
+export const STRUCTURE_FLOWER = {
+  singlePrice: 75,
+  bulkPrice: 60,
+  maxQty: 10,
+};
+
+export function structureFlowerCost(qty) {
+  if (!qty || qty <= 0) return 0;
+  if (qty === 1) return STRUCTURE_FLOWER.singlePrice;
+  return qty * STRUCTURE_FLOWER.bulkPrice;
+}
+
 export const STRUCTURE_NEON_MESSAGES = [
   "Will you marry me?", "It was always you", "Te casas conmigo?",
   "Will you be my Wife?", "This is our love story", "Let's grow old together",
@@ -231,7 +243,7 @@ export const STRUCTURE_NEON_MESSAGES = [
 
 export const WOW = [];
 
-export const SPARKLER_PRICES = { 0: 0, 2: 225, 4: 330, 6: 435, 8: 540 };
+export const SPARKLER_PRICES = { 0: 0, 2: 150, 4: 300, 6: 450, 8: 600 };
 export const SPARKLER_MAX = 8;
 
 // Portfolio gallery used by `findBestMatches` in useProposalState.js.

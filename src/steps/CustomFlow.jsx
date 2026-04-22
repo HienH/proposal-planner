@@ -6,7 +6,7 @@ import {
 import { fmt, btnMain, btnBack } from "../utils";
 import {
   SectionTitle, SocialProofCard, VenueCard,
-  AddonSection, InstrumentPicker, DroneAddon, renderDesc,
+  AddonSection, InstrumentPicker, DroneAddon, NeonSignAddon, StructureFlowerPicker, renderDesc,
 } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
@@ -17,6 +17,7 @@ export default function CustomFlow({ state }) {
     centerpieces, toggleCenterpiece,
     flowers, toggleFlower, flowerQtys, adjustFlowerQty,
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
+    structureFlowerQtys, adjustStructureFlowerQty,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
     soloInstrument, setSoloInstrument,
@@ -272,35 +273,51 @@ export default function CustomFlow({ state }) {
           Structures
         </h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {STRUCTURES.map((item) => (
-            <div key={item.id}>
-              <ToggleItem item={item} selected={structures.includes(item.id)} onToggle={() => toggleStructure(item.id)} />
-              {item.id === "structure-neon" && structures.includes("structure-neon") && (
-                <div style={{
-                  marginTop: 8, padding: "16px 20px", background: "rgba(196,148,74,0.07)",
-                  borderRadius: 14, marginLeft: 4, marginRight: 4,
-                }}>
-                  <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>Choose your message:</p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                    {STRUCTURE_NEON_MESSAGES.map((msg) => (
-                      <button
-                        key={msg}
-                        onClick={() => setStructureNeonMsg(msg)}
-                        style={{
-                          padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer",
-                          background: structureNeonMsg === msg ? "#C4944A" : "#F5E6C8",
-                          color: structureNeonMsg === msg ? "#fff" : "#3B2412",
-                          fontSize: 12, fontWeight: 600, transition: "all 0.2s",
-                        }}
-                      >
-                        "{msg}"
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+          {STRUCTURES.filter((s) => s.id !== "structure-neon").map((item) => {
+            const isSelected = structures.includes(item.id);
+            const neonSelected = structures.includes("structure-neon");
+            return (
+              <div key={item.id}>
+                <ToggleItem item={item} selected={isSelected} onToggle={() => toggleStructure(item.id)} />
+                {isSelected && (
+                  <>
+                    <NeonSignAddon
+                      selected={neonSelected}
+                      onToggle={() => toggleStructure("structure-neon")}
+                    />
+                    {neonSelected && (
+                      <div style={{
+                        marginTop: 8, padding: "16px 20px", background: "rgba(196,148,74,0.07)",
+                        borderRadius: 14, marginLeft: 4, marginRight: 4,
+                      }}>
+                        <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>Choose your message:</p>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                          {STRUCTURE_NEON_MESSAGES.map((msg) => (
+                            <button
+                              key={msg}
+                              onClick={() => setStructureNeonMsg(msg)}
+                              style={{
+                                padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer",
+                                background: structureNeonMsg === msg ? "#C4944A" : "#F5E6C8",
+                                color: structureNeonMsg === msg ? "#fff" : "#3B2412",
+                                fontSize: 12, fontWeight: 600, transition: "all 0.2s",
+                              }}
+                            >
+                              "{msg}"
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <StructureFlowerPicker
+                      qty={structureFlowerQtys[item.id] || 0}
+                      onAdjust={(delta) => adjustStructureFlowerQty(item.id, delta)}
+                    />
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {structures.includes("structure-neon") && !structureNeonMsg && (

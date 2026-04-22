@@ -3,6 +3,7 @@ import {
   VENUES, CENTERPIECES, ACTIVITIES, FLOWERS, STRUCTURES, WOW,
   SPARKLER_PRICES, SPARKLER_MAX, PORTFOLIO, ADDONS, NEON_MESSAGES,
   PACKAGES, BUSINESS_EMAIL, PHONE, COUNTRY_CODES, SOLO_INSTRUMENTS,
+  structureFlowerCost,
 } from "../data";
 import { fmt } from "../utils";
 
@@ -21,6 +22,7 @@ export default function useProposalState() {
   const [flowerQtys, setFlowerQtys] = useState({});
   const [structures, setStructures] = useState([]);
   const [structureNeonMsg, setStructureNeonMsg] = useState(null);
+  const [structureFlowerQtys, setStructureFlowerQtys] = useState({});
   const [wow, setWow] = useState([]);
   const [sparklerQty, setSparklerQty] = useState(0);
   const [addons, setAddons] = useState([]);
@@ -126,8 +128,41 @@ export default function useProposalState() {
   }, []);
 
   const toggleStructure = useCallback((id) => {
-    setStructures((p) => p.includes(id) ? p.filter((a) => a !== id) : [...p, id]);
+    const MAIN_IDS = ["wooden-frame", "gazebo-structure", "metal-structure"];
+    setStructures((p) => {
+      let next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
+      if (MAIN_IDS.includes(id) && p.includes(id) && !next.includes(id)) {
+        const anyMainLeft = MAIN_IDS.some((m) => next.includes(m));
+        if (!anyMainLeft && next.includes("structure-neon")) {
+          next = next.filter((a) => a !== "structure-neon");
+          setStructureNeonMsg(null);
+        }
+      }
+      return next;
+    });
     if (id === "structure-neon") setStructureNeonMsg(null);
+    if (id !== "structure-neon") {
+      setStructureFlowerQtys((q) => {
+        if (!(id in q)) return q;
+        const n = { ...q };
+        delete n[id];
+        return n;
+      });
+    }
+  }, []);
+
+  const adjustStructureFlowerQty = useCallback((id, delta) => {
+    setStructureFlowerQtys((q) => {
+      const cur = q[id] || 0;
+      const next = cur + delta;
+      if (next < 0 || next > 10) return q;
+      if (next === 0) {
+        const n = { ...q };
+        delete n[id];
+        return n;
+      }
+      return { ...q, [id]: next };
+    });
   }, []);
 
   const toggleWow = useCallback((id) => {
@@ -261,6 +296,9 @@ export default function useProposalState() {
       const s = STRUCTURES.find((x) => x.id === id);
       if (s) t += s.price;
     });
+    Object.entries(structureFlowerQtys).forEach(([id, qty]) => {
+      if (structures.includes(id)) t += structureFlowerCost(qty);
+    });
     wow.forEach((id) => {
       const w = WOW.find((x) => x.id === id);
       if (w) t += w.price;
@@ -338,6 +376,10 @@ export default function useProposalState() {
         m += `- ${s.name} (${fmt(s.price)})`;
         if (s.id === "structure-neon") m += ` — "${structureNeonMsg}"`;
         m += `\n`;
+        const fq = structureFlowerQtys[s.id];
+        if (fq > 0) {
+          m += `  + ${fq} Flower Arrangement${fq > 1 ? "s" : ""} (${fmt(structureFlowerCost(fq))})\n`;
+        }
       });
     }
     if (selWow.length || sparklerQty > 0) {
@@ -395,6 +437,7 @@ export default function useProposalState() {
       setFlowerQtys({});
       setStructures([]);
       setStructureNeonMsg(null);
+      setStructureFlowerQtys({});
       setWow([]);
       setSparklerQty(0);
       setAddons([]);
@@ -447,6 +490,7 @@ export default function useProposalState() {
     neonMsg, setNeonMsg,
     flowers, toggleFlower, flowerQtys, adjustFlowerQty,
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
+    structureFlowerQtys, adjustStructureFlowerQty,
     wow, toggleWow,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,

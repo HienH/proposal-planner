@@ -18,6 +18,7 @@ export default function ProposalBuilder() {
     selectedPackage, setSelectedPackage, setPkgCarouselIdx,
     soloInstrument,
     contactPhone,
+    venue,
   } = state;
 
   // RunningTotal computed props
@@ -32,12 +33,13 @@ export default function ProposalBuilder() {
   const hasSelection = stepHasSelection[step] || false;
   const statementPropRequired = step === 3 && planMode === "custom" && centerpieces.length === 0;
   const premadeNeedsPackage = step === 2 && planMode === "premade" && !selectedPackage;
+  const customNeedsVenue = step === 2 && planMode === "custom" && !venue;
   const soloNeedsInstrument =
     addons.includes("solo-musician") &&
     !soloInstrument &&
     ((planMode === "custom" && step === 6) || (planMode === "premade" && step === 3));
-  const isDisabled = (step === 5 && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage || soloNeedsInstrument;
-  const nextLabel = step === 6 ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
+  const isDisabled = (step === 5 && neonNeedsMsg) || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
+  const nextLabel = step === 6 ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : (step === 2 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
 
   const isReviewStep = (planMode === "custom" && step === 7) || (planMode === "premade" && step === 4);
   const showRunningTotal =
@@ -97,6 +99,16 @@ export default function ProposalBuilder() {
 
       {showSteps && (
         <div className="steps-container" style={{ maxWidth: 920, margin: "0 auto", padding: "12px 20px 110px" }}>
+          <img
+            src={`${import.meta.env.BASE_URL}logo.png`}
+            alt="Cancun Proposal Planner logo"
+            style={{
+              width: "clamp(90px, 18vw, 130px)",
+              height: "auto",
+              display: "block",
+              margin: "4px auto -10px",
+            }}
+          />
           <StepIndicator current={step - 2} total={labels.length} labels={labels} />
           {planMode === "custom" && <CustomFlow state={state} />}
           {planMode === "premade" && <PremadeFlow state={state} />}
