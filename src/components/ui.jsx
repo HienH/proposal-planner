@@ -526,6 +526,70 @@ export function InstrumentPicker({ selected, onSelect }) {
   );
 }
 
+export function GiantFrameStructurePicker({ options, selected, onSelect }) {
+  const items = options
+    .map((o) => {
+      const s = STRUCTURES.find((x) => x.id === o.id);
+      return s ? { ...s, uplift: o.uplift, florals: o.florals } : null;
+    })
+    .filter(Boolean);
+  return (
+    <div style={{
+      marginTop: 8, padding: "16px 18px", background: "rgba(196,148,74,0.07)",
+      borderRadius: 14, marginLeft: 4, marginRight: 4,
+    }}>
+      <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>
+        Choose your structure style:
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: 10 }}>
+        {items.map((s) => {
+          const sel = selected === s.id;
+          return (
+            <button
+              key={s.id}
+              onClick={() => onSelect(s.id)}
+              style={{
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                padding: 8, borderRadius: 12,
+                border: sel ? "2px solid #C4944A" : "2px solid transparent",
+                background: sel ? "rgba(196,148,74,0.12)" : "#fff",
+                cursor: "pointer", transition: "all 0.2s",
+                minHeight: 150, width: "100%",
+              }}
+            >
+              <div style={{
+                width: "100%", aspectRatio: "94 / 72", borderRadius: 10,
+                backgroundImage: `url(${s.img})`, backgroundSize: "cover", backgroundPosition: "center",
+              }} />
+              <span style={{
+                fontSize: 11, fontWeight: 600, textAlign: "center", lineHeight: 1.25,
+                color: sel ? "#C4944A" : "#6B5744",
+              }}>
+                {s.name}
+              </span>
+              {s.florals > 0 && (
+                <span style={{
+                  fontSize: 10, fontWeight: 500, color: "#8B7355", textAlign: "center",
+                }}>
+                  x{s.florals} floral arrangement{s.florals > 1 ? "s" : ""}
+                </span>
+              )}
+              {s.uplift > 0 && (
+                <span style={{
+                  marginTop: "auto",
+                  fontSize: 10.5, fontWeight: 700, color: "#C4944A",
+                }}>
+                  +{fmt(s.uplift)}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function SummaryItem({ label, price, sub, onRemove, hidePrice }) {
   return (
     <div style={{

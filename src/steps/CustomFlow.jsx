@@ -7,7 +7,7 @@ import {
 import { fmt, btnMain, btnBack } from "../utils";
 import {
   SectionTitle, SocialProofCard, VenueCard,
-  AddonSection, InstrumentPicker, DroneAddon, NeonSignAddon, NeonMessagePicker, StructureFlowerPicker, renderDesc,
+  AddonSection, InstrumentPicker, DroneAddon, NeonSignAddon, NeonMessagePicker, StructureFlowerPicker, GiantFrameStructurePicker, renderDesc,
 } from "../components/ui";
 import ReviewStep from "./ReviewStep";
 
@@ -19,6 +19,7 @@ export default function CustomFlow({ state }) {
     flowers, toggleFlower, flowerQtys, adjustFlowerQty,
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
     giantFrameNeonMsg, setGiantFrameNeonMsg,
+    giantFrameStructure, setGiantFrameStructure,
     structureFlowerQtys, adjustStructureFlowerQty,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
@@ -85,16 +86,21 @@ export default function CustomFlow({ state }) {
           {CENTERPIECES.map((item) => {
             if (item.id === "giant-frame-neon") {
               const sel = centerpieces.includes(item.id);
+              const pickedOpt = item.structureOptions?.find((o) => o.id === giantFrameStructure);
+              const displayItem = pickedOpt
+                ? { ...item, price: item.price + (pickedOpt.uplift || 0), priceFrom: false }
+                : item;
               return (
                 <Fragment key={item.id}>
-                  <ToggleItem item={item} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
+                  <ToggleItem item={displayItem} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
                   {sel && (
                     <div style={{ gridColumn: "1 / -1" }}>
-                      <NeonMessagePicker selected={giantFrameNeonMsg} onSelect={setGiantFrameNeonMsg} />
-                      <StructureFlowerPicker
-                        qty={structureFlowerQtys[item.id] || 0}
-                        onAdjust={(delta) => adjustStructureFlowerQty(item.id, delta)}
+                      <GiantFrameStructurePicker
+                        options={item.structureOptions}
+                        selected={giantFrameStructure}
+                        onSelect={setGiantFrameStructure}
                       />
+                      <NeonMessagePicker selected={giantFrameNeonMsg} onSelect={setGiantFrameNeonMsg} />
                     </div>
                   )}
                 </Fragment>
@@ -113,13 +119,22 @@ export default function CustomFlow({ state }) {
           ))}
         </div>
 
-        {centerpieces.includes("giant-frame-neon") && !giantFrameNeonMsg && (
+        {centerpieces.includes("giant-frame-neon") && !giantFrameStructure && (
           <div style={{
             textAlign: "center", marginTop: 20, padding: "10px 16px",
             background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
             fontSize: 13, color: "#8B6914", fontWeight: 600,
           }}>
-            Please select a message for your Giant Frame's Neon Sign above
+            Please select a structure style for your Decorated Structure above
+          </div>
+        )}
+        {centerpieces.includes("giant-frame-neon") && !giantFrameNeonMsg && (
+          <div style={{
+            textAlign: "center", marginTop: 12, padding: "10px 16px",
+            background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
+            fontSize: 13, color: "#8B6914", fontWeight: 600,
+          }}>
+            Please select a message for your Decorated Structure's Neon Sign above
           </div>
         )}
 
@@ -155,7 +170,7 @@ export default function CustomFlow({ state }) {
                 {item.badge && !sel && (
                   <div style={{
                     position: "absolute", top: -8, right: 12,
-                    background: "#C4944A", color: "#fff", padding: "2px 8px",
+                    background: item.badge === "FIRST GIFT" ? "#C0392B" : "#C4944A", color: "#fff", padding: "2px 8px",
                     borderRadius: 8, fontSize: 9, fontWeight: 700,
                   }}>
                     {item.badge}
@@ -170,7 +185,7 @@ export default function CustomFlow({ state }) {
                     <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
                       {isQty && sel
                         ? (item.perBundle
-                          ? `${qty} ${qty === 1 ? "bundle" : "bundles"} (${qty * item.perBundle} ${item.bundleUnit || "arrangements"})`
+                          ? `${item.name} (${qty * item.perBundle} ${item.bundleUnit || "arrangements"})`
                           : `${qty} ${item.name}`)
                         : item.name}
                     </span>
@@ -429,7 +444,7 @@ function ToggleItem({ item, selected, onToggle }) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>{item.name}</span>
           <span style={{ fontWeight: 700, fontSize: 15, color: item.price === 0 ? "#2D5016" : "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
-            {item.price === 0 ? "Free" : fmt(item.price)}
+            {item.price === 0 ? "Free" : item.priceFrom ? `from ${fmt(item.price)}` : fmt(item.price)}
           </span>
         </div>
         <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(item.desc)}</p>

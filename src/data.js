@@ -150,9 +150,11 @@ export const IMG = {
   arr8:            cld("flowers/flower-arrangement-2.webp"),
   roses50:         cld("flowers/standing-roses.webp"),
   roses100:        cld("flowers/standing-roses-2.webp"),
+  hangingRoses:    cld("unused/flowers/hanging-roses.webp"),
 
   // Structures
   woodenFrame:     cld("structures/wooden-structure.webp"),
+  giantFrame:      cld("unused/structures/giant-frame-structure.webp"),
   gazeboStructure: cld("structures/gazebo.webp"),
   metalStructure:  cld("structures/metal-heart-structure.webp"),
   // No dedicated neon-sign product shot — using a rooftop scene that features one prominently.
@@ -191,8 +193,9 @@ export const VENUES = [
   { id: "beach", name: "Beach", price: 400, img: IMG.beach, badge: "SIGNATURE", desc: "Our beachfront location with stunning ocean views. Weekdays recommended for a more intimate experience.", priv: false },
   { id: "lagoon", name: "Lagoon", price: 350, img: IMG.lagoon, badge: "BEST VALUE", desc: "A private waterfront setting with the best sunset view in Cancun.", priv: true },
   { id: "rooftop", name: "Rooftop", price: 450, img: IMG.rooftop, badge: "PRIVATE", desc: "City skyline, ferris wheel, and panoramic sunset views. Truly unforgettable.", priv: true },
-  { id: "yacht", name: "Yacht", price: 1250, img: IMG.yacht, badge: "PRIVATE", desc: "Pop the question at sea on a private yacht with Caribbean views and total seclusion. Includes captain & crew.", priv: true },
-  { id: "cenote", name: "Cenote", price: 1650, img: IMG.cenote, badge: "EXCLUSIVE", desc: "A breathtaking private cenote — crystal turquoise water framed by jungle. Truly one-of-a-kind in Cancún.", priv: true },
+  // Moved to premade packages — re-enable when ready
+  // { id: "yacht", name: "Yacht", price: 1250, img: IMG.yacht, badge: "PRIVATE", desc: "Pop the question at sea on a private yacht with Caribbean views and total seclusion. Includes captain & crew.", priv: true },
+  // { id: "cenote", name: "Cenote", price: 1650, img: IMG.cenote, badge: "EXCLUSIVE", desc: "A breathtaking private cenote — crystal turquoise water framed by jungle. Truly one-of-a-kind in Cancún.", priv: true },
 ];
 
 export const CENTERPIECES = [
@@ -201,7 +204,7 @@ export const CENTERPIECES = [
   { id: "med-letters-short", name: '"Marry Me?"', price: 350, img: IMG.medLettersShort, desc: "2ft letters on risers — clean and classic" },
   { id: "stacked-letters", name: "Stacked Letters", price: 350, img: IMG.stackedLetters, desc: "6ft tall stacked display — elegant and intimate" },
   { id: "flower-structure", name: "Flower Design", price: 625, img: IMG.flowerHeart, desc: "400 fresh roses shaped into a heart, ring, or circle" },
-  { id: "giant-frame-neon", name: "Giant Frame with Neon Sign", price: 275, img: IMG.woodenFrame, desc: "A bold freestanding frame with a custom-message neon sign included" },
+  { id: "giant-frame-neon", name: "Decorated Structure with Neon Sign", price: 300, priceFrom: true, img: IMG.woodenFrame, desc: "A pre-styled freestanding structure dressed in fresh florals with a custom neon sign", structureOptions: [{ id: "metal-structure", uplift: 0, florals: 1 }, { id: "giant-frame", uplift: 95, florals: 2 }, { id: "wooden-frame", uplift: 170, florals: 2 }, { id: "gazebo-structure", uplift: 230, florals: 3 }] },
 ];
 
 export const ACTIVITIES = [
@@ -210,17 +213,19 @@ export const ACTIVITIES = [
 ];
 
 export const FLOWERS = [
-  { id: "bouquet", name: "Rose Bouquet", price: 99, img: IMG.bouquet, desc: "3 dozen fresh roses — the first gift after saying yes", badge: "POPULAR" },
-  { id: "petals", name: "Rose Petal Walkway", price: 50, img: IMG.petals, desc: "2 bags of red rose petals for a romantic walkway" },
+  { id: "petals", name: "Rose Petal Walkway", pricePerUnit: 50, unitStep: 1, unitMin: 1, img: IMG.petals, desc: "Red rose petals for a romantic walkway — 2 bags per bundle, $50 each", qty: true, perBundle: 2, bundleUnit: "bags", badge: "POPULAR" },
   { id: "arrangements", name: "Flower Arrangements", pricePerUnit: 120, unitStep: 1, unitMin: 1, img: IMG.arr4, desc: "Elegant arrangements around your setup — 2 arrangements per bundle, $120 each", qty: true, perBundle: 2 },
   { id: "standing-roses", name: "Standing Roses", pricePerUnit: 60, unitStep: 1, unitMin: 1, img: IMG.roses50, desc: "Roses in sand lining your walkway — 24 roses per bundle, $60 each", qty: true, perBundle: 24, bundleUnit: "roses" },
+  { id: "hanging-roses", name: "Hanging Roses", price: 60, img: IMG.hangingRoses, desc: "24 cascading roses draped from your structure. **Only available with the Gazebo Structure.**" },
   { id: "candle-heart", name: "Candle Heart", price: 150, img: IMG.candleHeart, desc: "LED candles and rose petals — beautifully simple" },
+  { id: "bouquet", name: "Rose Bouquet", price: 99, img: IMG.bouquet, desc: "3 dozen fresh roses — the first gift after saying yes", badge: "FIRST GIFT" },
 ];
 
 export const STRUCTURES = [
-  { id: "wooden-frame", name: "Wooden Structure / Giant Frame", price: 150, img: IMG.woodenFrame, desc: "Wooden Gazebo or Giant Frame w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
-  { id: "gazebo-structure", name: "Gazebo Structure", price: 200, img: IMG.gazeboStructure, desc: "Wooden Gazebo w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
   { id: "metal-structure", name: "Metal Structures (Heart, Circle or Rectangle)", price: 100, img: IMG.metalStructure, desc: "Choose from our selection of metal structures. This simple structure can be taken to the next level with fabric, Neon sign and florals" },
+  { id: "giant-frame", name: "Giant Frame", price: 150, img: IMG.giantFrame, desc: "A bold freestanding giant frame w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
+  { id: "wooden-frame", name: "Wooden Structure", price: 150, img: IMG.woodenFrame, desc: "Wooden structure w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
+  { id: "gazebo-structure", name: "Gazebo Structure", price: 200, img: IMG.gazeboStructure, desc: "Wooden Gazebo w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
   { id: "structure-neon", name: "Neon Sign", price: 125, img: IMG.structureNeon, desc: "Add a glowing neon sign to your structure" },
 ];
 
@@ -240,6 +245,7 @@ export const STRUCTURE_NEON_MESSAGES = [
   "Will you marry me?", "It was always you", "Te casas conmigo?",
   "Will you be my Wife?", "Let's grow old together",
   "You & Me", "She said yes","This is our love story",
+  "Will you be my girlfriend"
 ];
 
 export const WOW = [];
@@ -390,30 +396,30 @@ const _portfolioPaths = [
   "rooftop/rooftop-wooden-structure-flowers-bundle-solo-musician-neon-sign-dinner-white-carpet.webp",
   "rooftop/rooftop-wooden-structure-flowers-bundle-solo-musician-neon-sign.webp",
   "rooftop/rooftop-wooden-structure.webp",
-  // --- Cenote (10) ---
-  "cenote/cenote1.webp",
-  "cenote/cenote10.webp",
-  "cenote/cenote2.webp",
-  "cenote/cenote3.webp",
-  "cenote/cenote4.webp",
-  "cenote/cenote5.webp",
-  "cenote/cenote6.webp",
-  "cenote/cenote7.webp",
-  "cenote/cenote8.webp",
-  "cenote/cenote9.webp",
-  // --- Yacht (12) ---
-  "yacht/yacht1.webp",
-  "yacht/yacht10.webp",
-  "yacht/yacht11.webp",
-  "yacht/yacht12.webp",
-  "yacht/yacht2.webp",
-  "yacht/yacht3.webp",
-  "yacht/yacht4.webp",
-  "yacht/yacht5.webp",
-  "yacht/yacht6.webp",
-  "yacht/yacht7.webp",
-  "yacht/yacht8.webp",
-  "yacht/yacht9.webp",
+  // --- Cenote (10) --- disabled while moved to premade packages
+  // "cenote/cenote1.webp",
+  // "cenote/cenote10.webp",
+  // "cenote/cenote2.webp",
+  // "cenote/cenote3.webp",
+  // "cenote/cenote4.webp",
+  // "cenote/cenote5.webp",
+  // "cenote/cenote6.webp",
+  // "cenote/cenote7.webp",
+  // "cenote/cenote8.webp",
+  // "cenote/cenote9.webp",
+  // --- Yacht (12) --- disabled while moved to premade packages
+  // "yacht/yacht1.webp",
+  // "yacht/yacht10.webp",
+  // "yacht/yacht11.webp",
+  // "yacht/yacht12.webp",
+  // "yacht/yacht2.webp",
+  // "yacht/yacht3.webp",
+  // "yacht/yacht4.webp",
+  // "yacht/yacht5.webp",
+  // "yacht/yacht6.webp",
+  // "yacht/yacht7.webp",
+  // "yacht/yacht8.webp",
+  // "yacht/yacht9.webp",
 ];
 
 function _parseTags(path) {
@@ -434,7 +440,8 @@ function _parseTags(path) {
   if (/petals/.test(file)) flowers.push("petals");
   if (/candle-heart|heart-candle|candlestick/.test(file)) flowers.push("candle-heart");
   if (/standing-roses/.test(file)) flowers.push("standing-roses");
-  if (/flowers-bundle|bundle-flowers|hanging-roses/.test(file)) flowers.push("arrangements");
+  if (/flowers-bundle|bundle-flowers/.test(file)) flowers.push("arrangements");
+  if (/hanging-roses/.test(file)) flowers.push("hanging-roses");
   if (/bouquet/.test(file)) flowers.push("bouquet");
 
   const wow = [];
@@ -488,7 +495,6 @@ export const UNUSED_PHOTOS = {
 
   // Alternate structure shots — IMG.metalStructure uses metal-heart-structure
   structures: [
-    { path: "unused/structures/giant-frame-structure.webp",         note: "Giant frame (alternate to wooden)" },
     { path: "unused/structures/metal-circle-structure.webp",        note: "Circle metal structure" },
     { path: "unused/structures/metal-rectangular-structure.webp",   note: "Rectangular metal structure" },
     { path: "unused/structures/metal-rectangular-structure-2.webp", note: "Alt rectangular metal structure" },

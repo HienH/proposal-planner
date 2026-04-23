@@ -283,7 +283,7 @@ function CustomLineItems({ state }) {
     venue, centerpieces, toggleCenterpiece,
     flowers, toggleFlower, flowerQtys,
     structures, toggleStructure, structureNeonMsg,
-    giantFrameNeonMsg,
+    giantFrameNeonMsg, giantFrameStructure,
     structureFlowerQtys, adjustStructureFlowerQty,
     wow, toggleWow, sparklerQty, setSparklerQty,
     addons, toggleAddon, soloInstrument,
@@ -301,12 +301,18 @@ function CustomLineItems({ state }) {
         if (!item || item.id === "none") return null;
         if (id === "giant-frame-neon") {
           const fq = structureFlowerQtys?.[id] || 0;
+          const structName = STRUCTURES.find((s) => s.id === giantFrameStructure)?.name;
+          const pickedOpt = item.structureOptions?.find((o) => o.id === giantFrameStructure);
+          const displayPrice = item.price + (pickedOpt?.uplift || 0);
+          const subParts = [];
+          if (structName) subParts.push(`Structure: ${structName}`);
+          if (giantFrameNeonMsg) subParts.push(`Message: "${giantFrameNeonMsg}"`);
           return (
             <div key={id}>
               <SummaryItem
                 label={item.name}
-                price={item.price}
-                sub={giantFrameNeonMsg ? `Message: "${giantFrameNeonMsg}"` : null}
+                price={displayPrice}
+                sub={subParts.length ? subParts.join(" · ") : null}
                 onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined}
               />
               {fq > 0 && (
@@ -327,7 +333,7 @@ function CustomLineItems({ state }) {
         if (item.qty) {
           const q = flowerQtys[id] || item.unitMin;
           const lbl = item.perBundle
-            ? `${item.name} — ${q} ${q === 1 ? "bundle" : "bundles"} (${q * item.perBundle} ${item.bundleUnit || "arrangements"})`
+            ? `${item.name} (${q * item.perBundle} ${item.bundleUnit || "arrangements"})`
             : `${q} ${item.name}`;
           return <SummaryItem key={id} label={lbl} price={q * item.pricePerUnit} onRemove={() => toggleFlower(id)} />;
         }

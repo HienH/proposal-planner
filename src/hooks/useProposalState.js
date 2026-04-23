@@ -23,6 +23,7 @@ export default function useProposalState() {
   const [structures, setStructures] = useState([]);
   const [structureNeonMsg, setStructureNeonMsg] = useState(null);
   const [giantFrameNeonMsg, setGiantFrameNeonMsg] = useState(null);
+  const [giantFrameStructure, setGiantFrameStructure] = useState(null);
   const [structureFlowerQtys, setStructureFlowerQtys] = useState({});
   const [wow, setWow] = useState([]);
   const [sparklerQty, setSparklerQty] = useState(0);
@@ -175,6 +176,7 @@ export default function useProposalState() {
     setCenterpieces((p) => p.includes(id) ? p.filter((a) => a !== id) : [...p, id]);
     if (id === "giant-frame-neon") {
       setGiantFrameNeonMsg(null);
+      setGiantFrameStructure(null);
       if (wasOn) {
         setStructureFlowerQtys((q) => {
           if (!(id in q)) return q;
@@ -296,7 +298,13 @@ export default function useProposalState() {
     if (venue) t += VENUES.find((v) => v.id === venue)?.price || 0;
     centerpieces.forEach((id) => {
       const c = CENTERPIECES.find((x) => x.id === id) || ACTIVITIES.find((x) => x.id === id);
-      if (c) t += c.price;
+      if (c) {
+        t += c.price;
+        if (c.id === "giant-frame-neon" && giantFrameStructure) {
+          const opt = c.structureOptions?.find((o) => o.id === giantFrameStructure);
+          t += opt?.uplift || 0;
+        }
+      }
     });
     flowers.forEach((id) => {
       const f = FLOWERS.find((x) => x.id === id);
@@ -370,8 +378,17 @@ export default function useProposalState() {
     if (selCenterpieces.length) {
       m += `\n✨ Statement Prop:\n`;
       selCenterpieces.forEach((c) => {
-        m += `- ${c.name} (${fmt(c.price)})`;
-        if (c.id === "giant-frame-neon" && giantFrameNeonMsg) m += ` — "${giantFrameNeonMsg}"`;
+        let displayPrice = c.price;
+        if (c.id === "giant-frame-neon" && giantFrameStructure) {
+          const opt = c.structureOptions?.find((o) => o.id === giantFrameStructure);
+          displayPrice = c.price + (opt?.uplift || 0);
+        }
+        m += `- ${c.name} (${fmt(displayPrice)})`;
+        if (c.id === "giant-frame-neon") {
+          const structName = STRUCTURES.find((s) => s.id === giantFrameStructure)?.name;
+          if (structName) m += ` — ${structName}`;
+          if (giantFrameNeonMsg) m += ` — "${giantFrameNeonMsg}"`;
+        }
         m += `\n`;
         const fq = structureFlowerQtys[c.id];
         if (c.id === "giant-frame-neon" && fq > 0) {
@@ -384,7 +401,7 @@ export default function useProposalState() {
       selFlowers.forEach((f) => {
         if (f.qty) {
           const q = flowerQtys[f.id] || f.unitMin;
-          if (f.perBundle) m += `- ${f.name} — ${q} ${q === 1 ? "bundle" : "bundles"} (${q * f.perBundle} ${f.bundleUnit || "arrangements"}) (${fmt(q * f.pricePerUnit)})\n`;
+          if (f.perBundle) m += `- ${f.name} (${q * f.perBundle} ${f.bundleUnit || "arrangements"}) (${fmt(q * f.pricePerUnit)})\n`;
           else m += `- ${q} ${f.name} (${fmt(q * f.pricePerUnit)})\n`;
         } else {
           m += `- ${f.name} (${fmt(f.price)})\n`;
@@ -460,6 +477,7 @@ export default function useProposalState() {
       setStructures([]);
       setStructureNeonMsg(null);
       setGiantFrameNeonMsg(null);
+      setGiantFrameStructure(null);
       setStructureFlowerQtys({});
       setWow([]);
       setSparklerQty(0);
@@ -514,6 +532,7 @@ export default function useProposalState() {
     flowers, toggleFlower, flowerQtys, adjustFlowerQty,
     structures, toggleStructure, structureNeonMsg, setStructureNeonMsg,
     giantFrameNeonMsg, setGiantFrameNeonMsg,
+    giantFrameStructure, setGiantFrameStructure,
     structureFlowerQtys, adjustStructureFlowerQty,
     wow, toggleWow,
     sparklerQty, setSparklerQty,
