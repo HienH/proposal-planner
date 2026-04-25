@@ -199,11 +199,11 @@ export const VENUES = [
 ];
 
 export const CENTERPIECES = [
-  { id: "big-letters", name: 'Big Letters "MARRY ME"', price: 625, img: IMG.bigLetters, desc: "6ft tall, 25ft wide — our biggest statement piece", badge: "MOST POPULAR" },
+  { id: "big-letters", name: 'Big Letters "MARRY ME"', price: 650, img: IMG.bigLetters, desc: "6ft tall, 25ft wide — our biggest statement piece", badge: "MOST POPULAR" },
   { id: "med-letters-full", name: '"Will You Marry Me?"', price: 495, img: IMG.medLettersFull, desc: "2ft letters on risers, standing 4ft high" },
   { id: "med-letters-short", name: '"Marry Me?"', price: 350, img: IMG.medLettersShort, desc: "2ft letters on risers — clean and classic" },
   { id: "stacked-letters", name: "Stacked Letters", price: 350, img: IMG.stackedLetters, desc: "6ft tall stacked display — elegant and intimate" },
-  { id: "flower-structure", name: "Flower Design", price: 625, img: IMG.flowerHeart, desc: "400 fresh roses shaped into a heart, ring, or circle" },
+  { id: "flower-structure", name: "Flower Design", price: 675, img: IMG.flowerHeart, desc: "400 fresh roses shaped into a heart, ring, or circle" },
   { id: "giant-frame-neon", name: "Decorated Structure with Neon Sign", price: 300, priceFrom: true, img: IMG.woodenFrame, desc: "A pre-styled freestanding structure dressed in fresh florals with a custom neon sign", structureOptions: [{ id: "metal-structure", uplift: 0, florals: 1 }, { id: "giant-frame", uplift: 95, florals: 2 }, { id: "wooden-frame", uplift: 170, florals: 2 }, { id: "gazebo-structure", uplift: 230, florals: 3 }] },
 ];
 
@@ -224,8 +224,8 @@ export const FLOWERS = [
 export const STRUCTURES = [
   { id: "metal-structure", name: "Metal Structures (Heart, Circle or Rectangle)", price: 100, img: IMG.metalStructure, desc: "Choose from our selection of metal structures. This simple structure can be taken to the next level with fabric, Neon sign and florals" },
   { id: "giant-frame", name: "Giant Frame", price: 150, img: IMG.giantFrame, desc: "A bold freestanding giant frame w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
-  { id: "wooden-frame", name: "Wooden Structure", price: 150, img: IMG.woodenFrame, desc: "Wooden structure w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
-  { id: "gazebo-structure", name: "Gazebo Structure", price: 200, img: IMG.gazeboStructure, desc: "Wooden Gazebo w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
+  { id: "wooden-frame", name: "Wooden Structure", price: 225, img: IMG.woodenFrame, desc: "Wooden structure w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
+  { id: "gazebo-structure", name: "Gazebo Structure", price: 225, img: IMG.gazeboStructure, desc: "Wooden Gazebo w/ fabric and lighting. Add a Neon sign and florals to complete the look" },
   { id: "structure-neon", name: "Neon Sign", price: 125, img: IMG.structureNeon, desc: "Add a glowing neon sign to your structure" },
 ];
 
@@ -434,6 +434,10 @@ function _parseTags(path) {
   else if (/heart-design-flowers|heart-flowers-structure|design-flowers|flower-structure/.test(file)) centerpiece = "flower-structure";
   else if (/giant-frame/.test(file)) centerpiece = "giant-frame-neon";
 
+  let activity = null;
+  if (/picnic/.test(file)) activity = "picnic";
+  else if (/dinner/.test(file)) activity = "dinner";
+
   const time = /dinner|evening/.test(file) ? "evening" : "sunset";
 
   const flowers = [];
@@ -447,7 +451,7 @@ function _parseTags(path) {
   const wow = [];
   if (/sparklers/.test(file)) wow.push("sparklers-2");
 
-  return { venue, centerpiece, time, flowers, wow };
+  return { venue, centerpiece, activity, time, flowers, wow };
 }
 
 export const PORTFOLIO = _portfolioPaths.map((p) => ({ img: cld(p), ..._parseTags(p) }));
@@ -554,7 +558,7 @@ export const PACKAGES = [
     price: 995,
     badge: "INTIMATE",
     desc: "An intimate and minimalist proposal experience designed to let the moment speak for itself. Featuring soft candlelight, elegant flowers, and a beautifully styled setting for just the two of you.",
-    includes: ["Venue of your choice", "8 flower arrangements", "Glass-encased flameless candles", "Round boho rug", "Rose petals", "Coordination · 1.5 hrs · Sparkling wine · Server"],
+    includes: ["Venue of your choice", "8 flower arrangements", "Glass-encased flameless candles", "Round boho rug", "Rose petals", "Coordination", "1.5 hrs", "Sparkling wine", "Server"],
     imgs: [
       cld("packages/sweet-1.webp"),
       cld("packages/sweet-2.webp"),
@@ -567,7 +571,7 @@ export const PACKAGES = [
     price: 1495,
     badge: "MOST POPULAR",
     desc: "A show-stopping proposal experience designed to leave a lasting impression. Featuring bold statement lettering, glowing sparklers, and elegantly styled flowers, every detail is thoughtfully designed to take their breath away.",
-    includes: ["Venue of your choice", 'Medium "MARRY ME" letters', "5 flower arrangements", "Metal circle structure", "Rose petal walkway", "Red or white carpet", "Flameless candles throughout", "Fountain sparklers (x2)", "Rose bouquet (3 dozen)", "Coordination · 1.5 hrs · Sparkling wine · Server"],
+    includes: ["Venue of your choice", 'Medium "MARRY ME" letters', "5 flower arrangements", "Metal circle structure", "Rose petal walkway", "Red or white carpet", "Flameless candles throughout", "Fountain sparklers (x2)", "Rose bouquet (3 dozen)", "Coordination", "1.5 hrs", "Sparkling wine", "Server"],
     imgs: [
       cld("packages/glamorous-4.webp"),
       cld("packages/glamorous-5.webp"),
@@ -580,7 +584,7 @@ export const PACKAGES = [
     price: 1995,
     badge: "PREMIUM",
     desc: "Our signature luxury experience, created for those who expect nothing but the exceptional. With over 10 years of expertise, we curate an unforgettable, bespoke moment for your special partner that will be remembered forever.",
-    includes: ["Venue of your choice", "Floral showpiece (heart, ring, or circle)", "Bespoke neon sign", '"The Moment" platform', "100 standing roses", "Glass-encased flameless candles", "Red or white carpet", "Fountain sparklers (x4)", "Rose bouquet (3 dozen)", "Coordination · 1.5 hrs · Sparkling wine · Server"],
+    includes: ["Venue of your choice", "Floral showpiece (heart, ring, or circle)", "Bespoke neon sign", '"The Moment" platform', "100 standing roses", "Glass-encased flameless candles", "Red or white carpet", "Fountain sparklers (x4)", "Rose bouquet (3 dozen)", "Coordination", "1.5 hrs", "Sparkling wine", "Server"],
     imgs: [
       cld("packages/artist-7.webp"),
       cld("packages/artist-8.webp"),

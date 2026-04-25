@@ -25,6 +25,8 @@ export default function useProposalState() {
   const [giantFrameNeonMsg, setGiantFrameNeonMsg] = useState(null);
   const [giantFrameStructure, setGiantFrameStructure] = useState(null);
   const [structureFlowerQtys, setStructureFlowerQtys] = useState({});
+  const [showPicnicEnhancements, setShowPicnicEnhancements] = useState(false);
+  const [showDinnerEnhancements, setShowDinnerEnhancements] = useState(false);
   const [wow, setWow] = useState([]);
   const [sparklerQty, setSparklerQty] = useState(0);
   const [addons, setAddons] = useState([]);
@@ -35,6 +37,8 @@ export default function useProposalState() {
   const [pkgCarouselIdx, setPkgCarouselIdx] = useState(0);
 
   // Contact info
+  const [travelStart, setTravelStart] = useState(null);
+  const [travelEnd, setTravelEnd] = useState(null);
   const [proposalDate, setProposalDate] = useState(null);
   const [hotelName, setHotelName] = useState("");
   const [partnerName, setPartnerName] = useState("");
@@ -199,7 +203,7 @@ export default function useProposalState() {
     // the same shoot (e.g. -1, -2 filename suffixes).
     const seen = new Set();
     const pool = rawPool.filter((p) => {
-      const sig = `${p.centerpiece}|${p.time}|${[...p.flowers].sort().join(",")}|${[...p.wow].sort().join(",")}`;
+      const sig = `${p.centerpiece}|${p.activity || ""}|${p.time}|${[...p.flowers].sort().join(",")}|${[...p.wow].sort().join(",")}`;
       if (seen.has(sig)) return false;
       seen.add(sig);
       return true;
@@ -208,6 +212,7 @@ export default function useProposalState() {
     return pool
       .map((photo) => {
         let score = 0;
+        if (photo.activity && centerpieces.includes(photo.activity)) score += 6;
         if (centerpieces.includes(photo.centerpiece)) score += 3;
         if (photo.time === "sunset") score += 2;
         flowers.forEach((f) => { if (photo.flowers.includes(f)) score += 1; });
@@ -220,13 +225,13 @@ export default function useProposalState() {
   }, [venue, centerpieces, flowers, wow, sparklerQty]);
 
   useEffect(() => {
-    if (step === 7 && planMode === "custom") setFrozenMatches(findBestMatches());
+    if (step === 6 && planMode === "custom") setFrozenMatches(findBestMatches());
   }, [step, planMode, findBestMatches]);
 
   const getExtras = useCallback((photo) => {
     const extras = [];
     centerpieces.forEach((id) => {
-      if (id !== photo.centerpiece && id !== "none") {
+      if (id !== photo.centerpiece && id !== photo.activity && id !== "none") {
         const item = CENTERPIECES.find((c) => c.id === id) || ACTIVITIES.find((c) => c.id === id);
         if (item) extras.push({ id: item.id, name: item.name, type: "centerpiece" });
       }
@@ -258,6 +263,10 @@ export default function useProposalState() {
     const upsells = [];
     if (photo.centerpiece && photo.centerpiece !== "none" && !centerpieces.includes(photo.centerpiece)) {
       const item = CENTERPIECES.find((c) => c.id === photo.centerpiece);
+      if (item) upsells.push({ id: item.id, name: item.name, price: item.price, type: "centerpiece" });
+    }
+    if (photo.activity && !centerpieces.includes(photo.activity)) {
+      const item = ACTIVITIES.find((a) => a.id === photo.activity);
       if (item) upsells.push({ id: item.id, name: item.name, price: item.price, type: "centerpiece" });
     }
     photo.flowers.forEach((id) => {
@@ -358,7 +367,8 @@ export default function useProposalState() {
         });
       }
       m += `\n💰 Est. Total: ${fmt(total)}\n`;
-      if (proposalDate) m += `\n📅 Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
+      if (travelStart && travelEnd) m += `\n✈️ Travel Dates: ${travelStart.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}\n`;
+      if (proposalDate) m += `📅 Preferred Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
       if (partnerName) m += `💕 Partner's name: ${partnerName}\n`;
       if (contactEmail) m += `\n📧 Email: ${contactEmail}\n`;
       if (contactPhone) m += `📱 Phone: ${countryCode} ${contactPhone}\n`;
@@ -438,7 +448,8 @@ export default function useProposalState() {
       });
     }
     m += `\n💰 Est. Total: ${fmt(total)}\n`;
-    if (proposalDate) m += `\n📅 Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
+    if (travelStart && travelEnd) m += `\n✈️ Travel Dates: ${travelStart.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}\n`;
+    if (proposalDate) m += `📅 Preferred Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
     if (partnerName) m += `💕 Partner's name: ${partnerName}\n`;
     if (contactEmail) m += `\n📧 Email: ${contactEmail}\n`;
     if (contactPhone) m += `📱 Phone: ${countryCode} ${contactPhone}\n`;
@@ -449,7 +460,7 @@ export default function useProposalState() {
   const buildEmailSubject = () =>
     encodeURIComponent(`Proposal Inquiry${partnerName ? ` — for ${partnerName}` : ""} — ${fmt(total)}`);
 
-  const inquiryReady = contactEmail.includes("@") && contactPhone.length >= 4;
+  const inquiryReady = contactEmail.includes("@") && contactPhone.length >= 4 && !!travelStart && !!travelEnd;
 
   const canProceed = () => {
     if (planMode === "custom") {
@@ -515,8 +526,8 @@ export default function useProposalState() {
     transition: "all 0.35s ease",
   };
 
-  const customLabels = ["Location", "Statement Prop", "Flowers", "Setup Enhancements", "Add-ons", "Review & Book"];
-  const premadeLabels = ["Package", "Extras", "Review & Book"];
+  const customLabels = ["Location", "Statement Prop", "Flowers & Enhancements", "Add-ons", "Review and Inquire"];
+  const premadeLabels = ["Package", "Extras", "Review and Inquire"];
   const labels = planMode === "premade" ? premadeLabels : customLabels;
 
   return {
@@ -534,6 +545,8 @@ export default function useProposalState() {
     giantFrameNeonMsg, setGiantFrameNeonMsg,
     giantFrameStructure, setGiantFrameStructure,
     structureFlowerQtys, adjustStructureFlowerQty,
+    showPicnicEnhancements, setShowPicnicEnhancements,
+    showDinnerEnhancements, setShowDinnerEnhancements,
     wow, toggleWow,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
@@ -544,6 +557,8 @@ export default function useProposalState() {
     pkgCarouselIdx, setPkgCarouselIdx,
 
     // Contact
+    travelStart, setTravelStart,
+    travelEnd, setTravelEnd,
     proposalDate, setProposalDate,
     hotelName, setHotelName,
     partnerName, setPartnerName,

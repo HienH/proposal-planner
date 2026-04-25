@@ -18,6 +18,8 @@ export default function ProposalBuilder() {
     selectedPackage, setSelectedPackage, setPkgCarouselIdx,
     soloInstrument,
     contactPhone,
+    travelStart, travelEnd,
+    inquiryReady,
     venue,
   } = state;
 
@@ -25,13 +27,12 @@ export default function ProposalBuilder() {
   const structureNeonNeedsMsg = structures.includes("structure-neon") && !structureNeonMsg;
   const giantFrameNeedsMsg = centerpieces.includes("giant-frame-neon") && !giantFrameNeonMsg;
   const neonNeedsMsg =
-    (step === 5 && structureNeonNeedsMsg) || (step === 3 && giantFrameNeedsMsg);
+    step === 3 && (structureNeonNeedsMsg || giantFrameNeedsMsg);
   const stepHasSelection = {
     2: !!venue,
     3: centerpieces.length > 0,
-    4: flowers.length > 0,
-    5: structures.length > 0 || sparklerQty > 0,
-    6: addons.length > 0,
+    4: flowers.length > 0 || sparklerQty > 0,
+    5: addons.length > 0,
   };
   const hasSelection = stepHasSelection[step] || false;
   const statementPropRequired = step === 3 && planMode === "custom" && centerpieces.length === 0;
@@ -40,7 +41,7 @@ export default function ProposalBuilder() {
   const soloNeedsInstrument =
     addons.includes("solo-musician") &&
     !soloInstrument &&
-    ((planMode === "custom" && step === 6) || (planMode === "premade" && step === 3));
+    ((planMode === "custom" && step === 5) || (planMode === "premade" && step === 3));
   const isDisabled = neonNeedsMsg || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
 
   const disabledReason = customNeedsVenue
@@ -54,16 +55,16 @@ export default function ProposalBuilder() {
     : soloNeedsInstrument
     ? "Pick an instrument"
     : "";
-  const nextLabel = step === 6 ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : (step === 2 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
+  const nextLabel = (planMode === "custom" && step === 5) ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : (step === 2 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
 
-  const isReviewStep = (planMode === "custom" && step === 7) || (planMode === "premade" && step === 4);
+  const isReviewStep = (planMode === "custom" && step === 6) || (planMode === "premade" && step === 4);
   const showRunningTotal =
-    (planMode === "custom" && step >= 2 && step <= 7) ||
+    (planMode === "custom" && step >= 2 && step <= 6) ||
     (planMode === "premade" && step >= 2 && step <= 4);
 
   const showSteps =
     step > 1 &&
-    ((planMode === "custom" && step < 8) || (planMode === "premade" && step < 5));
+    ((planMode === "custom" && step < 7) || (planMode === "premade" && step < 5));
 
   return (
     <div ref={topRef} style={{ fontFamily: "'DM Sans','Segoe UI',sans-serif", minHeight: "100vh", background: "#FBF8F3" }}>
@@ -150,14 +151,27 @@ export default function ProposalBuilder() {
               }
             }}
             nextLabel={isReviewStep ? "Send Inquiry" : nextLabel}
-            disabled={isReviewStep ? contactPhone.length < 4 : isDisabled}
-            disabledHint={isReviewStep ? (contactPhone.length < 4 ? "Enter phone number to send" : "") : disabledReason}
+            disabled={isReviewStep ? !inquiryReady : isDisabled}
+            disabledHint={isReviewStep
+              ? (contactPhone.length < 4
+                ? "Enter phone number to send"
+                : (!travelStart || !travelEnd)
+                ? "Add travel dates to send"
+                : !inquiryReady
+                ? "Complete required fields"
+                : "")
+              : disabledReason}
             onDisabledClick={() => {
-              const el = document.getElementById("phone-input");
+              const targetId = contactPhone.length < 4
+                ? "phone-input"
+                : (!travelStart || !travelEnd)
+                ? "travel-input"
+                : "phone-input";
+              const el = document.getElementById(targetId);
               if (el) {
                 el.scrollIntoView({ behavior: "smooth", block: "center" });
                 setTimeout(() => {
-                  el.focus();
+                  el.focus?.();
                   el.style.borderColor = "#C4944A";
                   setTimeout(() => { el.style.borderColor = "#EDE8E0"; }, 1500);
                 }, 400);

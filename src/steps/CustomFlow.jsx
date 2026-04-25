@@ -21,6 +21,8 @@ export default function CustomFlow({ state }) {
     giantFrameNeonMsg, setGiantFrameNeonMsg,
     giantFrameStructure, setGiantFrameStructure,
     structureFlowerQtys, adjustStructureFlowerQty,
+    showPicnicEnhancements, setShowPicnicEnhancements,
+    showDinnerEnhancements, setShowDinnerEnhancements,
     sparklerQty, setSparklerQty,
     addons, toggleAddon,
     soloInstrument, setSoloInstrument,
@@ -114,9 +116,289 @@ export default function CustomFlow({ state }) {
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 16, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
             Activities
           </h3>
-          {ACTIVITIES.map((item) => (
-            <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
-          ))}
+          {ACTIVITIES.map((item) => {
+            if (item.id === "dinner") {
+              const sel = centerpieces.includes(item.id);
+              return (
+                <Fragment key={item.id}>
+                  <ToggleItem item={item} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
+                  {sel && !showDinnerEnhancements && (
+                    <div style={{
+                      gridColumn: "1 / -1",
+                      padding: "16px 18px",
+                      background: "linear-gradient(135deg,rgba(212,175,55,0.08),rgba(196,148,74,0.12))",
+                      borderRadius: 12, borderLeft: "3px solid #D4AF37",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      flexWrap: "wrap", gap: 12,
+                    }}>
+                      <div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>
+                          Want to see additional enhancements for your dinner?
+                        </div>
+                        <div style={{ fontSize: 12, color: "#6B5744", marginTop: 2 }}>
+                          Add a structure to elevate the moment.
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <button
+                          onClick={() => setShowDinnerEnhancements(true)}
+                          style={{
+                            padding: "8px 18px", borderRadius: 20, border: "none",
+                            cursor: "pointer", background: "#C4944A", color: "#fff",
+                            fontSize: 13, fontWeight: 600,
+                          }}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          onClick={() => setShowDinnerEnhancements(false)}
+                          style={{
+                            padding: "8px 18px", borderRadius: 20,
+                            cursor: "pointer", background: "transparent",
+                            border: "1px solid #C4944A", color: "#C4944A",
+                            fontSize: 13, fontWeight: 600,
+                          }}
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  {sel && showDinnerEnhancements && (
+                    <div style={{
+                      gridColumn: "1 / -1",
+                      padding: "12px 14px",
+                      background: "rgba(196,148,74,0.05)",
+                      borderRadius: 12, borderLeft: "3px solid #D4AF37",
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                        <h3 style={{ fontSize: 11, color: "#C4944A", fontWeight: 700, margin: 0, textTransform: "uppercase", letterSpacing: 1.5 }}>
+                          Dinner Enhancements
+                        </h3>
+                        <button
+                          onClick={() => setShowDinnerEnhancements(false)}
+                          style={{
+                            background: "none", border: "none", color: "#B0A090",
+                            fontSize: 11, fontWeight: 600, cursor: "pointer", padding: 0,
+                          }}
+                        >
+                          Hide
+                        </button>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {STRUCTURES.filter((s) => s.id === "wooden-frame" || s.id === "gazebo-structure").map((s) => {
+                          const isSelected = structures.includes(s.id);
+                          const neonSelected = structures.includes("structure-neon");
+                          return (
+                            <div key={s.id}>
+                              <div
+                                onClick={() => toggleStructure(s.id)}
+                                style={{
+                                  display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
+                                  borderRadius: 10, cursor: "pointer",
+                                  background: isSelected ? "rgba(196,148,74,0.12)" : "#fff",
+                                  border: isSelected ? "1.5px solid #C4944A" : "1.5px solid #EDE8E0",
+                                  transition: "all 0.2s ease",
+                                }}
+                              >
+                                <div style={{
+                                  width: 40, height: 40, borderRadius: 8, flexShrink: 0,
+                                  backgroundImage: `url(${s.img})`, backgroundSize: "cover", backgroundPosition: "center",
+                                }} />
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                    <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{s.name}</span>
+                                    <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
+                                      {fmt(s.price)}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div style={{
+                                  width: 18, height: 18, borderRadius: 4, flexShrink: 0,
+                                  border: isSelected ? "none" : "1.5px solid #D4C5B0",
+                                  background: isSelected ? "#C4944A" : "transparent",
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                  color: "#fff", fontSize: 11, fontWeight: 700,
+                                }}>
+                                  {isSelected ? "✓" : ""}
+                                </div>
+                              </div>
+                              {isSelected && (
+                                <>
+                                  <NeonSignAddon
+                                    selected={neonSelected}
+                                    onToggle={() => toggleStructure("structure-neon")}
+                                  />
+                                  {neonSelected && (
+                                    <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
+                                  )}
+                                  <StructureFlowerPicker
+                                    qty={structureFlowerQtys[s.id] || 0}
+                                    onAdjust={(delta) => adjustStructureFlowerQty(s.id, delta)}
+                                  />
+                                </>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {structures.includes("structure-neon") && !structureNeonMsg && (
+                        <div style={{
+                          textAlign: "center", marginTop: 10, padding: "8px 12px",
+                          background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 8,
+                          fontSize: 12, color: "#8B6914", fontWeight: 600,
+                        }}>
+                          Please select a message for your Neon Sign above
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </Fragment>
+              );
+            }
+            if (item.id === "picnic") {
+              const sel = centerpieces.includes(item.id);
+              return (
+                <Fragment key={item.id}>
+                  <ToggleItem item={item} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
+                  {sel && !showPicnicEnhancements && (
+                    <div style={{
+                      gridColumn: "1 / -1",
+                      padding: "16px 18px",
+                      background: "linear-gradient(135deg,rgba(212,175,55,0.08),rgba(196,148,74,0.12))",
+                      borderRadius: 12, borderLeft: "3px solid #D4AF37",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      flexWrap: "wrap", gap: 12,
+                    }}>
+                      <div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>
+                          Want to see additional enhancements for your picnic?
+                        </div>
+                        <div style={{ fontSize: 12, color: "#6B5744", marginTop: 2 }}>
+                          Add a structure to elevate the moment.
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <button
+                          onClick={() => setShowPicnicEnhancements(true)}
+                          style={{
+                            padding: "8px 18px", borderRadius: 20, border: "none",
+                            cursor: "pointer", background: "#C4944A", color: "#fff",
+                            fontSize: 13, fontWeight: 600,
+                          }}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          onClick={() => setShowPicnicEnhancements(false)}
+                          style={{
+                            padding: "8px 18px", borderRadius: 20,
+                            cursor: "pointer", background: "transparent",
+                            border: "1px solid #C4944A", color: "#C4944A",
+                            fontSize: 13, fontWeight: 600,
+                          }}
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  {sel && showPicnicEnhancements && (
+                    <div style={{
+                      gridColumn: "1 / -1",
+                      padding: "12px 14px",
+                      background: "rgba(196,148,74,0.05)",
+                      borderRadius: 12, borderLeft: "3px solid #D4AF37",
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                        <h3 style={{ fontSize: 11, color: "#C4944A", fontWeight: 700, margin: 0, textTransform: "uppercase", letterSpacing: 1.5 }}>
+                          Picnic Enhancements
+                        </h3>
+                        <button
+                          onClick={() => setShowPicnicEnhancements(false)}
+                          style={{
+                            background: "none", border: "none", color: "#B0A090",
+                            fontSize: 11, fontWeight: 600, cursor: "pointer", padding: 0,
+                          }}
+                        >
+                          Hide
+                        </button>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {STRUCTURES.filter((s) => s.id === "gazebo-structure" || s.id === "metal-structure").map((s) => {
+                          const isSelected = structures.includes(s.id);
+                          const neonSelected = structures.includes("structure-neon");
+                          return (
+                            <div key={s.id}>
+                              <div
+                                onClick={() => toggleStructure(s.id)}
+                                style={{
+                                  display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
+                                  borderRadius: 10, cursor: "pointer",
+                                  background: isSelected ? "rgba(196,148,74,0.12)" : "#fff",
+                                  border: isSelected ? "1.5px solid #C4944A" : "1.5px solid #EDE8E0",
+                                  transition: "all 0.2s ease",
+                                }}
+                              >
+                                <div style={{
+                                  width: 40, height: 40, borderRadius: 8, flexShrink: 0,
+                                  backgroundImage: `url(${s.img})`, backgroundSize: "cover", backgroundPosition: "center",
+                                }} />
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                    <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{s.name}</span>
+                                    <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
+                                      {fmt(s.price)}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div style={{
+                                  width: 18, height: 18, borderRadius: 4, flexShrink: 0,
+                                  border: isSelected ? "none" : "1.5px solid #D4C5B0",
+                                  background: isSelected ? "#C4944A" : "transparent",
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                  color: "#fff", fontSize: 11, fontWeight: 700,
+                                }}>
+                                  {isSelected ? "✓" : ""}
+                                </div>
+                              </div>
+                              {isSelected && (
+                                <>
+                                  <NeonSignAddon
+                                    selected={neonSelected}
+                                    onToggle={() => toggleStructure("structure-neon")}
+                                  />
+                                  {neonSelected && (
+                                    <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
+                                  )}
+                                  <StructureFlowerPicker
+                                    qty={structureFlowerQtys[s.id] || 0}
+                                    onAdjust={(delta) => adjustStructureFlowerQty(s.id, delta)}
+                                  />
+                                </>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {structures.includes("structure-neon") && !structureNeonMsg && (
+                        <div style={{
+                          textAlign: "center", marginTop: 10, padding: "8px 12px",
+                          background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 8,
+                          fontSize: 12, color: "#8B6914", fontWeight: 600,
+                        }}>
+                          Please select a message for your Neon Sign above
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </Fragment>
+              );
+            }
+            return (
+              <ToggleItem key={item.id} item={item} selected={centerpieces.includes(item.id)} onToggle={() => toggleCenterpiece(item.id)} />
+            );
+          })}
         </div>
 
         {centerpieces.includes("giant-frame-neon") && !giantFrameStructure && (
@@ -143,11 +425,88 @@ export default function CustomFlow({ state }) {
     );
   }
 
-  // Step 4: Flowers
+  // Step 4: Flowers & Enhancements
   if (step === 4) {
     return (
       <div style={anim}>
-        <SectionTitle title="Flowers & Roses" subtitle="Add romantic floral touches to your setup. Select as many as you like, or skip." />
+        <SectionTitle title="Flowers & Enhancements" subtitle="Add sparklers and romantic floral touches to your setup. Select as many as you like, or skip." />
+
+        <div className="enhancements-col">
+          {/* Sparklers — first */}
+          <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 4, textTransform: "uppercase", letterSpacing: 2 }}>
+            Sparklers
+          </h3>
+          <div
+            onClick={() => { if (sparklerQty === 0) setSparklerQty(2); }}
+            style={{
+              display: "flex", alignItems: "center", gap: 12, padding: "14px 16px",
+              borderRadius: 14, cursor: "pointer",
+              background: sparklerQty > 0 ? "rgba(196,148,74,0.08)" : "#fff",
+              border: sparklerQty > 0 ? "2px solid #C4944A" : "2px solid #EDE8E0",
+              transition: "all 0.25s ease",
+            }}
+          >
+            <div style={{
+              width: 60, height: 60, borderRadius: 12, flexShrink: 0,
+              backgroundImage: `url(${IMG.sparklers2})`, backgroundSize: "cover", backgroundPosition: "center",
+            }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
+                  {sparklerQty > 0 ? `${sparklerQty} Fountain Sparklers` : "Fountain Sparklers"}
+                </span>
+                <span style={{ fontWeight: 700, fontSize: 15, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
+                  {sparklerQty > 0 ? fmt(SPARKLER_PRICES[sparklerQty]) : fmt(SPARKLER_PRICES[2])}
+                </span>
+              </div>
+              <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>
+                Cold sparkler fountains — a dramatic WOW moment
+              </p>
+              {sparklerQty > 0 && sparklerQty < SPARKLER_MAX && (
+                <p style={{ margin: "2px 0 0", fontSize: 10, color: "#B0A090", lineHeight: 1.4 }}>
+                  +2 more: +{fmt(SPARKLER_PRICES[sparklerQty + 2] - SPARKLER_PRICES[sparklerQty])}
+                </p>
+              )}
+              {sparklerQty > 0 && (
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={() => setSparklerQty((q) => q - 2)}
+                    style={{
+                      width: 32, height: 32, borderRadius: "50%", border: "2px solid #C4944A",
+                      background: "transparent", color: "#C4944A", fontSize: 18, fontWeight: 700,
+                      cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                  >
+                    −
+                  </button>
+                  <span style={{ fontSize: 16, fontWeight: 700, color: "#3B2412", minWidth: 36, textAlign: "center" }}>
+                    {sparklerQty}
+                  </span>
+                  <button
+                    onClick={() => setSparklerQty((q) => Math.min(SPARKLER_MAX, q + 2))}
+                    disabled={sparklerQty === SPARKLER_MAX}
+                    style={{
+                      width: 32, height: 32, borderRadius: "50%", border: "none",
+                      background: sparklerQty === SPARKLER_MAX ? "#EDE8E0" : "#C4944A",
+                      color: sparklerQty === SPARKLER_MAX ? "#B0A090" : "#fff",
+                      fontSize: 18, fontWeight: 700,
+                      cursor: sparklerQty === SPARKLER_MAX ? "default" : "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              )}
+            </div>
+            {sparklerQty === 0 && <Checkbox checked={false} />}
+          </div>
+
+          {/* Flowers */}
+          <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 24, textTransform: "uppercase", letterSpacing: 2 }}>
+            Flowers
+          </h3>
+        </div>
         <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
           {FLOWERS.map((item) => {
             const sel = flowers.includes(item.id);
@@ -234,133 +593,8 @@ export default function CustomFlow({ state }) {
     );
   }
 
-  // Step 5: Enhancements (sparklers + structures)
+  // Step 5: Addons
   if (step === 5) {
-    return (
-      <div style={anim}>
-        <SectionTitle
-          title="Setup Enhancements"
-          subtitle="Add sparklers and structures to elevate your proposal. Select as many as you like, or skip."
-        />
-
-        <div className="enhancements-col">
-        {/* Sparklers */}
-        <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 4, textTransform: "uppercase", letterSpacing: 2 }}>
-          Sparklers
-        </h3>
-        <div
-          onClick={() => { if (sparklerQty === 0) setSparklerQty(2); }}
-          style={{
-            display: "flex", alignItems: "center", gap: 12, padding: "14px 16px",
-            borderRadius: 14, cursor: "pointer",
-            background: sparklerQty > 0 ? "rgba(196,148,74,0.08)" : "#fff",
-            border: sparklerQty > 0 ? "2px solid #C4944A" : "2px solid #EDE8E0",
-            transition: "all 0.25s ease",
-          }}
-        >
-          <div style={{
-            width: 60, height: 60, borderRadius: 12, flexShrink: 0,
-            backgroundImage: `url(${IMG.sparklers2})`, backgroundSize: "cover", backgroundPosition: "center",
-          }} />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
-                {sparklerQty > 0 ? `${sparklerQty} Fountain Sparklers` : "Fountain Sparklers"}
-              </span>
-              <span style={{ fontWeight: 700, fontSize: 15, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
-                {sparklerQty > 0 ? fmt(SPARKLER_PRICES[sparklerQty]) : fmt(SPARKLER_PRICES[2])}
-              </span>
-            </div>
-            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>
-              Cold sparkler fountains — a dramatic WOW moment
-            </p>
-            {sparklerQty > 0 && sparklerQty < SPARKLER_MAX && (
-              <p style={{ margin: "2px 0 0", fontSize: 10, color: "#B0A090", lineHeight: 1.4 }}>
-                +2 more: +{fmt(SPARKLER_PRICES[sparklerQty + 2] - SPARKLER_PRICES[sparklerQty])}
-              </p>
-            )}
-            {sparklerQty > 0 && (
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
-                <button
-                  onClick={() => setSparklerQty((q) => q - 2)}
-                  style={{
-                    width: 32, height: 32, borderRadius: "50%", border: "2px solid #C4944A",
-                    background: "transparent", color: "#C4944A", fontSize: 18, fontWeight: 700,
-                    cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                  }}
-                >
-                  −
-                </button>
-                <span style={{ fontSize: 16, fontWeight: 700, color: "#3B2412", minWidth: 36, textAlign: "center" }}>
-                  {sparklerQty}
-                </span>
-                <button
-                  onClick={() => setSparklerQty((q) => Math.min(SPARKLER_MAX, q + 2))}
-                  disabled={sparklerQty === SPARKLER_MAX}
-                  style={{
-                    width: 32, height: 32, borderRadius: "50%", border: "none",
-                    background: sparklerQty === SPARKLER_MAX ? "#EDE8E0" : "#C4944A",
-                    color: sparklerQty === SPARKLER_MAX ? "#B0A090" : "#fff",
-                    fontSize: 18, fontWeight: 700,
-                    cursor: sparklerQty === SPARKLER_MAX ? "default" : "pointer",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}
-                >
-                  +
-                </button>
-              </div>
-            )}
-          </div>
-          {sparklerQty === 0 && <Checkbox checked={false} />}
-        </div>
-
-        {/* Structures */}
-        <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 24, textTransform: "uppercase", letterSpacing: 2 }}>
-          Structures
-        </h3>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {STRUCTURES.filter((s) => s.id !== "structure-neon").map((item) => {
-            const isSelected = structures.includes(item.id);
-            const neonSelected = structures.includes("structure-neon");
-            return (
-              <div key={item.id}>
-                <ToggleItem item={item} selected={isSelected} onToggle={() => toggleStructure(item.id)} />
-                {isSelected && (
-                  <>
-                    <NeonSignAddon
-                      selected={neonSelected}
-                      onToggle={() => toggleStructure("structure-neon")}
-                    />
-                    {neonSelected && (
-                      <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
-                    )}
-                    <StructureFlowerPicker
-                      qty={structureFlowerQtys[item.id] || 0}
-                      onAdjust={(delta) => adjustStructureFlowerQty(item.id, delta)}
-                    />
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {structures.includes("structure-neon") && !structureNeonMsg && (
-          <div style={{
-            textAlign: "center", marginTop: 20, padding: "10px 16px",
-            background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
-            fontSize: 13, color: "#8B6914", fontWeight: 600,
-          }}>
-            Please select a message for your Neon Sign above
-          </div>
-        )}
-        </div>
-      </div>
-    );
-  }
-
-  // Step 6: Addons
-  if (step === 6) {
     return (
       <div style={anim}>
         <SectionTitle title="Capture & Music" subtitle="Add photography, video, or live music. Everything here is optional." />
@@ -405,8 +639,8 @@ export default function CustomFlow({ state }) {
     );
   }
 
-  // Step 7: Review
-  if (step === 7) {
+  // Step 6: Review
+  if (step === 6) {
     return <ReviewStep state={state} />;
   }
 

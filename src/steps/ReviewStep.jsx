@@ -11,7 +11,9 @@ export default function ReviewStep({ state }) {
   const {
     anim, go, planMode, total, addons, toggleAddon,
     contactEmail, setContactEmail, contactPhone, setContactPhone,
-    countryCode, setCountryCode, proposalDate, setProposalDate,
+    countryCode, setCountryCode,
+    travelStart, setTravelStart, travelEnd, setTravelEnd,
+    proposalDate, setProposalDate,
     partnerName, setPartnerName, inquiryReady,
     buildMsg, buildEmailSubject,
     showSave, setShowSave, planSaved, startOver,
@@ -19,13 +21,50 @@ export default function ReviewStep({ state }) {
 
   return (
     <div style={anim}>
+      <style>{`
+        .review-back-btn{display:none;}
+        @media(min-width:768px){
+          .review-back-btn{
+            display:inline-flex;align-items:center;gap:6px;
+            padding:8px 16px;border-radius:20px;
+            border:1px solid #D4C5B0;background:transparent;
+            color:#8B7355;font-size:13px;font-weight:600;
+            cursor:pointer;font-family:inherit;
+            margin-bottom:12px;transition:all 0.2s;
+          }
+          .review-back-btn:hover{background:rgba(196,148,74,0.06);border-color:#C4944A;color:#C4944A;}
+        }
+      `}</style>
+      <button className="review-back-btn" onClick={() => go(-1)}>← Back</button>
       <SectionTitle title="Your Perfect Proposal" />
 
       <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.08)" }}>
         {/* Total banner */}
-        <div style={{ padding: "24px 28px", textAlign: "center", background: "linear-gradient(135deg,#3B2412,#5C3A1E)" }}>
+        <div style={{ padding: "24px 28px 36px", textAlign: "center", background: "linear-gradient(135deg,#3B2412,#5C3A1E)" }}>
           <div style={{ fontSize: 11, color: "rgba(245,230,200,0.6)", fontWeight: 600, letterSpacing: 2, marginBottom: 8 }}>ESTIMATED TOTAL</div>
           <div style={{ fontSize: 52, fontWeight: 700, color: "#F5E6C8", fontFamily: "'Playfair Display',Georgia,serif" }}>{fmt(total)}</div>
+        </div>
+
+        {/* Floating retainer pill */}
+        <div style={{
+          margin: "-17px 57px 0px", padding: "8px 14px",
+          background: "#fff", borderRadius: 37,
+          boxShadow: "0 2px 10px rgba(59,36,18,0.08)",
+          border: "1px solid #F0E6D0",
+          textAlign: "center",
+        }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", marginBottom: 6 }}>
+            Reserve from{" "}
+            <span style={{ color: "#C4944A", fontSize: 16, fontFamily: "'Playfair Display',Georgia,serif" }}>
+              {fmt(total * 0.2)}
+            </span>
+          </div>
+          <div style={{ fontSize: 11, color: "#6B5744", fontWeight: 600 }}>
+            Zelle <span style={{ color: "#B0A090", margin: "0 4px" }}>·</span>
+            Venmo <span style={{ color: "#B0A090", margin: "0 4px" }}>·</span>
+            Wise <span style={{ color: "#B0A090", margin: "0 4px" }}>·</span>
+            PayPal
+          </div>
         </div>
 
         {/* Flow-specific line items */}
@@ -73,6 +112,8 @@ export default function ReviewStep({ state }) {
           contactEmail={contactEmail} setContactEmail={setContactEmail}
           contactPhone={contactPhone} setContactPhone={setContactPhone}
           countryCode={countryCode} setCountryCode={setCountryCode}
+          travelStart={travelStart} setTravelStart={setTravelStart}
+          travelEnd={travelEnd} setTravelEnd={setTravelEnd}
           proposalDate={proposalDate} setProposalDate={setProposalDate}
           partnerName={partnerName} setPartnerName={setPartnerName}
           inquiryReady={inquiryReady}
@@ -90,12 +131,12 @@ export default function ReviewStep({ state }) {
       </div>
 
       {/* Footer */}
-      <div style={{ marginTop: 24, padding: "16px 20px", background: "#fff", borderRadius: 12, border: "1px solid #EDE8E0", textAlign: "center" }}>
-        <div style={{ fontSize: 13, color: "#6B5744", fontWeight: 600, marginBottom: 4 }}>
-          📅 Sunset slots book 2-3 weeks in advance during peak season (Dec - April)
+      <div style={{ marginTop: 24, padding: "16px 20px", background: "#FFF8EE", borderRadius: 12, border: "1px solid #F0E6D0", textAlign: "center" }}>
+        <div style={{ fontSize: 13, color: "#8B6914", fontWeight: 700, marginBottom: 6 }}>
+          📅 Your package and date can only be reserved with a retainer fee
         </div>
-        <div style={{ fontSize: 12, color: "#B0A090" }}>
-          Secure your date with a retainer — Jill's team will confirm everything.
+        <div style={{ fontSize: 12, color: "#6B5744", lineHeight: 1.5 }}>
+          Submitting an inquiry does not guarantee a booking. Jill's team will follow up to confirm availability.
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 20, flexWrap: "wrap" }}>
