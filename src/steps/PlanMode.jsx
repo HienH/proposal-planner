@@ -1,28 +1,34 @@
 import { IMG } from "../data";
 import { fmt } from "../utils";
 import { SectionTitle } from "../components/ui";
+import useT from "../i18n/useT";
+import LanguageToggle from "../components/LanguageToggle";
 
 export default function PlanMode({ state }) {
   const { anim, goToStep, setPlanMode, selectPlanMode, topRef } = state;
+  const { t } = useT();
 
   return (
     <div style={{ ...anim, maxWidth: 920, margin: "0 auto", padding: "40px 20px 60px" }}>
-      <button
-        onClick={() => goToStep(0, () => setPlanMode(null))}
-        style={{
-          background: "none", border: "none", color: "#B0A090",
-          fontSize: 14, fontWeight: 600, cursor: "pointer", marginBottom: 24, padding: 0,
-        }}
-      >
-        ← Back
-      </button>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <button
+          onClick={() => goToStep(0, () => setPlanMode(null))}
+          style={{
+            background: "none", border: "none", color: "#B0A090",
+            fontSize: 14, fontWeight: 600, cursor: "pointer", padding: 0,
+          }}
+        >
+          ← {t("common.back")}
+        </button>
+        <LanguageToggle />
+      </div>
 
       <SectionTitle
-        title="How Would You Like to Plan?"
-        subtitle="Choose your path — build every detail yourself, or pick one of our expertly curated packages."
+        title={t("planMode.title")}
+        subtitle={t("planMode.subtitle")}
       />
 
-    {/* TODOCHANGE PHOTO */}
+      {/* TODOCHANGE PHOTO */}
       <div style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
         {/* Premade Packages */}
         <div
@@ -44,24 +50,23 @@ export default function PlanMode({ state }) {
                   fontSize: 24, fontWeight: 700, color: "#FFF8EE",
                   fontFamily: "'Playfair Display',Georgia,serif",
                 }}>
-                  Premade Packages
+                  {t("planMode.premade.title")}
                 </div>
                 <div style={{ fontSize: 13, color: "rgba(255,248,238,0.8)", marginTop: 4 }}>
-                  Curated by Jill and her team — ready to book
+                  {t("planMode.premade.tagline")}
                 </div>
               </div>
             </div>
           </div>
           <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
             <p style={{ margin: "0 0 12px", fontSize: 14, color: "#6B5744", lineHeight: 1.6 }}>
-              Choose from three expertly designed packages.
-              Everything is included — just add optional extras and you're set.
+              {t("planMode.premade.body")}
             </p>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto" }}>
               <span style={{ fontSize: 13, color: "#B0A090" }}>
-                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(995)}</strong>
+                {t("planMode.startingFrom")} <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(995)}</strong>
               </span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>Browse Packages →</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>{t("planMode.premade.cta")} →</span>
             </div>
           </div>
         </div>
@@ -86,24 +91,23 @@ export default function PlanMode({ state }) {
                   fontSize: 24, fontWeight: 700, color: "#FFF8EE",
                   fontFamily: "'Playfair Display',Georgia,serif",
                 }}>
-                  Build Your Own
+                  {t("planMode.custom.title")}
                 </div>
                 <div style={{ fontSize: 13, color: "rgba(255,248,238,0.8)", marginTop: 4 }}>
-                  Full creative control over every detail
+                  {t("planMode.custom.tagline")}
                 </div>
               </div>
             </div>
           </div>
           <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
             <p style={{ margin: "0 0 12px", fontSize: 14, color: "#6B5744", lineHeight: 1.6 }}>
-              Pick your venue, statement props, flowers, structures, and more.
-              Perfect for those who want to customize everything.
+              {t("planMode.custom.body")}
             </p>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto" }}>
               <span style={{ fontSize: 13, color: "#B0A090" }}>
-                Starting from <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(625)}</strong>
+                {t("planMode.startingFrom")} <strong style={{ color: "#C4944A", fontSize: 16 }}>{fmt(625)}</strong>
               </span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>Customize →</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>{t("planMode.custom.cta")} →</span>
             </div>
           </div>
         </div>

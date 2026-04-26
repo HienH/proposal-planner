@@ -1,0 +1,246 @@
+{
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "review": "Review",
+    "addedToPlan": "Added to your plan",
+    "yes": "Yes",
+    "no": "No",
+    "hide": "Hide",
+    "free": "Free",
+    "from": "from",
+    "addPrefix": "Add",
+    "sendInquiry": "Send Inquiry"
+  },
+  "landing": {
+    "logoAlt": "Cancun Proposal Planner logo",
+    "eyebrow": "CANCUN PROPOSAL PLANNER",
+    "headlinePrefix": "They're going to say",
+    "headlineEm": "yes.",
+    "subhead": "Build your dream Cancun proposal in under 3 minutes. We handle every detail — you just show up and ask.",
+    "cta": "Start Planning",
+    "stats": {
+      "proposals": "Successful Proposals",
+      "sinceValue": "Since 2018",
+      "sinceLabel": "Years of Experience",
+      "rating": "Client Rating"
+    }
+  },
+  "planMode": {
+    "title": "How Would You Like to Plan?",
+    "subtitle": "Choose your path — build every detail yourself, or pick one of our expertly curated packages.",
+    "startingFrom": "Starting from",
+    "premade": {
+      "title": "Premade Packages",
+      "tagline": "Curated by Jill and her team — ready to book",
+      "body": "Choose from three expertly designed packages. Everything is included — just add optional extras and you're set.",
+      "cta": "Browse Packages"
+    },
+    "custom": {
+      "title": "Build Your Own",
+      "tagline": "Full creative control over every detail",
+      "body": "Pick your venue, statement props, flowers, structures, and more. Perfect for those who want to customize everything.",
+      "cta": "Customize"
+    }
+  },
+  "steps": {
+    "indicator": "Step {current} of {total} — {label}",
+    "labels": {
+      "location": "Location",
+      "statementProp": "Statement Prop",
+      "flowers": "Flowers & Enhancements",
+      "addons": "Add-ons",
+      "review": "Review and Inquire",
+      "package": "Package",
+      "extras": "Extras"
+    }
+  },
+  "runningTotal": {
+    "label": "Total"
+  },
+  "venue": {
+    "cardIncludes": "Includes: Coordination · 1.5 hrs · Cocktail table · Sparkling wine · Server · Speaker"
+  },
+  "badges": {
+    "PRIVATE": "PRIVATE",
+    "POPULAR": "POPULAR",
+    "MOST POPULAR": "MOST POPULAR",
+    "BEST VALUE": "BEST VALUE",
+    "SIGNATURE": "SIGNATURE",
+    "EXCLUSIVE": "EXCLUSIVE",
+    "FIRST GIFT": "FIRST GIFT",
+    "INTIMATE": "INTIMATE",
+    "PREMIUM": "PREMIUM"
+  },
+  "socialProof": {
+    "see": "See what others choose",
+    "hide": "Hide what others choose",
+    "avgSpend": "Average total spend"
+  },
+  "neon": {
+    "chooseMessage": "Choose your message:"
+  },
+  "instrument": {
+    "choose": "Choose your instrument:"
+  },
+  "giantFrame": {
+    "chooseStyle": "Choose your structure style:",
+    "floralCount": "x{count} floral {plural}",
+    "floralSingular": "arrangement",
+    "floralPlural": "arrangements"
+  },
+  "structureFlower": {
+    "addCta": "Add Flower Arrangement",
+    "priceHint": "${single} solo · ${bulk} each when ordering 2 or more"
+  },
+  "custom": {
+    "changePath": "Change path",
+    "venue": {
+      "title": "Choose Your Setting",
+      "subtitle": "Every location includes a cocktail table and sparkling wine. Each venue has its own unique inclusions — see details below."
+    },
+    "centerpiece": {
+      "title": "Choose Your Statement Prop",
+      "subtitle": "This is the moment they'll replay forever. At least one statement prop is required.",
+      "decoratives": "Decoratives",
+      "activities": "Activities"
+    },
+    "flowers": {
+      "title": "Flowers & Enhancements",
+      "subtitle": "Add sparklers and romantic floral touches to your setup. Select as many as you like, or skip.",
+      "sparklersHeading": "Sparklers",
+      "flowersHeading": "Flowers",
+      "sparklersName": "Fountain Sparklers",
+      "sparklersDesc": "Cold sparkler fountains — a dramatic WOW moment",
+      "sparklers2More": "+2 more: +{price}",
+      "fallbackUnit": "arrangements"
+    },
+    "addons": {
+      "title": "Capture & Music",
+      "subtitle": "Add photography, video, or live music. Everything here is optional.",
+      "captureHeading": "Capture the Moment",
+      "musicHeading": "Live Music"
+    },
+    "enhancements": {
+      "body": "Add a structure to elevate the moment.",
+      "dinnerPrompt": "Want to see additional enhancements for your dinner?",
+      "picnicPrompt": "Want to see additional enhancements for your picnic?",
+      "dinnerHeading": "Dinner Enhancements",
+      "picnicHeading": "Picnic Enhancements"
+    },
+    "hints": {
+      "pickNeonMsg": "Please select a message for your Neon Sign above",
+      "pickStructureStyle": "Please select a structure style for your Decorated Structure above",
+      "pickGiantFrameMsg": "Please select a message for your Decorated Structure's Neon Sign above",
+      "pickInstrument": "Please pick an instrument for your Solo Musician above"
+    }
+  },
+  "disabled": {
+    "pickLocation": "Pick a location",
+    "pickPackage": "Pick a package",
+    "pickStatementProp": "Pick a statement prop",
+    "pickNeonMsg": "Pick a neon message",
+    "pickInstrument": "Pick an instrument",
+    "enterPhone": "Enter phone number to send",
+    "addTravelDates": "Add travel dates to send",
+    "completeFields": "Complete required fields"
+  },
+  "review": {
+    "title": "Your Perfect Proposal",
+    "estimatedTotal": "ESTIMATED TOTAL",
+    "reserveFrom": "Reserve from",
+    "goldenHourTitle": "Timed to golden hour",
+    "goldenHourBody": "After a decade of planning professional proposals in Cancún, we know the best time for an unforgettable moment is sunset. That's why we always reserve yours for this special hour.",
+    "photoUpsell": {
+      "headline": "📸 94% of our clients add photography. Want to add it?",
+      "add30": "Add 30min ($295)",
+      "add60": "Add 60min ($350)"
+    },
+    "footer": {
+      "retainerHeadline": "📅 Your package and date can only be reserved with a retainer fee",
+      "retainerBody": "Submitting an inquiry does not guarantee a booking. Jill's team will follow up to confirm availability.",
+      "trust": {
+        "noFees": "No hidden fees",
+        "experience": "1,500+ proposals since 2018",
+        "responsive": "Jill's team responds within hours"
+      },
+      "disclaimer": "Prices are estimates. Final pricing confirmed with Jill and her team."
+    },
+    "similarSetups": "Similar Setups From Our Portfolio",
+    "similarSetupAlt": "Similar setup {n}",
+    "toMakeSimilar": "To make it similar, add:",
+    "similarFromPortfolio": "A similar setup from our portfolio",
+    "yourSetup": "Your Setup",
+    "sunset": "Sunset",
+    "alsoInclude": "Yours will also include:",
+    "summary": {
+      "venue": "{name} Venue",
+      "venueSub": "Sunset · 1.5 hours · Sparkling wine included",
+      "structureLabel": "Structure: {name}",
+      "messageLabel": "Message: \"{msg}\"",
+      "flowerArrSingular": "Flower Arrangement",
+      "flowerArrPlural": "Flower Arrangements",
+      "packageLabel": "{name} Package",
+      "packageIncludes": "Package includes:"
+    }
+  },
+  "contact": {
+    "heading": "Your contact & trip details",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your@email.com",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "Phone number",
+    "travelLabel": "Travel Dates",
+    "travelHint": "Your full trip range — we'll confirm sunset availability within these dates.",
+    "travelPlaceholder": "Select your arrival → departure dates",
+    "proposalDateLabel": "Preferred Proposal Date",
+    "optional": "(optional)",
+    "proposalDatePlaceholderReady": "Pick a day within your trip",
+    "proposalDatePlaceholderEmpty": "Set travel dates first",
+    "partnerNameLabel": "Partner's First Name",
+    "partnerNamePlaceholder": "e.g., Sarah",
+    "fillPhone": "Please fill in your phone number above to send your inquiry",
+    "fillTravelDates": "Please add your travel dates above so we can confirm availability",
+    "fillRequired": "Please complete the required fields above",
+    "fasterResponse": "Want a faster response?",
+    "sendViaWhatsapp": "Send via WhatsApp",
+    "savePlan": "Save My Plan for Later",
+    "planSaved": "✓ Plan Saved — Check Your Email",
+    "startOver": "Start Over"
+  },
+  "savePlan": {
+    "title": "Save Your Plan",
+    "subtitle": "We'll email you a link to your custom proposal. Come back anytime to edit or book.",
+    "nameLabel": "Your Name",
+    "namePlaceholder": "e.g., Marcus",
+    "cta": "Save & Email My Plan",
+    "noSpam": "No spam. Just your saved proposal plan.",
+    "savedTitle": "Plan Saved!",
+    "savedBody": "Check your inbox{greeting}. Your custom proposal plan is on its way.",
+    "savedFollowUp": "Jill usually responds within a few hours if you decide to book.",
+    "backToPlan": "Back to My Plan"
+  },
+  "premade": {
+    "list": {
+      "title": "Choose Your Package",
+      "subtitle": "Each package is designed by Jill and her team with years of experience — everything you need for a perfect proposal.",
+      "viewDetails": "View Details"
+    },
+    "detail": {
+      "included": "What's Included",
+      "experience": "The Experience",
+      "exp": {
+        "venue": "Choose any of our stunning venues — Beach, Lagoon, or Rooftop",
+        "coordination": "Full event coordination from start to finish",
+        "duration": "1.5 hours private setup",
+        "drinks": "Complimentary celebratory drinks",
+        "goldenHour": "Timed to golden hour for the most magical lighting"
+      }
+    },
+    "extras": {
+      "title": "Add Extras",
+      "subtitle": "Enhance your package with photography, video, or live music. Everything here is optional."
+    }
+  }
+}

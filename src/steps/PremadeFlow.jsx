@@ -2,8 +2,10 @@ import { PACKAGES, ADDONS, SOCIAL_PROOF } from "../data";
 import { fmt, btnMain, btnBack } from "../utils";
 import { SectionTitle, AddonSection, InstrumentPicker, DroneAddon } from "../components/ui";
 import ReviewStep from "./ReviewStep";
+import useT from "../i18n/useT";
 
 export default function PremadeFlow({ state }) {
+  const { t } = useT();
   const {
     step, anim, go, goToStep, setPlanMode, setPreview,
     selectedPackage, setSelectedPackage,
@@ -30,15 +32,16 @@ export default function PremadeFlow({ state }) {
   if (step === 3) {
     return (
       <div style={anim}>
-        <SectionTitle title="Add Extras" subtitle="Enhance your package with photography, video, or live music. Everything here is optional." />
+        <SectionTitle title={t("premade.extras.title")} subtitle={t("premade.extras.subtitle")} />
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
         <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
           <AddonSection
-            title="📸 Capture the Moment"
+            title={`📸 ${t("custom.addons.captureHeading")}`}
             items={ADDONS.capture.filter((a) => a.id !== "drone")}
             selected={addons}
             onToggle={toggleAddon}
             popularIds={["photo-30", "video-30"]}
+            collection="addons"
             renderExtra={(item) => {
               const showUnder = addons.includes("video-30") ? "video-30" : "video-60";
               return item.id === showUnder
@@ -47,11 +50,12 @@ export default function PremadeFlow({ state }) {
             }}
           />
           <AddonSection
-            title="🎵 Live Music"
+            title={`🎵 ${t("custom.addons.musicHeading")}`}
             items={ADDONS.music}
             selected={addons}
             onToggle={toggleAddon}
             popularIds={["solo-musician"]}
+            collection="addons"
             renderExtra={(item) =>
               item.id === "solo-musician"
                 ? <InstrumentPicker selected={soloInstrument} onSelect={setSoloInstrument} />
@@ -64,7 +68,7 @@ export default function PremadeFlow({ state }) {
               background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
               fontSize: 13, color: "#8B6914", fontWeight: 600,
             }}>
-              Please pick an instrument for your Solo Musician above
+              {t("custom.hints.pickInstrument")}
             </div>
           )}
         </div>
@@ -84,12 +88,17 @@ export default function PremadeFlow({ state }) {
 
 function PackageList({ state }) {
   const { anim, goToStep, setPlanMode, setSelectedPackage, setPkgCarouselIdx, topRef } = state;
+  const { t, tCatalog } = useT();
 
   return (
     <div style={anim}>
-      <SectionTitle title="Choose Your Package" subtitle="Each package is designed by Jill and her team with years of experience — everything you need for a perfect proposal." />
+      <SectionTitle title={t("premade.list.title")} subtitle={t("premade.list.subtitle")} />
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        {PACKAGES.map((pkg) => (
+        {PACKAGES.map((pkg) => {
+          const displayName = tCatalog("packages", pkg.id, "name", pkg.name);
+          const displayDesc = tCatalog("packages", pkg.id, "desc", pkg.desc);
+          const displayBadge = pkg.badge ? tCatalog("badges", pkg.badge, null, pkg.badge) : null;
+          return (
           <div
             key={pkg.id}
             onClick={() => { setSelectedPackage(pkg.id); setPkgCarouselIdx(0); topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
@@ -111,19 +120,20 @@ function PackageList({ state }) {
                 color: "#fff", padding: "5px 14px", borderRadius: 20,
                 fontSize: 10, fontWeight: 700, letterSpacing: 1.2,
               }}>
-                {pkg.badge}
+                {displayBadge}
               </div>
             </div>
             <div style={{ flex: "1 1 300px", padding: "20px 24px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12 }}>
-                <h3 style={{ margin: 0, fontSize: 24, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>{pkg.name}</h3>
+                <h3 style={{ margin: 0, fontSize: 24, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>{displayName}</h3>
                 <span style={{ fontSize: 24, fontWeight: 700, color: "#C4944A", fontFamily: "'Playfair Display',Georgia,serif", whiteSpace: "nowrap" }}>{fmt(pkg.price)}</span>
               </div>
-              <p style={{ margin: "10px 0 14px", fontSize: 13, color: "#6B5744", lineHeight: 1.6 }}>{pkg.desc}</p>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>View Details →</div>
+              <p style={{ margin: "10px 0 14px", fontSize: 13, color: "#6B5744", lineHeight: 1.6 }}>{displayDesc}</p>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#C4944A" }}>{t("premade.list.viewDetails")} →</div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -133,8 +143,14 @@ function PackageList({ state }) {
 
 function PackageDetail({ state }) {
   const { anim, go, setPreview, selectedPackage, setSelectedPackage, pkgCarouselIdx, setPkgCarouselIdx } = state;
+  const { t, tCatalog } = useT();
   const pkg = PACKAGES.find((p) => p.id === selectedPackage);
   const imgIdx = pkgCarouselIdx % pkg.imgs.length;
+  const displayName = tCatalog("packages", pkg.id, "name", pkg.name);
+  const displayDesc = tCatalog("packages", pkg.id, "desc", pkg.desc);
+  const displayBadge = pkg.badge ? tCatalog("badges", pkg.badge, null, pkg.badge) : null;
+  const includesEs = tCatalog("packages", pkg.id, "includes", null);
+  const displayIncludes = Array.isArray(includesEs) ? includesEs : pkg.includes;
 
   return (
     <div style={anim}>
@@ -147,7 +163,7 @@ function PackageDetail({ state }) {
             backgroundSize: "cover", backgroundPosition: "center",
             transition: "background-image 0.3s ease", cursor: "zoom-in",
           }}
-          onClick={() => setPreview({ img: pkg.imgs[imgIdx], name: pkg.name })}
+          onClick={() => setPreview({ img: pkg.imgs[imgIdx], name: displayName })}
         />
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "60px 24px 20px", background: "linear-gradient(transparent,rgba(0,0,0,0.85))" }}>
           <div style={{
@@ -156,9 +172,9 @@ function PackageDetail({ state }) {
             color: "#fff", padding: "4px 14px", borderRadius: 20,
             fontSize: 10, fontWeight: 700, letterSpacing: 1.2, marginBottom: 10, backdropFilter: "blur(4px)",
           }}>
-            {pkg.badge}
+            {displayBadge}
           </div>
-          <h2 style={{ margin: 0, fontSize: "clamp(28px,6vw,40px)", color: "#fff", fontFamily: "'Playfair Display',Georgia,serif" }}>{pkg.name}</h2>
+          <h2 style={{ margin: 0, fontSize: "clamp(28px,6vw,40px)", color: "#fff", fontFamily: "'Playfair Display',Georgia,serif" }}>{displayName}</h2>
         </div>
         {pkg.imgs.length > 1 && (
           <>
@@ -173,7 +189,7 @@ function PackageDetail({ state }) {
         {pkg.imgs.map((img, i) => (
           <div
             key={i}
-            onClick={() => { setPkgCarouselIdx(i); setPreview({ img, name: pkg.name }); }}
+            onClick={() => { setPkgCarouselIdx(i); setPreview({ img, name: displayName }); }}
             style={{
               flex: 1, aspectRatio: "4/3", borderRadius: 12,
               backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center",
@@ -188,14 +204,14 @@ function PackageDetail({ state }) {
 
       {/* Description */}
       <div style={{ background: "#fff", borderRadius: 16, padding: "24px 28px", boxShadow: "0 2px 16px rgba(59,36,18,0.06)", marginBottom: 16 }}>
-        <p style={{ margin: 0, fontSize: 13, color: "#3B2412", lineHeight: 1.7 }}>{pkg.desc}</p>
+        <p style={{ margin: 0, fontSize: 13, color: "#3B2412", lineHeight: 1.7 }}>{displayDesc}</p>
       </div>
 
       {/* What's Included */}
       <div style={{ background: "#fff", borderRadius: 16, padding: "24px 28px", boxShadow: "0 2px 16px rgba(59,36,18,0.06)", marginBottom: 16 }}>
-        <h3 style={{ margin: "0 0 18px", fontSize: 18, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>What's Included</h3>
+        <h3 style={{ margin: "0 0 18px", fontSize: 18, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>{t("premade.detail.included")}</h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {pkg.includes.map((item, i) => (
+          {displayIncludes.map((item, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{
                 width: 28, height: 28, borderRadius: "50%",
@@ -212,14 +228,14 @@ function PackageDetail({ state }) {
 
       {/* The Experience */}
       <div style={{ background: "linear-gradient(135deg,#3B2412,#5C3A1E)", borderRadius: 16, padding: "24px 28px", marginBottom: 20 }}>
-        <h3 style={{ margin: "0 0 12px", fontSize: 18, color: "#F5E6C8", fontFamily: "'Playfair Display',Georgia,serif" }}>The Experience</h3>
+        <h3 style={{ margin: "0 0 12px", fontSize: 18, color: "#F5E6C8", fontFamily: "'Playfair Display',Georgia,serif" }}>{t("premade.detail.experience")}</h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {[
-            ["📍", "Choose any of our stunning venues — Beach, Lagoon, or Rooftop"],
-            ["📋", "Full event coordination from start to finish"],
-            ["🕐", "1.5 hours private setup"],
-            ["🥂", "Complimentary celebratory drinks"],
-            ["🌅", "Timed to golden hour for the most magical lighting"],
+            ["📍", t("premade.detail.exp.venue")],
+            ["📋", t("premade.detail.exp.coordination")],
+            ["🕐", t("premade.detail.exp.duration")],
+            ["🥂", t("premade.detail.exp.drinks")],
+            ["🌅", t("premade.detail.exp.goldenHour")],
           ].map(([icon, text], i) => (
             <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
               <span style={{ fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>{icon}</span>

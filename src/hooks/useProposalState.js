@@ -6,8 +6,22 @@ import {
   structureFlowerCost,
 } from "../data";
 import { fmt } from "../utils";
+import { useLanguage } from "../i18n/LanguageContext";
+import catalogEs from "../locales/catalog.es.json";
+
+const CATALOG_BY_LANG = { es: catalogEs };
+
+function loc(lang, collection, id, field, fallback) {
+  if (lang === "en") return fallback;
+  const entry = CATALOG_BY_LANG[lang]?.[collection]?.[id];
+  if (entry == null) return fallback;
+  if (field == null) return typeof entry === "string" ? entry : fallback;
+  return entry?.[field] ?? fallback;
+}
 
 export default function useProposalState() {
+  const { lang } = useLanguage();
+
   // Navigation
   const [step, setStep] = useState(0);
   const [fade, setFade] = useState(true);
@@ -344,121 +358,194 @@ export default function useProposalState() {
 
   // --- Message building ---
 
+  const M = lang === "es" ? {
+    greetingPremade: "¡Hola Jill! Acabo de elegir un paquete de propuesta y estoy listo/a para hacerlo realidad 💍",
+    greetingCustom: "¡Hola Jill! Acabo de armar mi plan de propuesta y estoy listo/a para hacerlo realidad 💍",
+    package: "Paquete",
+    includes: "Incluye:",
+    addons: "🎶 Extras:",
+    estTotal: "💰 Total Est.:",
+    travelDates: "✈️ Fechas de Viaje:",
+    preferredDate: "📅 Fecha Preferida de Propuesta:",
+    partnerName: "💕 Nombre de la pareja:",
+    email: "📧 Email:",
+    phone: "📱 Teléfono:",
+    closing: "¡Espero tu respuesta!",
+    venue: "📍 Locación:",
+    statementProp: "✨ Pieza Decorativa:",
+    flowers: "🌹 Flores:",
+    structures: "🏛️ Estructuras:",
+    wowFactor: "🎆 Factor WOW:",
+    flowerArrSingular: "Arreglo Floral",
+    flowerArrPlural: "Arreglos Florales",
+    fallbackUnit: "arreglos",
+    sparklersName: "Bengalas Fuente",
+    subjectLead: "Solicitud de Propuesta",
+    subjectFor: "para",
+  } : {
+    greetingPremade: "Hey Jill! I just chose a proposal package and I'm ready to make it happen 💍",
+    greetingCustom: "Hey Jill! I just built my proposal plan and I'm ready to make it happen 💍",
+    package: "Package",
+    includes: "Includes:",
+    addons: "🎶 Add-ons:",
+    estTotal: "💰 Est. Total:",
+    travelDates: "✈️ Travel Dates:",
+    preferredDate: "📅 Preferred Proposal Date:",
+    partnerName: "💕 Partner's name:",
+    email: "📧 Email:",
+    phone: "📱 Phone:",
+    closing: "Looking forward to hearing from you!",
+    venue: "📍 Venue:",
+    statementProp: "✨ Statement Prop:",
+    flowers: "🌹 Flowers:",
+    structures: "🏛️ Structures:",
+    wowFactor: "🎆 WOW Factor:",
+    flowerArrSingular: "Flower Arrangement",
+    flowerArrPlural: "Flower Arrangements",
+    fallbackUnit: "arrangements",
+    sparklersName: "Fountain Sparklers",
+    subjectLead: "Proposal Inquiry",
+    subjectFor: "for",
+  };
+
+  const dateLocale = lang === "es" ? "es-MX" : "en-US";
+
   const buildMsg = () => {
     if (planMode === "premade") {
       const pkg = PACKAGES.find((p) => p.id === selectedPackage);
       const all = [...ADDONS.music, ...ADDONS.capture];
       const sel = addons.map((id) => all.find((x) => x.id === id)).filter(Boolean);
+      const pkgName = pkg ? loc(lang, "packages", pkg.id, "name", pkg.name) : "";
+      const pkgIncludes = pkg ? (loc(lang, "packages", pkg.id, "includes", null) || pkg.includes) : [];
 
-      let m = `Hey Jill! I just chose a proposal package and I'm ready to make it happen 💍\n\n📦 Package: ${pkg?.name} (${fmt(pkg?.price || 0)})\n`;
+      let m = `${M.greetingPremade}\n\n📦 ${M.package}: ${pkgName} (${fmt(pkg?.price || 0)})\n`;
       if (pkg) {
-        m += `\nIncludes:\n`;
-        pkg.includes.forEach((item) => { m += `- ${item}\n`; });
+        m += `\n${M.includes}\n`;
+        pkgIncludes.forEach((item) => { m += `- ${item}\n`; });
       }
       if (sel.length) {
-        m += `\n🎶 Add-ons:\n`;
+        m += `\n${M.addons}\n`;
         sel.forEach((a) => {
-          m += `- ${a.name} (${fmt(a.price)})`;
+          const aName = loc(lang, "addons", a.id, "name", a.name);
+          m += `- ${aName} (${fmt(a.price)})`;
           if (a.id === "solo-musician" && soloInstrument) {
             const inst = SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument);
-            if (inst) m += ` — ${inst.name}`;
+            if (inst) m += ` — ${loc(lang, "soloInstruments", inst.id, "name", inst.name)}`;
           }
           m += `\n`;
         });
       }
-      m += `\n💰 Est. Total: ${fmt(total)}\n`;
-      if (travelStart && travelEnd) m += `\n✈️ Travel Dates: ${travelStart.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}\n`;
-      if (proposalDate) m += `📅 Preferred Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
-      if (partnerName) m += `💕 Partner's name: ${partnerName}\n`;
-      if (contactEmail) m += `\n📧 Email: ${contactEmail}\n`;
-      if (contactPhone) m += `📱 Phone: ${countryCode} ${contactPhone}\n`;
-      m += `\nLooking forward to hearing from you!`;
+      m += `\n${M.estTotal} ${fmt(total)}\n`;
+      if (travelStart && travelEnd) m += `\n${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
+      if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
+      if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
+      if (contactEmail) m += `\n${M.email} ${contactEmail}\n`;
+      if (contactPhone) m += `${M.phone} ${countryCode} ${contactPhone}\n`;
+      m += `\n${M.closing}`;
       return encodeURIComponent(m);
     }
 
     const v = VENUES.find((x) => x.id === venue);
-    const selCenterpieces = centerpieces.map((id) => CENTERPIECES.find((x) => x.id === id) || ACTIVITIES.find((x) => x.id === id)).filter(Boolean);
+    const vName = v ? loc(lang, "venues", v.id, "name", v.name) : "";
+    const selCenterpieces = centerpieces.map((id) => {
+      const item = CENTERPIECES.find((x) => x.id === id) || ACTIVITIES.find((x) => x.id === id);
+      if (!item) return null;
+      const collection = CENTERPIECES.some((x) => x.id === id) ? "centerpieces" : "activities";
+      return { ...item, _collection: collection };
+    }).filter(Boolean);
     const selFlowers = flowers.map((id) => FLOWERS.find((x) => x.id === id)).filter(Boolean);
     const selWow = wow.map((id) => WOW.find((x) => x.id === id)).filter(Boolean);
     const all = [...ADDONS.music, ...ADDONS.capture];
     const sel = addons.map((id) => all.find((x) => x.id === id)).filter(Boolean);
 
-    let m = `Hey Jill! I just built my proposal plan and I'm ready to make it happen 💍\n\n📍 Venue: ${v?.name} (${fmt(v?.price || 0)})\n`;
+    let m = `${M.greetingCustom}\n\n${M.venue} ${vName} (${fmt(v?.price || 0)})\n`;
 
     if (selCenterpieces.length) {
-      m += `\n✨ Statement Prop:\n`;
+      m += `\n${M.statementProp}\n`;
       selCenterpieces.forEach((c) => {
         let displayPrice = c.price;
         if (c.id === "giant-frame-neon" && giantFrameStructure) {
           const opt = c.structureOptions?.find((o) => o.id === giantFrameStructure);
           displayPrice = c.price + (opt?.uplift || 0);
         }
-        m += `- ${c.name} (${fmt(displayPrice)})`;
+        const cName = loc(lang, c._collection, c.id, "name", c.name);
+        m += `- ${cName} (${fmt(displayPrice)})`;
         if (c.id === "giant-frame-neon") {
-          const structName = STRUCTURES.find((s) => s.id === giantFrameStructure)?.name;
+          const structObj = STRUCTURES.find((s) => s.id === giantFrameStructure);
+          const structName = structObj ? loc(lang, "structures", structObj.id, "name", structObj.name) : null;
           if (structName) m += ` — ${structName}`;
-          if (giantFrameNeonMsg) m += ` — "${giantFrameNeonMsg}"`;
+          if (giantFrameNeonMsg) {
+            const msgDisplay = loc(lang, "structureNeonMessages", giantFrameNeonMsg, null, giantFrameNeonMsg);
+            m += ` — "${msgDisplay}"`;
+          }
         }
         m += `\n`;
         const fq = structureFlowerQtys[c.id];
         if (c.id === "giant-frame-neon" && fq > 0) {
-          m += `  + ${fq} Flower Arrangement${fq > 1 ? "s" : ""} (${fmt(structureFlowerCost(fq))})\n`;
+          m += `  + ${fq} ${fq > 1 ? M.flowerArrPlural : M.flowerArrSingular} (${fmt(structureFlowerCost(fq))})\n`;
         }
       });
     }
     if (selFlowers.length) {
-      m += `\n🌹 Flowers:\n`;
+      m += `\n${M.flowers}\n`;
       selFlowers.forEach((f) => {
+        const fName = loc(lang, "flowers", f.id, "name", f.name);
+        const fUnit = loc(lang, "flowers", f.id, "bundleUnit", f.bundleUnit || M.fallbackUnit);
         if (f.qty) {
           const q = flowerQtys[f.id] || f.unitMin;
-          if (f.perBundle) m += `- ${f.name} (${q * f.perBundle} ${f.bundleUnit || "arrangements"}) (${fmt(q * f.pricePerUnit)})\n`;
-          else m += `- ${q} ${f.name} (${fmt(q * f.pricePerUnit)})\n`;
+          if (f.perBundle) m += `- ${fName} (${q * f.perBundle} ${fUnit}) (${fmt(q * f.pricePerUnit)})\n`;
+          else m += `- ${q} ${fName} (${fmt(q * f.pricePerUnit)})\n`;
         } else {
-          m += `- ${f.name} (${fmt(f.price)})\n`;
+          m += `- ${fName} (${fmt(f.price)})\n`;
         }
       });
     }
     const selStructures = structures.map((id) => STRUCTURES.find((x) => x.id === id)).filter(Boolean);
     if (selStructures.length) {
-      m += `\n🏛️ Structures:\n`;
+      m += `\n${M.structures}\n`;
       selStructures.forEach((s) => {
-        m += `- ${s.name} (${fmt(s.price)})`;
-        if (s.id === "structure-neon") m += ` — "${structureNeonMsg}"`;
+        const sName = loc(lang, "structures", s.id, "name", s.name);
+        m += `- ${sName} (${fmt(s.price)})`;
+        if (s.id === "structure-neon" && structureNeonMsg) {
+          const msgDisplay = loc(lang, "structureNeonMessages", structureNeonMsg, null, structureNeonMsg);
+          m += ` — "${msgDisplay}"`;
+        }
         m += `\n`;
         const fq = structureFlowerQtys[s.id];
         if (fq > 0) {
-          m += `  + ${fq} Flower Arrangement${fq > 1 ? "s" : ""} (${fmt(structureFlowerCost(fq))})\n`;
+          m += `  + ${fq} ${fq > 1 ? M.flowerArrPlural : M.flowerArrSingular} (${fmt(structureFlowerCost(fq))})\n`;
         }
       });
     }
     if (selWow.length || sparklerQty > 0) {
-      m += `\n🎆 WOW Factor:\n`;
-      if (sparklerQty > 0) m += `- Fountain Sparklers x${sparklerQty} (${fmt(SPARKLER_PRICES[sparklerQty])})\n`;
+      m += `\n${M.wowFactor}\n`;
+      if (sparklerQty > 0) m += `- ${M.sparklersName} x${sparklerQty} (${fmt(SPARKLER_PRICES[sparklerQty])})\n`;
       selWow.forEach((w) => m += `- ${w.name} (${fmt(w.price)})\n`);
     }
     if (sel.length) {
-      m += `\n🎶 Add-ons:\n`;
+      m += `\n${M.addons}\n`;
       sel.forEach((a) => {
-        m += `- ${a.name} (${fmt(a.price)})`;
+        const aName = loc(lang, "addons", a.id, "name", a.name);
+        m += `- ${aName} (${fmt(a.price)})`;
         if (a.id === "solo-musician" && soloInstrument) {
           const inst = SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument);
-          if (inst) m += ` — ${inst.name}`;
+          if (inst) m += ` — ${loc(lang, "soloInstruments", inst.id, "name", inst.name)}`;
         }
         m += `\n`;
       });
     }
-    m += `\n💰 Est. Total: ${fmt(total)}\n`;
-    if (travelStart && travelEnd) m += `\n✈️ Travel Dates: ${travelStart.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}\n`;
-    if (proposalDate) m += `📅 Preferred Proposal Date: ${proposalDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
-    if (partnerName) m += `💕 Partner's name: ${partnerName}\n`;
-    if (contactEmail) m += `\n📧 Email: ${contactEmail}\n`;
-    if (contactPhone) m += `📱 Phone: ${countryCode} ${contactPhone}\n`;
-    m += `\nLooking forward to hearing from you!`;
+    m += `\n${M.estTotal} ${fmt(total)}\n`;
+    if (travelStart && travelEnd) m += `\n${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
+    if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
+    if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
+    if (contactEmail) m += `\n${M.email} ${contactEmail}\n`;
+    if (contactPhone) m += `${M.phone} ${countryCode} ${contactPhone}\n`;
+    m += `\n${M.closing}`;
     return encodeURIComponent(m);
   };
 
   const buildEmailSubject = () =>
-    encodeURIComponent(`Proposal Inquiry${partnerName ? ` — for ${partnerName}` : ""} — ${fmt(total)}`);
+    encodeURIComponent(`${M.subjectLead}${partnerName ? ` — ${M.subjectFor} ${partnerName}` : ""} — ${fmt(total)}`);
 
   const inquiryReady = contactEmail.includes("@") && contactPhone.length >= 4 && !!travelStart && !!travelEnd;
 
@@ -526,15 +613,10 @@ export default function useProposalState() {
     transition: "all 0.35s ease",
   };
 
-  const customLabels = ["Location", "Statement Prop", "Flowers & Enhancements", "Add-ons", "Review and Inquire"];
-  const premadeLabels = ["Package", "Extras", "Review and Inquire"];
-  const labels = planMode === "premade" ? premadeLabels : customLabels;
-
   return {
     // Navigation
     step, setStep, go, goToStep, fade, setFade, topRef, anim,
     planMode, setPlanMode, selectPlanMode,
-    labels,
 
     // Custom flow
     venue, setVenue, selectVenue,

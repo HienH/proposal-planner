@@ -1,7 +1,10 @@
 import { fmt } from "../utils";
+import useT from "../i18n/useT";
 
-export default function RunningTotal({ total, visible, showBack, onBack, onNext, nextLabel = "Next", disabled = false, hideNext = false, hideTotal = false, disabledHint = "", onDisabledClick, isReviewStep = false }) {
+export default function RunningTotal({ total, visible, showBack, onBack, onNext, nextLabel, disabled = false, hideNext = false, hideTotal = false, disabledHint = "", onDisabledClick, isReviewStep = false }) {
+  const { t } = useT();
   if (!visible) return null;
+  const resolvedNextLabel = nextLabel ?? t("common.next");
 
   return (
     <>
@@ -51,7 +54,7 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
             color: "#F5E6C8", fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
           }}
         >
-          ← Back
+          ← {t("common.back")}
         </button>
       ) : (
         <div style={{ width: 70 }} />
@@ -65,7 +68,7 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
             fontSize: 10, color: "rgba(245,230,200,0.5)",
             fontWeight: 600, letterSpacing: 1, textTransform: "uppercase",
           }}>
-            Total
+            {t("runningTotal.label")}
           </div>
           <div className="total-value" style={{
             fontSize: 24, fontWeight: 700, color: "#F5E6C8",
@@ -98,7 +101,7 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
               opacity: disabled ? 0.5 : 1, transition: "all 0.3s",
             }}
           >
-            {nextLabel} →
+            {resolvedNextLabel} →
           </button>
         </div>
       )}

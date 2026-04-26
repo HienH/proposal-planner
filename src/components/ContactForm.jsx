@@ -3,6 +3,9 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { COUNTRY_CODES, PHONE, BUSINESS_EMAIL } from "../data";
 import { fmt } from "../utils";
+import useT from "../i18n/useT";
+
+const DATE_LOCALE = { en: "en-US", es: "es-MX" };
 
 function CountryCodePicker({ value, onChange }) {
   const [open, setOpen] = useState(false);
@@ -62,9 +65,10 @@ function CountryCodePicker({ value, onChange }) {
   );
 }
 
-function ProposalDatePicker({ value, onChange, placeholder = "Select your proposal date", minDate, maxDate }) {
+function ProposalDatePicker({ value, onChange, placeholder, minDate, maxDate }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const { lang } = useT();
 
   useEffect(() => {
     const handler = (e) => {
@@ -75,7 +79,7 @@ function ProposalDatePicker({ value, onChange, placeholder = "Select your propos
   }, []);
 
   const formatted = value
-    ? value.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    ? value.toLocaleDateString(DATE_LOCALE[lang] || "en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
     : "";
 
   const disabledRules = [];
@@ -120,6 +124,7 @@ function ProposalDatePicker({ value, onChange, placeholder = "Select your propos
 function TravelRangePicker({ start, end, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const { t, lang } = useT();
 
   useEffect(() => {
     const handler = (e) => {
@@ -130,7 +135,7 @@ function TravelRangePicker({ start, end, onChange }) {
   }, []);
 
   const fmtDate = (d) =>
-    d ? d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "";
+    d ? d.toLocaleDateString(DATE_LOCALE[lang] || "en-US", { month: "short", day: "numeric", year: "numeric" }) : "";
 
   const label = start && end
     ? `${fmtDate(start)} → ${fmtDate(end)}`
@@ -151,7 +156,7 @@ function TravelRangePicker({ start, end, onChange }) {
           fontFamily: "'DM Sans','Segoe UI',sans-serif",
         }}
       >
-        <span>{label || "Select your arrival → departure dates"}</span>
+        <span>{label || t("contact.travelPlaceholder")}</span>
         <span style={{ fontSize: 16 }}>✈️</span>
       </div>
       {open && (
@@ -192,6 +197,7 @@ export default function ContactForm({
   goBack,
   startOver,
 }) {
+  const { t } = useT();
   const onTravelChange = (from, to) => {
     setTravelStart(from);
     setTravelEnd(to);
@@ -206,17 +212,17 @@ export default function ContactForm({
           fontSize: 16, color: "#3B2412", margin: "20px 0 16px",
           fontFamily: "'Playfair Display',Georgia,serif",
         }}>
-          Your contact & trip details
+          {t("contact.heading")}
         </h3>
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            Email Address *
+            {t("contact.emailLabel")} *
           </label>
           <input
             value={contactEmail}
             onChange={(e) => setContactEmail(e.target.value)}
-            placeholder="your@email.com"
+            placeholder={t("contact.emailPlaceholder")}
             type="email"
             style={{
               width: "100%", padding: "12px 16px", borderRadius: 10,
@@ -228,7 +234,7 @@ export default function ContactForm({
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            Phone Number *
+            {t("contact.phoneLabel")} *
           </label>
           <div style={{ display: "flex", gap: 8 }}>
             <CountryCodePicker value={countryCode} onChange={setCountryCode} />
@@ -236,7 +242,7 @@ export default function ContactForm({
               id="phone-input"
               value={contactPhone}
               onChange={(e) => setContactPhone(e.target.value.replace(/[^0-9]/g, ""))}
-              placeholder="Phone number"
+              placeholder={t("contact.phonePlaceholder")}
               type="tel"
               style={{
                 flex: 1, padding: "12px 16px", borderRadius: 10,
@@ -249,22 +255,22 @@ export default function ContactForm({
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            Travel Dates *
+            {t("contact.travelLabel")} *
           </label>
           <TravelRangePicker start={travelStart} end={travelEnd} onChange={onTravelChange} />
           <div style={{ fontSize: 11, color: "#B0A090", marginTop: 4, lineHeight: 1.4 }}>
-            Your full trip range — we'll confirm sunset availability within these dates.
+            {t("contact.travelHint")}
           </div>
         </div>
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            Preferred Proposal Date <span style={{ color: "#B0A090", fontWeight: 500 }}>(optional)</span>
+            {t("contact.proposalDateLabel")} <span style={{ color: "#B0A090", fontWeight: 500 }}>{t("contact.optional")}</span>
           </label>
           <ProposalDatePicker
             value={proposalDate}
             onChange={setProposalDate}
-            placeholder={travelStart && travelEnd ? "Pick a day within your trip" : "Set travel dates first"}
+            placeholder={travelStart && travelEnd ? t("contact.proposalDatePlaceholderReady") : t("contact.proposalDatePlaceholderEmpty")}
             minDate={travelStart || undefined}
             maxDate={travelEnd || undefined}
           />
@@ -272,12 +278,12 @@ export default function ContactForm({
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            Partner's First Name
+            {t("contact.partnerNameLabel")}
           </label>
           <input
             value={partnerName}
             onChange={(e) => setPartnerName(e.target.value)}
-            placeholder="e.g., Sarah"
+            placeholder={t("contact.partnerNamePlaceholder")}
             style={{
               width: "100%", padding: "12px 16px", borderRadius: 10,
               border: "2px solid #EDE8E0", fontSize: 14, fontFamily: "inherit",
@@ -305,20 +311,20 @@ export default function ContactForm({
           width: "100%", maxWidth: 380,
         }}>
           <div style={{ fontSize: 13, color: "#8B6914", fontWeight: 700, marginBottom: 4 }}>
-            📅 Your package and date can only be reserved with a retainer fee
+            {t("review.footer.retainerHeadline")}
           </div>
           <div style={{ fontSize: 12, color: "#6B5744", lineHeight: 1.5 }}>
-            Submitting an inquiry does not guarantee a booking. Jill's team will follow up to confirm availability.
+            {t("review.footer.retainerBody")}
           </div>
         </div>
 
         {!inquiryReady && (
           <div style={{ textAlign: "center", fontSize: 12, color: "#C4944A", lineHeight: 1.5, maxWidth: 340 }}>
             {contactPhone.length < 4
-              ? "Please fill in your phone number above to send your inquiry"
+              ? t("contact.fillPhone")
               : (!travelStart || !travelEnd)
-              ? "Please add your travel dates above so we can confirm availability"
-              : "Please complete the required fields above"}
+              ? t("contact.fillTravelDates")
+              : t("contact.fillRequired")}
           </div>
         )}
 
@@ -351,7 +357,7 @@ export default function ContactForm({
             opacity: inquiryReady ? 1 : 0.5, transition: "all 0.3s",
           }}
         >
-          Send Inquiry →
+          {t("common.sendInquiry")} →
         </a>
 
         <div style={{
@@ -360,7 +366,7 @@ export default function ContactForm({
         }}>
           <div style={{ flex: 1, height: 1, background: "#EDE8E0" }} />
           <span style={{ fontSize: 11, color: "#B0A090", fontWeight: 600, whiteSpace: "nowrap" }}>
-            Want a faster response?
+            {t("contact.fasterResponse")}
           </span>
           <div style={{ flex: 1, height: 1, background: "#EDE8E0" }} />
         </div>
@@ -377,7 +383,7 @@ export default function ContactForm({
             width: "100%", maxWidth: 380, textAlign: "center",
           }}
         >
-          Send via WhatsApp
+          {t("contact.sendViaWhatsapp")}
         </a>
 
         <button
@@ -389,7 +395,7 @@ export default function ContactForm({
             color: "#C4944A", fontSize: 14, fontWeight: 600, width: "100%", maxWidth: 380,
           }}
         >
-          {planSaved ? "✓ Plan Saved — Check Your Email" : "Save My Plan for Later"}
+          {planSaved ? t("contact.planSaved") : t("contact.savePlan")}
         </button>
 
         <button
@@ -400,7 +406,7 @@ export default function ContactForm({
             color: "#D4A09A", fontSize: 12, fontWeight: 600,
           }}
         >
-          Start Over
+          {t("contact.startOver")}
         </button>
       </div>
     </>

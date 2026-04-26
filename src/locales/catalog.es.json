@@ -1,0 +1,213 @@
+{
+  "venues": {
+    "beach": {
+      "name": "Playa",
+      "desc": "Nuestra locación frente al mar con impresionantes vistas al océano. Recomendado entre semana para una experiencia más íntima."
+    },
+    "lagoon": {
+      "name": "Laguna",
+      "desc": "Una locación privada frente al agua con la mejor vista del atardecer en Cancún."
+    },
+    "rooftop": {
+      "name": "Rooftop",
+      "desc": "Skyline de la ciudad, rueda de la fortuna y vistas panorámicas del atardecer. Verdaderamente inolvidable."
+    },
+    "yacht": {
+      "name": "Yate",
+      "desc": "Propón en altamar a bordo de un yate privado con vistas del Caribe y total privacidad. Incluye capitán y tripulación."
+    },
+    "cenote": {
+      "name": "Cenote",
+      "desc": "Un cenote privado impresionante — agua turquesa cristalina rodeada de jungla. Verdaderamente único en Cancún."
+    }
+  },
+  "centerpieces": {
+    "big-letters": {
+      "name": "Letras Grandes \"MARRY ME\"",
+      "desc": "1.8 m de alto, 7.6 m de ancho — nuestra pieza más impactante"
+    },
+    "med-letters-full": {
+      "name": "\"Will You Marry Me?\"",
+      "desc": "Letras de 60 cm sobre pedestales, 1.2 m de altura"
+    },
+    "med-letters-short": {
+      "name": "\"Marry Me?\"",
+      "desc": "Letras de 60 cm sobre pedestales — limpias y clásicas"
+    },
+    "stacked-letters": {
+      "name": "Letras Apiladas",
+      "desc": "Display apilado de 1.8 m — elegante e íntimo"
+    },
+    "flower-structure": {
+      "name": "Diseño Floral",
+      "desc": "400 rosas frescas en forma de corazón, anillo, o círculo"
+    },
+    "giant-frame-neon": {
+      "name": "Estructura Decorada con Letrero de Neón",
+      "desc": "Una estructura preestilizada decorada con flores frescas y un letrero de neón personalizado"
+    }
+  },
+  "activities": {
+    "picnic": {
+      "name": "Picnic Romántico",
+      "desc": "Tabla de quesos curada para dos con botella de vino de cortesía, montada en tu locación"
+    },
+    "dinner": {
+      "name": "Cena a la Luz de las Velas",
+      "desc": "Cena íntima de 3 tiempos para dos con copa de vino de cortesía bajo las estrellas"
+    }
+  },
+  "flowers": {
+    "petals": {
+      "name": "Pasillo de Pétalos de Rosa",
+      "desc": "Pétalos de rosas rojas para un pasillo romántico — 2 bolsas por paquete, $50 cada uno",
+      "bundleUnit": "bolsas"
+    },
+    "arrangements": {
+      "name": "Arreglos Florales",
+      "desc": "Arreglos elegantes alrededor de tu montaje — 2 arreglos por paquete, $120 cada uno"
+    },
+    "standing-roses": {
+      "name": "Rosas de Pie",
+      "desc": "Rosas en arena bordeando tu pasillo — 24 rosas por paquete, $60 cada uno",
+      "bundleUnit": "rosas"
+    },
+    "hanging-roses": {
+      "name": "Rosas Colgantes",
+      "desc": "24 rosas en cascada colgadas de tu estructura. **Solo disponible con la Estructura Gazebo.**"
+    },
+    "candle-heart": {
+      "name": "Corazón de Velas",
+      "desc": "Velas LED y pétalos de rosa — bellamente sencillo"
+    },
+    "bouquet": {
+      "name": "Ramo de Rosas",
+      "desc": "3 docenas de rosas frescas — el primer regalo después del sí"
+    }
+  },
+  "structures": {
+    "metal-structure": {
+      "name": "Estructuras de Metal (Corazón, Círculo o Rectángulo)",
+      "desc": "Elige entre nuestra selección de estructuras de metal. Esta estructura simple puede llevarse al siguiente nivel con tela, letrero de neón y flores"
+    },
+    "giant-frame": {
+      "name": "Marco Gigante",
+      "desc": "Un marco gigante autoportante audaz con tela e iluminación. Agrega un letrero de neón y flores para completar el look"
+    },
+    "wooden-frame": {
+      "name": "Estructura de Madera",
+      "desc": "Estructura de madera con tela e iluminación. Agrega un letrero de neón y flores para completar el look"
+    },
+    "gazebo-structure": {
+      "name": "Estructura de Gazebo",
+      "desc": "Gazebo de madera con tela e iluminación. Agrega un letrero de neón y flores para completar el look"
+    },
+    "structure-neon": {
+      "name": "Letrero de Neón",
+      "desc": "Agrega un letrero de neón brillante a tu estructura"
+    }
+  },
+  "addons": {
+    "solo-musician": {
+      "name": "Músico Solista",
+      "desc": "Saxofón, guitarra, violín, cello, o arpa — 30-45 min"
+    },
+    "mariachi": {
+      "name": "Banda de Mariachi",
+      "desc": "4-5 músicos, 7 canciones — 25-30 min"
+    },
+    "photo-30": {
+      "name": "Fotografía (30 min)",
+      "desc": "50 imágenes digitales — propuesta + mini sesión de compromiso"
+    },
+    "photo-60": {
+      "name": "Fotografía (60 min)",
+      "desc": "100 imágenes digitales — propuesta + sesión extendida"
+    },
+    "video-30": {
+      "name": "Video Highlight (30 min en sitio)",
+      "desc": "Video de propuesta de **2-3 minutos** editado profesionalmente"
+    },
+    "video-60": {
+      "name": "Video Highlight (60 min en sitio)",
+      "desc": "Video de propuesta de **4-5 minutos** editado profesionalmente"
+    },
+    "drone": {
+      "name": "Tomas con Drone",
+      "desc": "Tomas aéreas adicionales — impresionantes vistas de pájaro"
+    }
+  },
+  "soloInstruments": {
+    "violin": { "name": "Violín" },
+    "sax": { "name": "Saxofón" },
+    "guitar": { "name": "Guitarra" },
+    "cello": { "name": "Cello" },
+    "harp": { "name": "Arpa" }
+  },
+  "packages": {
+    "simple": {
+      "name": "Simple y Dulce",
+      "desc": "Una experiencia de propuesta íntima y minimalista diseñada para que el momento hable por sí mismo. Con luz suave de velas, flores elegantes, y un montaje cuidadosamente estilizado solo para los dos.",
+      "includes": [
+        "Locación de tu elección",
+        "8 arreglos florales",
+        "Velas LED en estuches de vidrio",
+        "Tapete redondo bohemio",
+        "Pétalos de rosa",
+        "Coordinación",
+        "1.5 hrs",
+        "Vino espumoso",
+        "Mesero"
+      ]
+    },
+    "glamorous": {
+      "name": "Glamoroso",
+      "desc": "Una experiencia de propuesta espectacular diseñada para dejar una impresión duradera. Con letras audaces, bengalas brillantes y flores elegantemente estilizadas, cada detalle está pensado para dejarles sin aliento.",
+      "includes": [
+        "Locación de tu elección",
+        "Letras medianas \"MARRY ME\"",
+        "5 arreglos florales",
+        "Estructura círculo de metal",
+        "Pasillo de pétalos de rosa",
+        "Alfombra roja o blanca",
+        "Velas LED en todo el montaje",
+        "Bengalas fuente (x2)",
+        "Ramo de rosas (3 docenas)",
+        "Coordinación",
+        "1.5 hrs",
+        "Vino espumoso",
+        "Mesero"
+      ]
+    },
+    "artist": {
+      "name": "Toque de Artista",
+      "desc": "Nuestra experiencia de lujo emblemática, creada para quienes esperan solo lo excepcional. Con más de 10 años de experiencia, curamos un momento inolvidable y a la medida para tu pareja especial que será recordado para siempre.",
+      "includes": [
+        "Locación de tu elección",
+        "Pieza floral (corazón, anillo o círculo)",
+        "Letrero de neón a la medida",
+        "Plataforma \"El Momento\"",
+        "100 rosas de pie",
+        "Velas LED en estuches de vidrio",
+        "Alfombra roja o blanca",
+        "Bengalas fuente (x4)",
+        "Ramo de rosas (3 docenas)",
+        "Coordinación",
+        "1.5 hrs",
+        "Vino espumoso",
+        "Mesero"
+      ]
+    }
+  },
+  "structureNeonMessages": {
+    "Will you marry me?": "¿Te casas conmigo?",
+    "It was always you": "Siempre fuiste tú",
+    "Te casas conmigo?": "¿Te casas conmigo?",
+    "Will you be my Wife?": "¿Quieres ser mi esposa?",
+    "Let's grow old together": "Envejezcamos juntos",
+    "You & Me": "Tú y Yo",
+    "She said yes": "Ella dijo que sí",
+    "This is our love story": "Esta es nuestra historia de amor",
+    "Will you be my girlfriend": "¿Quieres ser mi novia?"
+  }
+}

@@ -6,8 +6,10 @@ import {
 import { fmt } from "../utils";
 import { SectionTitle, SummaryItem } from "../components/ui";
 import ContactForm from "../components/ContactForm";
+import useT from "../i18n/useT";
 
 export default function ReviewStep({ state }) {
+  const { t } = useT();
   const {
     anim, go, planMode, total, addons, toggleAddon,
     contactEmail, setContactEmail, contactPhone, setContactPhone,
@@ -35,13 +37,13 @@ export default function ReviewStep({ state }) {
           .review-back-btn:hover{background:rgba(196,148,74,0.06);border-color:#C4944A;color:#C4944A;}
         }
       `}</style>
-      <button className="review-back-btn" onClick={() => go(-1)}>← Back</button>
-      <SectionTitle title="Your Perfect Proposal" />
+      <button className="review-back-btn" onClick={() => go(-1)}>← {t("common.back")}</button>
+      <SectionTitle title={t("review.title")} />
 
       <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 8px 40px rgba(59,36,18,0.08)" }}>
         {/* Total banner */}
         <div style={{ padding: "24px 28px 36px", textAlign: "center", background: "linear-gradient(135deg,#3B2412,#5C3A1E)" }}>
-          <div style={{ fontSize: 11, color: "rgba(245,230,200,0.6)", fontWeight: 600, letterSpacing: 2, marginBottom: 8 }}>ESTIMATED TOTAL</div>
+          <div style={{ fontSize: 11, color: "rgba(245,230,200,0.6)", fontWeight: 600, letterSpacing: 2, marginBottom: 8 }}>{t("review.estimatedTotal")}</div>
           <div style={{ fontSize: 52, fontWeight: 700, color: "#F5E6C8", fontFamily: "'Playfair Display',Georgia,serif" }}>{fmt(total)}</div>
         </div>
 
@@ -54,7 +56,7 @@ export default function ReviewStep({ state }) {
           textAlign: "center",
         }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", marginBottom: 6 }}>
-            Reserve from{" "}
+            {t("review.reserveFrom")}{" "}
             <span style={{ color: "#C4944A", fontSize: 16, fontFamily: "'Playfair Display',Georgia,serif" }}>
               {fmt(total * 0.2)}
             </span>
@@ -81,10 +83,10 @@ export default function ReviewStep({ state }) {
             <div style={{ fontSize: 20, lineHeight: 1, flexShrink: 0, marginTop: 1 }}>🌅</div>
             <div>
               <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", marginBottom: 4, fontFamily: "'Playfair Display',Georgia,serif" }}>
-                Timed to golden hour
+                {t("review.goldenHourTitle")}
               </div>
               <div style={{ fontSize: 13, color: "#6B5744", lineHeight: 1.5 }}>
-                After a decade of planning professional proposals in Cancún, we know the best time for an unforgettable moment is sunset. That's why we always reserve yours for this special hour.
+                {t("review.goldenHourBody")}
               </div>
             </div>
           </div>
@@ -94,14 +96,14 @@ export default function ReviewStep({ state }) {
         {!addons.some((a) => ["photo-30", "photo-60"].includes(a)) && (
           <div style={{ margin: "0 28px 16px", padding: "14px 16px", background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10 }}>
             <div style={{ fontSize: 13, color: "#8B6914", fontWeight: 600 }}>
-              📸 94% of our clients add photography. Want to add it?
+              {t("review.photoUpsell.headline")}
             </div>
             <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
               <button onClick={() => toggleAddon("photo-30")} style={{ padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer", background: "#C4944A", color: "#fff", fontSize: 12, fontWeight: 600 }}>
-                + Add 30min ($295)
+                + {t("review.photoUpsell.add30")}
               </button>
               <button onClick={() => toggleAddon("photo-60")} style={{ padding: "8px 16px", borderRadius: 20, cursor: "pointer", background: "transparent", border: "1px solid #C4944A", color: "#C4944A", fontSize: 12, fontWeight: 600 }}>
-                + Add 60min ($350)
+                + {t("review.photoUpsell.add60")}
               </button>
             </div>
           </div>
@@ -133,19 +135,23 @@ export default function ReviewStep({ state }) {
       {/* Footer */}
       <div style={{ marginTop: 24, padding: "16px 20px", background: "#FFF8EE", borderRadius: 12, border: "1px solid #F0E6D0", textAlign: "center" }}>
         <div style={{ fontSize: 13, color: "#8B6914", fontWeight: 700, marginBottom: 6 }}>
-          📅 Your package and date can only be reserved with a retainer fee
+          {t("review.footer.retainerHeadline")}
         </div>
         <div style={{ fontSize: 12, color: "#6B5744", lineHeight: 1.5 }}>
-          Submitting an inquiry does not guarantee a booking. Jill's team will follow up to confirm availability.
+          {t("review.footer.retainerBody")}
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 20, flexWrap: "wrap" }}>
-        {["No hidden fees", "1,500+ proposals since 2018", "Jill's team responds within hours"].map((t) => (
-          <span key={t} style={{ fontSize: 12, color: "#B0A090", fontWeight: 500 }}>✓ {t}</span>
+        {[
+          t("review.footer.trust.noFees"),
+          t("review.footer.trust.experience"),
+          t("review.footer.trust.responsive"),
+        ].map((label) => (
+          <span key={label} style={{ fontSize: 12, color: "#B0A090", fontWeight: 500 }}>✓ {label}</span>
         ))}
       </div>
       <p style={{ textAlign: "center", fontSize: 11, color: "#C4B8A8", marginTop: 12, lineHeight: 1.5, maxWidth: 440, margin: "12px auto 0" }}>
-        Prices are estimates. Final pricing confirmed with Jill and her team.
+        {t("review.footer.disclaimer")}
       </p>
     </div>
   );
@@ -160,6 +166,7 @@ function CustomTop({ state }) {
     centerpieces, toggleCenterpiece, flowers, toggleFlower,
     wow, toggleWow, sparklerQty, setSparklerQty,
   } = state;
+  const { t, tCatalog } = useT();
 
   const matches = frozenMatches;
   const fallbackImg = VENUES.find((v) => v.id === venue)?.img;
@@ -167,13 +174,15 @@ function CustomTop({ state }) {
   const idx = Math.min(carouselIdx, matches.length - 1);
   const current = matches[idx];
   const currentUpsells = current ? getUpsells(current) : [];
+  const venueObj = VENUES.find((v) => v.id === venue);
+  const venueName = venueObj ? tCatalog("venues", venueObj.id, "name", venueObj.name) : "";
 
   return (
     <>
       {/* Carousel header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px 0" }}>
         <div style={{ fontSize: 16, fontWeight: 700, color: "#3B2412", letterSpacing: 0.5 }}>
-          Similar Setups From Our Portfolio
+          {t("review.similarSetups")}
         </div>
         {matches.length > 1 && (
           <div style={{ fontSize: 12, color: "#B0A090", fontWeight: 600 }}>{idx + 1}/{matches.length}</div>
@@ -185,7 +194,7 @@ function CustomTop({ state }) {
         {matches.length > 0 ? (
           <div
             style={{ position: "relative", cursor: "pointer" }}
-            onClick={() => setPreview({ img: current.img, name: `Similar setup ${idx + 1}` })}
+            onClick={() => setPreview({ img: current.img, name: t("review.similarSetupAlt", { n: idx + 1 }) })}
           >
             <div className="review-hero-img" style={{
               height: 320, backgroundImage: `url(${current.img})`,
@@ -196,7 +205,7 @@ function CustomTop({ state }) {
               {currentUpsells.length > 0 ? (
                 <div style={{ padding: "60px 16px 16px" }}>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 }}>
-                    To make it similar, add:
+                    {t("review.toMakeSimilar")}
                   </div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                     {currentUpsells.map((item) => (
@@ -229,10 +238,10 @@ function CustomTop({ state }) {
               ) : (
                 <div style={{ padding: "50px 16px 16px" }}>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>
-                    A similar setup from our portfolio
+                    {t("review.similarFromPortfolio")}
                   </div>
                   <div style={{ fontSize: 16, color: "#fff", fontWeight: 600, fontFamily: "'Playfair Display',Georgia,serif", marginTop: 4 }}>
-                    {VENUES.find((v) => v.id === venue)?.name} · Sunset
+                    {venueName} · {t("review.sunset")}
                   </div>
                 </div>
               )}
@@ -242,9 +251,9 @@ function CustomTop({ state }) {
           <div style={{ position: "relative" }}>
             <div className="review-hero-img" style={{ height: 320, backgroundImage: `url(${fallbackImg})`, backgroundSize: "cover", backgroundPosition: "center" }} />
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "50px 16px 16px", background: "linear-gradient(transparent,rgba(0,0,0,0.8))" }}>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>Your Setup</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>{t("review.yourSetup")}</div>
               <div style={{ fontSize: 16, color: "#fff", fontWeight: 600, fontFamily: "'Playfair Display',Georgia,serif", marginTop: 4 }}>
-                {VENUES.find((v) => v.id === venue)?.name} · Sunset
+                {venueName} · {t("review.sunset")}
               </div>
             </div>
           </div>
@@ -280,7 +289,7 @@ function CustomTop({ state }) {
       {extras.length > 0 && (
         <div style={{ padding: "14px 20px", background: "rgba(196,148,74,0.06)", borderBottom: "1px solid #F0EBE3" }}>
           <div style={{ fontSize: 12, fontWeight: 700, color: "#8B7355", marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>
-            Yours will also include:
+            {t("review.alsoInclude")}
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {extras.map((item) => (
@@ -303,14 +312,17 @@ function CustomTop({ state }) {
 
 function PremadeTop({ state }) {
   const { selectedPackage } = state;
+  const { tCatalog } = useT();
   const pkg = PACKAGES.find((p) => p.id === selectedPackage);
+  const displayName = pkg ? tCatalog("packages", pkg.id, "name", pkg.name) : "";
+  const displayBadge = pkg?.badge ? tCatalog("badges", pkg.badge, null, pkg.badge) : "";
 
   return (
     <div className="review-hero-img" style={{ position: "relative", height: 320, backgroundImage: `url(${pkg?.imgs[0]})`, backgroundSize: "cover", backgroundPosition: "center" }}>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 40%,rgba(0,0,0,0.8))" }}>
         <div style={{ position: "absolute", bottom: 20, left: 20, right: 20 }}>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>{pkg?.badge}</div>
-          <div style={{ fontSize: 28, fontWeight: 700, color: "#FFF8EE", fontFamily: "'Playfair Display',Georgia,serif", marginTop: 4 }}>{pkg?.name}</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>{displayBadge}</div>
+          <div style={{ fontSize: 28, fontWeight: 700, color: "#FFF8EE", fontFamily: "'Playfair Display',Georgia,serif", marginTop: 4 }}>{displayName}</div>
         </div>
       </div>
     </div>
@@ -329,36 +341,43 @@ function CustomLineItems({ state }) {
     wow, toggleWow, sparklerQty, setSparklerQty,
     addons, toggleAddon, soloInstrument,
   } = state;
+  const { t, tCatalog } = useT();
+  const venueObj = VENUES.find((v) => v.id === venue);
+  const venueName = venueObj ? tCatalog("venues", venueObj.id, "name", venueObj.name) : "";
 
   return (
     <div style={{ padding: "20px 28px" }}>
       <SummaryItem
-        label={`${VENUES.find((v) => v.id === venue)?.name} Venue`}
-        price={VENUES.find((v) => v.id === venue)?.price || 0}
-        sub="Sunset · 1.5 hours · Sparkling wine included"
+        label={t("review.summary.venue", { name: venueName })}
+        price={venueObj?.price || 0}
+        sub={t("review.summary.venueSub")}
       />
       {centerpieces.map((id) => {
         const item = CENTERPIECES.find((x) => x.id === id) || ACTIVITIES.find((x) => x.id === id);
         if (!item || item.id === "none") return null;
+        const collection = CENTERPIECES.some((x) => x.id === id) ? "centerpieces" : "activities";
+        const itemName = tCatalog(collection, item.id, "name", item.name);
         if (id === "giant-frame-neon") {
           const fq = structureFlowerQtys?.[id] || 0;
-          const structName = STRUCTURES.find((s) => s.id === giantFrameStructure)?.name;
+          const structObj = STRUCTURES.find((s) => s.id === giantFrameStructure);
+          const structName = structObj ? tCatalog("structures", structObj.id, "name", structObj.name) : null;
+          const neonMsgDisplay = giantFrameNeonMsg ? tCatalog("structureNeonMessages", giantFrameNeonMsg, null, giantFrameNeonMsg) : null;
           const pickedOpt = item.structureOptions?.find((o) => o.id === giantFrameStructure);
           const displayPrice = item.price + (pickedOpt?.uplift || 0);
           const subParts = [];
-          if (structName) subParts.push(`Structure: ${structName}`);
-          if (giantFrameNeonMsg) subParts.push(`Message: "${giantFrameNeonMsg}"`);
+          if (structName) subParts.push(t("review.summary.structureLabel", { name: structName }));
+          if (neonMsgDisplay) subParts.push(t("review.summary.messageLabel", { msg: neonMsgDisplay }));
           return (
             <div key={id}>
               <SummaryItem
-                label={item.name}
+                label={itemName}
                 price={displayPrice}
                 sub={subParts.length ? subParts.join(" · ") : null}
                 onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined}
               />
               {fq > 0 && (
                 <SummaryItem
-                  label={`↳ ${fq} Flower Arrangement${fq > 1 ? "s" : ""}`}
+                  label={`↳ ${fq} ${fq > 1 ? t("review.summary.flowerArrPlural") : t("review.summary.flowerArrSingular")}`}
                   price={structureFlowerCost(fq)}
                   onRemove={() => adjustStructureFlowerQty(id, -fq)}
                 />
@@ -366,30 +385,34 @@ function CustomLineItems({ state }) {
             </div>
           );
         }
-        return <SummaryItem key={id} label={item.name} price={item.price} onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined} />;
+        return <SummaryItem key={id} label={itemName} price={item.price} onRemove={centerpieces.length > 1 ? () => toggleCenterpiece(id) : undefined} />;
       })}
       {flowers.map((id) => {
         const item = FLOWERS.find((x) => x.id === id);
         if (!item) return null;
+        const itemName = tCatalog("flowers", item.id, "name", item.name);
+        const itemUnit = tCatalog("flowers", item.id, "bundleUnit", item.bundleUnit || t("custom.flowers.fallbackUnit"));
         if (item.qty) {
           const q = flowerQtys[id] || item.unitMin;
           const lbl = item.perBundle
-            ? `${item.name} (${q * item.perBundle} ${item.bundleUnit || "arrangements"})`
-            : `${q} ${item.name}`;
+            ? `${itemName} (${q * item.perBundle} ${itemUnit})`
+            : `${q} ${itemName}`;
           return <SummaryItem key={id} label={lbl} price={q * item.pricePerUnit} onRemove={() => toggleFlower(id)} />;
         }
-        return <SummaryItem key={id} label={item.name} price={item.price} onRemove={() => toggleFlower(id)} />;
+        return <SummaryItem key={id} label={itemName} price={item.price} onRemove={() => toggleFlower(id)} />;
       })}
       {structures.map((id) => {
         const item = STRUCTURES.find((x) => x.id === id);
         if (!item) return null;
+        const itemName = tCatalog("structures", item.id, "name", item.name);
         const fq = structureFlowerQtys?.[id] || 0;
+        const neonMsgDisplay = structureNeonMsg ? tCatalog("structureNeonMessages", structureNeonMsg, null, structureNeonMsg) : null;
         return (
           <div key={id}>
-            <SummaryItem label={item.name} price={item.price} sub={id === "structure-neon" ? `Message: "${structureNeonMsg}"` : null} onRemove={() => toggleStructure(id)} />
+            <SummaryItem label={itemName} price={item.price} sub={id === "structure-neon" && neonMsgDisplay ? t("review.summary.messageLabel", { msg: neonMsgDisplay }) : null} onRemove={() => toggleStructure(id)} />
             {fq > 0 && (
               <SummaryItem
-                label={`↳ ${fq} Flower Arrangement${fq > 1 ? "s" : ""}`}
+                label={`↳ ${fq} ${fq > 1 ? t("review.summary.flowerArrPlural") : t("review.summary.flowerArrSingular")}`}
                 price={structureFlowerCost(fq)}
                 onRemove={() => adjustStructureFlowerQty(id, -fq)}
               />
@@ -397,7 +420,7 @@ function CustomLineItems({ state }) {
           </div>
         );
       })}
-      {sparklerQty > 0 && <SummaryItem label={`Fountain Sparklers x${sparklerQty}`} price={SPARKLER_PRICES[sparklerQty]} onRemove={() => setSparklerQty(0)} />}
+      {sparklerQty > 0 && <SummaryItem label={`${t("custom.flowers.sparklersName")} x${sparklerQty}`} price={SPARKLER_PRICES[sparklerQty]} onRemove={() => setSparklerQty(0)} />}
       {wow.map((id) => {
         const item = WOW.find((x) => x.id === id);
         return item ? <SummaryItem key={id} label={item.name} price={item.price} onRemove={() => toggleWow(id)} /> : null;
@@ -406,13 +429,15 @@ function CustomLineItems({ state }) {
         const all = [...ADDONS.music, ...ADDONS.capture];
         const item = all.find((x) => x.id === id);
         if (!item) return null;
+        const itemName = tCatalog("addons", item.id, "name", item.name);
         const inst = id === "solo-musician" && soloInstrument
           ? SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument)
           : null;
+        const instName = inst ? tCatalog("soloInstruments", inst.id, "name", inst.name) : null;
         return (
           <SummaryItem
             key={id}
-            label={inst ? `${item.name} — ${inst.name}` : item.name}
+            label={instName ? `${itemName} — ${instName}` : itemName}
             price={item.price}
             onRemove={() => toggleAddon(id)}
           />
@@ -426,18 +451,23 @@ function CustomLineItems({ state }) {
 
 function PremadeLineItems({ state }) {
   const { selectedPackage, addons, toggleAddon, soloInstrument } = state;
+  const { t, tCatalog } = useT();
   const pkg = PACKAGES.find((p) => p.id === selectedPackage);
   const all = [...ADDONS.music, ...ADDONS.capture];
+  const pkgName = pkg ? tCatalog("packages", pkg.id, "name", pkg.name) : "";
+  const pkgDesc = pkg ? tCatalog("packages", pkg.id, "desc", pkg.desc) : "";
+  const includesEs = pkg ? tCatalog("packages", pkg.id, "includes", null) : null;
+  const displayIncludes = Array.isArray(includesEs) ? includesEs : (pkg?.includes || []);
 
   return (
     <div style={{ padding: "20px 28px" }}>
-      <SummaryItem label={`${pkg?.name} Package`} price={pkg?.price || 0} sub={pkg?.desc} hidePrice />
+      <SummaryItem label={t("review.summary.packageLabel", { name: pkgName })} price={pkg?.price || 0} sub={pkgDesc} hidePrice />
       <div style={{ padding: "14px 0" }}>
         <div style={{ fontSize: 12, fontWeight: 700, color: "#8B7355", marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>
-          Package includes:
+          {t("review.summary.packageIncludes")}
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-          {pkg?.includes.map((item, i) => (
+          {displayIncludes.map((item, i) => (
             <span key={i} style={{
               display: "inline-flex", alignItems: "center",
               background: "rgba(196,148,74,0.1)", color: "#6B5744",
@@ -451,13 +481,15 @@ function PremadeLineItems({ state }) {
       {addons.map((id) => {
         const item = all.find((x) => x.id === id);
         if (!item) return null;
+        const itemName = tCatalog("addons", item.id, "name", item.name);
         const inst = id === "solo-musician" && soloInstrument
           ? SOLO_INSTRUMENTS.find((i) => i.id === soloInstrument)
           : null;
+        const instName = inst ? tCatalog("soloInstruments", inst.id, "name", inst.name) : null;
         return (
           <SummaryItem
             key={id}
-            label={inst ? `${item.name} — ${inst.name}` : item.name}
+            label={instName ? `${itemName} — ${instName}` : itemName}
             price={item.price}
             onRemove={() => toggleAddon(id)}
           />

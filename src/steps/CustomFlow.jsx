@@ -10,8 +10,10 @@ import {
   AddonSection, InstrumentPicker, DroneAddon, NeonSignAddon, NeonMessagePicker, StructureFlowerPicker, GiantFrameStructurePicker, renderDesc,
 } from "../components/ui";
 import ReviewStep from "./ReviewStep";
+import useT from "../i18n/useT";
 
 export default function CustomFlow({ state }) {
+  const { t, tCatalog } = useT();
   const {
     step, anim, go, goToStep, setPlanMode, setPreview,
     venue, selectVenue,
@@ -49,12 +51,12 @@ export default function CustomFlow({ state }) {
               fontSize: 13, fontWeight: 600, cursor: "pointer", padding: 0,
             }}
           >
-            ← Change path
+            ← {t("custom.changePath")}
           </button>
         </div>
         <SectionTitle
-          title="Choose Your Setting"
-          subtitle="Every location includes a cocktail table and sparkling wine. Each venue has its own unique inclusions — see details below."
+          title={t("custom.venue.title")}
+          subtitle={t("custom.venue.subtitle")}
         />
         <div className="venue-grid" style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
           {VENUES.map((v) => (
@@ -77,13 +79,13 @@ export default function CustomFlow({ state }) {
     return (
       <div style={anim}>
         <SectionTitle
-          title="Choose Your Statement Prop"
-          subtitle="This is the moment they'll replay forever. At least one statement prop is required."
+          title={t("custom.centerpiece.title")}
+          subtitle={t("custom.centerpiece.subtitle")}
         />
 
         <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 4, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
-            Decoratives
+            {t("custom.centerpiece.decoratives")}
           </h3>
           {CENTERPIECES.map((item) => {
             if (item.id === "giant-frame-neon") {
@@ -114,7 +116,7 @@ export default function CustomFlow({ state }) {
           })}
 
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: -2, marginTop: 16, textTransform: "uppercase", letterSpacing: 2, gridColumn: "1 / -1" }}>
-            Activities
+            {t("custom.centerpiece.activities")}
           </h3>
           {ACTIVITIES.map((item) => {
             if (item.id === "dinner") {
@@ -133,10 +135,10 @@ export default function CustomFlow({ state }) {
                     }}>
                       <div>
                         <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>
-                          Want to see additional enhancements for your dinner?
+                          {t("custom.enhancements.dinnerPrompt")}
                         </div>
                         <div style={{ fontSize: 12, color: "#6B5744", marginTop: 2 }}>
-                          Add a structure to elevate the moment.
+                          {t("custom.enhancements.body")}
                         </div>
                       </div>
                       <div style={{ display: "flex", gap: 8 }}>
@@ -148,7 +150,7 @@ export default function CustomFlow({ state }) {
                             fontSize: 13, fontWeight: 600,
                           }}
                         >
-                          Yes
+                          {t("common.yes")}
                         </button>
                         <button
                           onClick={() => setShowDinnerEnhancements(false)}
@@ -159,7 +161,7 @@ export default function CustomFlow({ state }) {
                             fontSize: 13, fontWeight: 600,
                           }}
                         >
-                          No
+                          {t("common.no")}
                         </button>
                       </div>
                     </div>
@@ -173,7 +175,7 @@ export default function CustomFlow({ state }) {
                     }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                         <h3 style={{ fontSize: 11, color: "#C4944A", fontWeight: 700, margin: 0, textTransform: "uppercase", letterSpacing: 1.5 }}>
-                          Dinner Enhancements
+                          {t("custom.enhancements.dinnerHeading")}
                         </h3>
                         <button
                           onClick={() => setShowDinnerEnhancements(false)}
@@ -182,7 +184,7 @@ export default function CustomFlow({ state }) {
                             fontSize: 11, fontWeight: 600, cursor: "pointer", padding: 0,
                           }}
                         >
-                          Hide
+                          {t("common.hide")}
                         </button>
                       </div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -207,7 +209,7 @@ export default function CustomFlow({ state }) {
                                 }} />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                    <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{s.name}</span>
+                                    <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{tCatalog("structures", s.id, "name", s.name)}</span>
                                     <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
                                       {fmt(s.price)}
                                     </span>
@@ -248,7 +250,7 @@ export default function CustomFlow({ state }) {
                           background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 8,
                           fontSize: 12, color: "#8B6914", fontWeight: 600,
                         }}>
-                          Please select a message for your Neon Sign above
+                          {t("custom.hints.pickNeonMsg")}
                         </div>
                       )}
                     </div>
@@ -272,10 +274,10 @@ export default function CustomFlow({ state }) {
                     }}>
                       <div>
                         <div style={{ fontSize: 14, fontWeight: 700, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>
-                          Want to see additional enhancements for your picnic?
+                          {t("custom.enhancements.picnicPrompt")}
                         </div>
                         <div style={{ fontSize: 12, color: "#6B5744", marginTop: 2 }}>
-                          Add a structure to elevate the moment.
+                          {t("custom.enhancements.body")}
                         </div>
                       </div>
                       <div style={{ display: "flex", gap: 8 }}>
@@ -287,7 +289,7 @@ export default function CustomFlow({ state }) {
                             fontSize: 13, fontWeight: 600,
                           }}
                         >
-                          Yes
+                          {t("common.yes")}
                         </button>
                         <button
                           onClick={() => setShowPicnicEnhancements(false)}
@@ -298,7 +300,7 @@ export default function CustomFlow({ state }) {
                             fontSize: 13, fontWeight: 600,
                           }}
                         >
-                          No
+                          {t("common.no")}
                         </button>
                       </div>
                     </div>
@@ -312,7 +314,7 @@ export default function CustomFlow({ state }) {
                     }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                         <h3 style={{ fontSize: 11, color: "#C4944A", fontWeight: 700, margin: 0, textTransform: "uppercase", letterSpacing: 1.5 }}>
-                          Picnic Enhancements
+                          {t("custom.enhancements.picnicHeading")}
                         </h3>
                         <button
                           onClick={() => setShowPicnicEnhancements(false)}
@@ -321,7 +323,7 @@ export default function CustomFlow({ state }) {
                             fontSize: 11, fontWeight: 600, cursor: "pointer", padding: 0,
                           }}
                         >
-                          Hide
+                          {t("common.hide")}
                         </button>
                       </div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -346,7 +348,7 @@ export default function CustomFlow({ state }) {
                                 }} />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                    <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{s.name}</span>
+                                    <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{tCatalog("structures", s.id, "name", s.name)}</span>
                                     <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
                                       {fmt(s.price)}
                                     </span>
@@ -387,7 +389,7 @@ export default function CustomFlow({ state }) {
                           background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 8,
                           fontSize: 12, color: "#8B6914", fontWeight: 600,
                         }}>
-                          Please select a message for your Neon Sign above
+                          {t("custom.hints.pickNeonMsg")}
                         </div>
                       )}
                     </div>
@@ -407,7 +409,7 @@ export default function CustomFlow({ state }) {
             background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
             fontSize: 13, color: "#8B6914", fontWeight: 600,
           }}>
-            Please select a structure style for your Decorated Structure above
+            {t("custom.hints.pickStructureStyle")}
           </div>
         )}
         {centerpieces.includes("giant-frame-neon") && !giantFrameNeonMsg && (
@@ -416,7 +418,7 @@ export default function CustomFlow({ state }) {
             background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
             fontSize: 13, color: "#8B6914", fontWeight: 600,
           }}>
-            Please select a message for your Decorated Structure's Neon Sign above
+            {t("custom.hints.pickGiantFrameMsg")}
           </div>
         )}
 
@@ -429,12 +431,12 @@ export default function CustomFlow({ state }) {
   if (step === 4) {
     return (
       <div style={anim}>
-        <SectionTitle title="Flowers & Enhancements" subtitle="Add sparklers and romantic floral touches to your setup. Select as many as you like, or skip." />
+        <SectionTitle title={t("custom.flowers.title")} subtitle={t("custom.flowers.subtitle")} />
 
         <div className="enhancements-col">
           {/* Sparklers — first */}
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 4, textTransform: "uppercase", letterSpacing: 2 }}>
-            Sparklers
+            {t("custom.flowers.sparklersHeading")}
           </h3>
           <div
             onClick={() => { if (sparklerQty === 0) setSparklerQty(2); }}
@@ -453,18 +455,18 @@ export default function CustomFlow({ state }) {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
-                  {sparklerQty > 0 ? `${sparklerQty} Fountain Sparklers` : "Fountain Sparklers"}
+                  {sparklerQty > 0 ? `${sparklerQty} ${t("custom.flowers.sparklersName")}` : t("custom.flowers.sparklersName")}
                 </span>
                 <span style={{ fontWeight: 700, fontSize: 15, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
                   {sparklerQty > 0 ? fmt(SPARKLER_PRICES[sparklerQty]) : fmt(SPARKLER_PRICES[2])}
                 </span>
               </div>
               <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>
-                Cold sparkler fountains — a dramatic WOW moment
+                {t("custom.flowers.sparklersDesc")}
               </p>
               {sparklerQty > 0 && sparklerQty < SPARKLER_MAX && (
                 <p style={{ margin: "2px 0 0", fontSize: 10, color: "#B0A090", lineHeight: 1.4 }}>
-                  +2 more: +{fmt(SPARKLER_PRICES[sparklerQty + 2] - SPARKLER_PRICES[sparklerQty])}
+                  {t("custom.flowers.sparklers2More", { price: fmt(SPARKLER_PRICES[sparklerQty + 2] - SPARKLER_PRICES[sparklerQty]) })}
                 </p>
               )}
               {sparklerQty > 0 && (
@@ -504,7 +506,7 @@ export default function CustomFlow({ state }) {
 
           {/* Flowers */}
           <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 24, textTransform: "uppercase", letterSpacing: 2 }}>
-            Flowers
+            {t("custom.flowers.flowersHeading")}
           </h3>
         </div>
         <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
@@ -513,6 +515,10 @@ export default function CustomFlow({ state }) {
             const isQty = !!item.qty;
             const qty = flowerQtys[item.id] || item.unitMin;
             const price = isQty ? (sel ? qty * item.pricePerUnit : item.unitMin * item.pricePerUnit) : item.price;
+            const displayName = tCatalog("flowers", item.id, "name", item.name);
+            const displayDesc = tCatalog("flowers", item.id, "desc", item.desc);
+            const displayBadge = item.badge ? tCatalog("badges", item.badge, null, item.badge) : null;
+            const displayUnit = tCatalog("flowers", item.id, "bundleUnit", item.bundleUnit || t("custom.flowers.fallbackUnit"));
 
             return (
               <div
@@ -532,7 +538,7 @@ export default function CustomFlow({ state }) {
                     background: item.badge === "FIRST GIFT" ? "#C0392B" : "#C4944A", color: "#fff", padding: "2px 8px",
                     borderRadius: 8, fontSize: 9, fontWeight: 700,
                   }}>
-                    {item.badge}
+                    {displayBadge}
                   </div>
                 )}
                 <div style={{
@@ -544,15 +550,15 @@ export default function CustomFlow({ state }) {
                     <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
                       {isQty && sel
                         ? (item.perBundle
-                          ? `${item.name} (${qty * item.perBundle} ${item.bundleUnit || "arrangements"})`
-                          : `${qty} ${item.name}`)
-                        : item.name}
+                          ? `${displayName} (${qty * item.perBundle} ${displayUnit})`
+                          : `${qty} ${displayName}`)
+                        : displayName}
                     </span>
                     <span style={{ fontWeight: 700, fontSize: 15, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
                       {fmt(price)}
                     </span>
                   </div>
-                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(item.desc)}</p>
+                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(displayDesc)}</p>
                   {isQty && sel && (
                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
                       <button
@@ -597,15 +603,16 @@ export default function CustomFlow({ state }) {
   if (step === 5) {
     return (
       <div style={anim}>
-        <SectionTitle title="Capture & Music" subtitle="Add photography, video, or live music. Everything here is optional." />
+        <SectionTitle title={t("custom.addons.title")} subtitle={t("custom.addons.subtitle")} />
         {/* <SocialProofCard data={SOCIAL_PROOF.addons} /> */}
         <div className="addons-grid" style={{ maxWidth: 500, margin: "0 auto" }}>
           <AddonSection
-            title="📸 Capture the Moment"
+            title={`📸 ${t("custom.addons.captureHeading")}`}
             items={ADDONS.capture.filter((a) => a.id !== "drone")}
             selected={addons}
             onToggle={toggleAddon}
             popularIds={["photo-30", "video-30"]}
+            collection="addons"
             renderExtra={(item) => {
               const showUnder = addons.includes("video-30") ? "video-30" : "video-60";
               return item.id === showUnder
@@ -614,11 +621,12 @@ export default function CustomFlow({ state }) {
             }}
           />
           <AddonSection
-            title="🎵 Live Music"
+            title={`🎵 ${t("custom.addons.musicHeading")}`}
             items={ADDONS.music}
             selected={addons}
             onToggle={toggleAddon}
             popularIds={["solo-musician"]}
+            collection="addons"
             renderExtra={(item) =>
               item.id === "solo-musician"
                 ? <InstrumentPicker selected={soloInstrument} onSelect={setSoloInstrument} />
@@ -631,7 +639,7 @@ export default function CustomFlow({ state }) {
               background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
               fontSize: 13, color: "#8B6914", fontWeight: 600,
             }}>
-              Please pick an instrument for your Solo Musician above
+              {t("custom.hints.pickInstrument")}
             </div>
           )}
         </div>
@@ -650,6 +658,11 @@ export default function CustomFlow({ state }) {
 // --- Shared helper components ---
 
 function ToggleItem({ item, selected, onToggle }) {
+  const { t, tCatalog } = useT();
+  // try centerpieces first, then activities — same lookup pattern, cheap
+  const displayName = tCatalog("centerpieces", item.id, "name", null) ?? tCatalog("activities", item.id, "name", item.name);
+  const displayDesc = tCatalog("centerpieces", item.id, "desc", null) ?? tCatalog("activities", item.id, "desc", item.desc);
+  const displayBadge = item.badge ? tCatalog("badges", item.badge, null, item.badge) : null;
   return (
     <div
       onClick={onToggle}
@@ -667,7 +680,7 @@ function ToggleItem({ item, selected, onToggle }) {
           background: "#C4944A", color: "#fff", padding: "2px 8px",
           borderRadius: 8, fontSize: 9, fontWeight: 700,
         }}>
-          {item.badge}
+          {displayBadge}
         </div>
       )}
       <div style={{
@@ -676,12 +689,12 @@ function ToggleItem({ item, selected, onToggle }) {
       }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>{item.name}</span>
+          <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>{displayName}</span>
           <span style={{ fontWeight: 700, fontSize: 15, color: item.price === 0 ? "#2D5016" : "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
-            {item.price === 0 ? "Free" : item.priceFrom ? `from ${fmt(item.price)}` : fmt(item.price)}
+            {item.price === 0 ? t("common.free") : item.priceFrom ? `${t("common.from")} ${fmt(item.price)}` : fmt(item.price)}
           </span>
         </div>
-        <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(item.desc)}</p>
+        <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(displayDesc)}</p>
       </div>
       <Checkbox checked={selected} />
     </div>

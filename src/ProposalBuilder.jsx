@@ -2,18 +2,21 @@ import useProposalState from "./hooks/useProposalState";
 import PhotoPreviewModal from "./components/PhotoPreviewModal";
 import SavePlanModal from "./components/SavePlanModal";
 import RunningTotal from "./components/RunningTotal";
+import LanguageToggle from "./components/LanguageToggle";
 import { StepIndicator } from "./components/ui";
 import Landing from "./steps/Landing";
 import PlanMode from "./steps/PlanMode";
 import CustomFlow from "./steps/CustomFlow";
 import PremadeFlow from "./steps/PremadeFlow";
+import useT from "./i18n/useT";
 
 export default function ProposalBuilder() {
   const state = useProposalState();
+  const { t } = useT();
   const {
     step, topRef, planMode, setPlanMode, goToStep, go,
     preview, setPreview, showSave, setShowSave, handleSavePlan,
-    toast, total, labels, structures, structureNeonMsg, giantFrameNeonMsg,
+    toast, total, structures, structureNeonMsg, giantFrameNeonMsg,
     centerpieces, flowers, addons, sparklerQty,
     selectedPackage, setSelectedPackage, setPkgCarouselIdx,
     soloInstrument,
@@ -22,6 +25,20 @@ export default function ProposalBuilder() {
     inquiryReady,
     venue,
   } = state;
+
+  const customLabels = [
+    t("steps.labels.location"),
+    t("steps.labels.statementProp"),
+    t("steps.labels.flowers"),
+    t("steps.labels.addons"),
+    t("steps.labels.review"),
+  ];
+  const premadeLabels = [
+    t("steps.labels.package"),
+    t("steps.labels.extras"),
+    t("steps.labels.review"),
+  ];
+  const labels = planMode === "premade" ? premadeLabels : customLabels;
 
   // RunningTotal computed props
   const structureNeonNeedsMsg = structures.includes("structure-neon") && !structureNeonMsg;
@@ -45,17 +62,17 @@ export default function ProposalBuilder() {
   const isDisabled = neonNeedsMsg || statementPropRequired || premadeNeedsPackage || customNeedsVenue || soloNeedsInstrument;
 
   const disabledReason = customNeedsVenue
-    ? "Pick a location"
+    ? t("disabled.pickLocation")
     : premadeNeedsPackage
-    ? "Pick a package"
+    ? t("disabled.pickPackage")
     : statementPropRequired
-    ? "Pick a statement prop"
+    ? t("disabled.pickStatementProp")
     : neonNeedsMsg
-    ? "Pick a neon message"
+    ? t("disabled.pickNeonMsg")
     : soloNeedsInstrument
-    ? "Pick an instrument"
+    ? t("disabled.pickInstrument")
     : "";
-  const nextLabel = (planMode === "custom" && step === 5) ? "Review" : (planMode === "premade") ? "Next" : (step === 3 && planMode === "custom") ? "Next" : (step === 2 && planMode === "custom") ? "Next" : hasSelection ? "Next" : "Skip";
+  const nextLabel = (planMode === "custom" && step === 5) ? t("common.review") : (planMode === "premade") ? t("common.next") : (step === 3 && planMode === "custom") ? t("common.next") : (step === 2 && planMode === "custom") ? t("common.next") : hasSelection ? t("common.next") : t("common.skip");
 
   const isReviewStep = (planMode === "custom" && step === 6) || (planMode === "premade" && step === 4);
   const showRunningTotal =
@@ -106,7 +123,7 @@ export default function ProposalBuilder() {
         boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
         opacity: toast ? 1 : 0, transition: "all 0.3s ease", pointerEvents: "none",
       }}>
-        ✓ Added to your plan
+        ✓ {t("common.addedToPlan")}
       </div>
 
       {/* Steps */}
@@ -115,14 +132,17 @@ export default function ProposalBuilder() {
 
       {showSteps && (
         <div className="steps-container" style={{ maxWidth: 920, margin: "0 auto", padding: "12px 20px 110px" }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", paddingTop: 4 }}>
+            <LanguageToggle />
+          </div>
           <img
             src={`${import.meta.env.BASE_URL}logo.png`}
-            alt="Cancun Proposal Planner logo"
+            alt={t("landing.logoAlt")}
             style={{
               width: "clamp(90px, 18vw, 130px)",
               height: "auto",
               display: "block",
-              margin: "4px auto -10px",
+              margin: "-8px auto -10px",
             }}
           />
           <StepIndicator current={step - 2} total={labels.length} labels={labels} />
@@ -150,15 +170,15 @@ export default function ProposalBuilder() {
                 go(1);
               }
             }}
-            nextLabel={isReviewStep ? "Send Inquiry" : nextLabel}
+            nextLabel={isReviewStep ? t("common.sendInquiry") : nextLabel}
             disabled={isReviewStep ? !inquiryReady : isDisabled}
             disabledHint={isReviewStep
               ? (contactPhone.length < 4
-                ? "Enter phone number to send"
+                ? t("disabled.enterPhone")
                 : (!travelStart || !travelEnd)
-                ? "Add travel dates to send"
+                ? t("disabled.addTravelDates")
                 : !inquiryReady
-                ? "Complete required fields"
+                ? t("disabled.completeFields")
                 : "")
               : disabledReason}
             onDisabledClick={() => {

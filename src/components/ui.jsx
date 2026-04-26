@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { fmt } from "../utils";
 import { SOLO_INSTRUMENTS, ADDONS, STRUCTURES, STRUCTURE_FLOWER, STRUCTURE_NEON_MESSAGES, structureFlowerCost } from "../data";
+import useT from "../i18n/useT";
 
 export function renderDesc(text) {
   if (!text) return text;
@@ -30,6 +31,7 @@ export function ProofBar({ pct, label }) {
 
 export function SocialProofCard({ data }) {
   const [open, setOpen] = useState(false);
+  const { t } = useT();
 
   return (
     <div style={{ maxWidth: 500, margin: "28px auto 0" }}>
@@ -44,7 +46,7 @@ export function SocialProofCard({ data }) {
         }}
       >
         <span style={{ fontSize: 13, color: "#8B7355", fontWeight: 500 }}>
-          {open ? "Hide" : "See"} what others choose
+          {open ? t("socialProof.hide") : t("socialProof.see")}
         </span>
         <span style={{
           fontSize: 12, color: "#C4944A", transition: "transform 0.2s",
@@ -83,7 +85,7 @@ export function SocialProofCard({ data }) {
                 {data.combo.label}
               </div>
               <div style={{ fontSize: 13, color: "#3B2412", fontWeight: 600 }}>{data.combo.items}</div>
-              <div style={{ fontSize: 12, color: "#8B7355", marginTop: 2 }}>Average total spend: {data.combo.avgSpend}</div>
+              <div style={{ fontSize: 12, color: "#8B7355", marginTop: 2 }}>{t("socialProof.avgSpend")}: {data.combo.avgSpend}</div>
             </div>
           )}
 
@@ -100,6 +102,7 @@ export function SocialProofCard({ data }) {
 }
 
 export function StepIndicator({ current, total, labels }) {
+  const { t } = useT();
   return (
     <div style={{ padding: "24px 0 8px" }}>
       <div style={{ display: "flex", gap: 4, justifyContent: "center", marginBottom: 8 }}>
@@ -115,7 +118,7 @@ export function StepIndicator({ current, total, labels }) {
         ))}
       </div>
       <div style={{ textAlign: "center", fontSize: 12, color: "#B0A090", fontWeight: 500 }}>
-        Step {current + 1} of {total} — {labels[current]}
+        {t("steps.indicator", { current: current + 1, total, label: labels[current] })}
       </div>
     </div>
   );
@@ -160,6 +163,10 @@ export function EyeButton({ onClick }) {
 
 export function VenueCard({ venue, selected, onSelect, onPreview }) {
   const sel = selected === venue.id;
+  const { t, tCatalog } = useT();
+  const displayName = tCatalog("venues", venue.id, "name", venue.name);
+  const displayDesc = tCatalog("venues", venue.id, "desc", venue.desc);
+  const displayBadge = venue.badge ? tCatalog("badges", venue.badge, null, venue.badge) : null;
 
   return (
     <div
@@ -186,7 +193,7 @@ export function VenueCard({ venue, selected, onSelect, onPreview }) {
           color: "#fff", padding: "5px 14px", borderRadius: 20,
           fontSize: 10, fontWeight: 700, letterSpacing: 1.2,
         }}>
-          {venue.badge}
+          {displayBadge}
         </div>
       )}
 
@@ -196,7 +203,7 @@ export function VenueCard({ venue, selected, onSelect, onPreview }) {
           background: "rgba(0,0,0,0.65)", color: "#fff",
           padding: "5px 12px", borderRadius: 20, fontSize: 10, fontWeight: 600,
         }}>
-          PRIVATE
+          {t("badges.PRIVATE")}
         </div>
       )}
 
@@ -214,22 +221,25 @@ export function VenueCard({ venue, selected, onSelect, onPreview }) {
       <div style={{ padding: "16px 20px 20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <h3 style={{ margin: 0, fontSize: 22, color: "#3B2412", fontFamily: "'Playfair Display',Georgia,serif" }}>
-            {venue.name}
+            {displayName}
           </h3>
           <span style={{ fontSize: 22, fontWeight: 700, color: "#C4944A", fontFamily: "'Playfair Display',Georgia,serif" }}>
             {fmt(venue.price)}
           </span>
         </div>
-        <p style={{ margin: "8px 0 0", fontSize: 13, color: "#6B5744", lineHeight: 1.5 }}>{venue.desc}</p>
+        <p style={{ margin: "8px 0 0", fontSize: 13, color: "#6B5744", lineHeight: 1.5 }}>{displayDesc}</p>
         <div style={{ marginTop: 8, fontSize: 11, color: "#B0A090", lineHeight: 1.5 }}>
-          Includes: Coordination · 1.5 hrs · Cocktail table · Sparkling wine · Server · Speaker
+          {t("venue.cardIncludes")}
         </div>
       </div>
     </div>
   );
 }
 
-export function AddonToggle({ item, active, onToggle, popular }) {
+export function AddonToggle({ item, active, onToggle, popular, collection = "addons" }) {
+  const { t, tCatalog } = useT();
+  const displayName = tCatalog(collection, item.id, "name", item.name);
+  const displayDesc = tCatalog(collection, item.id, "desc", item.desc);
   return (
     <div
       onClick={onToggle}
@@ -247,7 +257,7 @@ export function AddonToggle({ item, active, onToggle, popular }) {
           background: "#C4944A", color: "#fff", padding: "2px 8px",
           borderRadius: 8, fontSize: 9, fontWeight: 700,
         }}>
-          POPULAR
+          {t("badges.POPULAR")}
         </div>
       )}
       <div style={{
@@ -256,12 +266,12 @@ export function AddonToggle({ item, active, onToggle, popular }) {
       }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{item.name}</span>
+          <span style={{ fontWeight: 600, fontSize: 13, color: "#3B2412" }}>{displayName}</span>
           <span style={{ fontWeight: 700, fontSize: 14, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
             {fmt(item.price)}
           </span>
         </div>
-        <p style={{ margin: "3px 0 0", fontSize: 11, color: "#8B7355", lineHeight: 1.3 }}>{renderDesc(item.desc)}</p>
+        <p style={{ margin: "3px 0 0", fontSize: 11, color: "#8B7355", lineHeight: 1.3 }}>{renderDesc(displayDesc)}</p>
       </div>
       <div style={{
         width: 22, height: 22, borderRadius: 6, flexShrink: 0,
@@ -276,7 +286,7 @@ export function AddonToggle({ item, active, onToggle, popular }) {
   );
 }
 
-export function AddonSection({ title, items, selected, onToggle, popularIds = [], renderExtra }) {
+export function AddonSection({ title, items, selected, onToggle, popularIds = [], renderExtra, collection = "addons" }) {
   return (
     <div style={{ marginBottom: 24 }}>
       <h3 style={{
@@ -295,6 +305,7 @@ export function AddonSection({ title, items, selected, onToggle, popularIds = []
                 active={active}
                 onToggle={() => onToggle(item.id)}
                 popular={popularIds.includes(item.id)}
+                collection={collection}
               />
               {active && renderExtra && renderExtra(item)}
             </div>
@@ -307,7 +318,10 @@ export function AddonSection({ title, items, selected, onToggle, popularIds = []
 
 export function DroneAddon({ selected, onToggle }) {
   const drone = ADDONS.capture.find((a) => a.id === "drone");
+  const { t, tCatalog } = useT();
   if (!drone) return null;
+  const droneName = tCatalog("addons", drone.id, "name", drone.name);
+  const droneDesc = tCatalog("addons", drone.id, "desc", drone.desc);
   return (
     <div
       onClick={onToggle}
@@ -327,13 +341,13 @@ export function DroneAddon({ selected, onToggle }) {
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
           <span style={{ fontWeight: 600, fontSize: 12, color: "#3B2412" }}>
-            + Add {drone.name}
+            + {t("common.addPrefix")} {droneName}
           </span>
           <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap" }}>
             +{fmt(drone.price)}
           </span>
         </div>
-        <div style={{ fontSize: 11, color: "#8B7355", marginTop: 2, lineHeight: 1.3 }}>{drone.desc}</div>
+        <div style={{ fontSize: 11, color: "#8B7355", marginTop: 2, lineHeight: 1.3 }}>{droneDesc}</div>
       </div>
       <div style={{
         width: 20, height: 20, borderRadius: 5, flexShrink: 0,
@@ -349,27 +363,31 @@ export function DroneAddon({ selected, onToggle }) {
 }
 
 export function NeonMessagePicker({ selected, onSelect }) {
+  const { t, tCatalog } = useT();
   return (
     <div style={{
       marginTop: 8, padding: "16px 20px", background: "rgba(196,148,74,0.07)",
       borderRadius: 14, marginLeft: 4, marginRight: 4,
     }}>
-      <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>Choose your message:</p>
+      <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>{t("neon.chooseMessage")}</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-        {STRUCTURE_NEON_MESSAGES.map((msg) => (
-          <button
-            key={msg}
-            onClick={() => onSelect(msg)}
-            style={{
-              padding: "6px 12px", borderRadius: 18, border: "none", cursor: "pointer",
-              background: selected === msg ? "#C4944A" : "#F5E6C8",
-              color: selected === msg ? "#fff" : "#3B2412",
-              fontSize: 10.5, fontWeight: 600, transition: "all 0.2s",
-            }}
-          >
-            "{msg}"
-          </button>
-        ))}
+        {STRUCTURE_NEON_MESSAGES.map((msg) => {
+          const display = tCatalog("structureNeonMessages", msg, null, msg);
+          return (
+            <button
+              key={msg}
+              onClick={() => onSelect(msg)}
+              style={{
+                padding: "6px 12px", borderRadius: 18, border: "none", cursor: "pointer",
+                background: selected === msg ? "#C4944A" : "#F5E6C8",
+                color: selected === msg ? "#fff" : "#3B2412",
+                fontSize: 10.5, fontWeight: 600, transition: "all 0.2s",
+              }}
+            >
+              "{display}"
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -377,7 +395,10 @@ export function NeonMessagePicker({ selected, onSelect }) {
 
 export function NeonSignAddon({ selected, onToggle }) {
   const neon = STRUCTURES.find((s) => s.id === "structure-neon");
+  const { t, tCatalog } = useT();
   if (!neon) return null;
+  const neonName = tCatalog("structures", neon.id, "name", neon.name);
+  const neonDesc = tCatalog("structures", neon.id, "desc", neon.desc);
   return (
     <div
       onClick={onToggle}
@@ -397,13 +418,13 @@ export function NeonSignAddon({ selected, onToggle }) {
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
           <span style={{ fontWeight: 600, fontSize: 12, color: "#3B2412" }}>
-            + Add {neon.name}
+            + {t("common.addPrefix")} {neonName}
           </span>
           <span style={{ fontWeight: 700, fontSize: 13, color: "#C4944A", whiteSpace: "nowrap" }}>
             +{fmt(neon.price)}
           </span>
         </div>
-        <div style={{ fontSize: 11, color: "#8B7355", marginTop: 2, lineHeight: 1.3 }}>{neon.desc}</div>
+        <div style={{ fontSize: 11, color: "#8B7355", marginTop: 2, lineHeight: 1.3 }}>{neonDesc}</div>
       </div>
       <div style={{
         width: 20, height: 20, borderRadius: 5, flexShrink: 0,
@@ -421,6 +442,7 @@ export function NeonSignAddon({ selected, onToggle }) {
 export function StructureFlowerPicker({ qty, onAdjust }) {
   const q = qty || 0;
   const cost = structureFlowerCost(q);
+  const { t } = useT();
   return (
     <div style={{
       marginTop: 8, padding: "10px 12px",
@@ -432,7 +454,7 @@ export function StructureFlowerPicker({ qty, onAdjust }) {
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0, fontWeight: 600, fontSize: 12, color: "#3B2412" }}>
-          + Add Flower Arrangement
+          + {t("structureFlower.addCta")}
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -464,7 +486,7 @@ export function StructureFlowerPicker({ qty, onAdjust }) {
         </div>
       </div>
       <div style={{ fontSize: 11, color: "#8B7355", lineHeight: 1.3 }}>
-        ${STRUCTURE_FLOWER.singlePrice} solo · ${STRUCTURE_FLOWER.bulkPrice} each when ordering 2 or more
+        {t("structureFlower.priceHint", { single: STRUCTURE_FLOWER.singlePrice, bulk: STRUCTURE_FLOWER.bulkPrice })}
       </div>
     </div>
   );
@@ -484,17 +506,19 @@ function qtyBtnStyle(disabled) {
 }
 
 export function InstrumentPicker({ selected, onSelect }) {
+  const { t, tCatalog } = useT();
   return (
     <div style={{
       marginTop: 8, padding: "16px 18px", background: "rgba(196,148,74,0.07)",
       borderRadius: 12, marginLeft: 4, marginRight: 4,
     }}>
       <p style={{ margin: "0 0 12px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>
-        Choose your instrument:
+        {t("instrument.choose")}
       </p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         {SOLO_INSTRUMENTS.map((inst) => {
           const sel = selected === inst.id;
+          const displayName = tCatalog("soloInstruments", inst.id, "name", inst.name);
           return (
             <button
               key={inst.id}
@@ -516,7 +540,7 @@ export function InstrumentPicker({ selected, onSelect }) {
                 fontSize: 11, fontWeight: 600,
                 color: sel ? "#C4944A" : "#6B5744",
               }}>
-                {inst.name}
+                {displayName}
               </span>
             </button>
           );
@@ -527,6 +551,7 @@ export function InstrumentPicker({ selected, onSelect }) {
 }
 
 export function GiantFrameStructurePicker({ options, selected, onSelect }) {
+  const { t, tCatalog } = useT();
   const items = options
     .map((o) => {
       const s = STRUCTURES.find((x) => x.id === o.id);
@@ -539,11 +564,12 @@ export function GiantFrameStructurePicker({ options, selected, onSelect }) {
       borderRadius: 14, marginLeft: 4, marginRight: 4,
     }}>
       <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "#3B2412" }}>
-        Choose your structure style:
+        {t("giantFrame.chooseStyle")}
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: 10 }}>
         {items.map((s) => {
           const sel = selected === s.id;
+          const displayName = tCatalog("structures", s.id, "name", s.name);
           return (
             <button
               key={s.id}
@@ -565,13 +591,13 @@ export function GiantFrameStructurePicker({ options, selected, onSelect }) {
                 fontSize: 11, fontWeight: 600, textAlign: "center", lineHeight: 1.25,
                 color: sel ? "#C4944A" : "#6B5744",
               }}>
-                {s.name}
+                {displayName}
               </span>
               {s.florals > 0 && (
                 <span style={{
                   fontSize: 10, fontWeight: 500, color: "#8B7355", textAlign: "center",
                 }}>
-                  x{s.florals} floral arrangement{s.florals > 1 ? "s" : ""}
+                  {t("giantFrame.floralCount", { count: s.florals, plural: s.florals > 1 ? t("giantFrame.floralPlural") : t("giantFrame.floralSingular") })}
                 </span>
               )}
               {s.uplift > 0 && (

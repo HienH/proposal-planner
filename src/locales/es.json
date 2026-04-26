@@ -1,0 +1,246 @@
+{
+  "common": {
+    "back": "Atrás",
+    "next": "Siguiente",
+    "skip": "Omitir",
+    "review": "Revisar",
+    "addedToPlan": "Añadido a tu plan",
+    "yes": "Sí",
+    "no": "No",
+    "hide": "Ocultar",
+    "free": "Gratis",
+    "from": "desde",
+    "addPrefix": "Agregar",
+    "sendInquiry": "Enviar Solicitud"
+  },
+  "landing": {
+    "logoAlt": "Logo de Cancun Proposal Planner",
+    "eyebrow": "PLANIFICADOR DE PROPUESTAS EN CANCÚN",
+    "headlinePrefix": "Van a decir que",
+    "headlineEm": "sí.",
+    "subhead": "Crea la propuesta de tus sueños en Cancún en menos de 3 minutos. Nosotros nos encargamos de cada detalle — tú solo llegas y propones.",
+    "cta": "Empezar a Planear",
+    "stats": {
+      "proposals": "Propuestas Exitosas",
+      "sinceValue": "Desde 2018",
+      "sinceLabel": "Años de Experiencia",
+      "rating": "Calificación de Clientes"
+    }
+  },
+  "planMode": {
+    "title": "¿Cómo te Gustaría Planear?",
+    "subtitle": "Elige tu camino — diseña cada detalle tú mismo, o elige uno de nuestros paquetes cuidadosamente curados.",
+    "startingFrom": "Desde",
+    "premade": {
+      "title": "Paquetes Prediseñados",
+      "tagline": "Curados por Jill y su equipo — listos para reservar",
+      "body": "Elige entre tres paquetes diseñados por expertos. Todo está incluido — solo agrega extras opcionales y estarás listo.",
+      "cta": "Ver Paquetes"
+    },
+    "custom": {
+      "title": "Diseña el Tuyo",
+      "tagline": "Control creativo total sobre cada detalle",
+      "body": "Elige tu locación, piezas decorativas, flores, estructuras y más. Perfecto para quienes quieren personalizar todo.",
+      "cta": "Personalizar"
+    }
+  },
+  "steps": {
+    "indicator": "Paso {current} de {total} — {label}",
+    "labels": {
+      "location": "Locación",
+      "statementProp": "Pieza Decorativa",
+      "flowers": "Flores y Detalles",
+      "addons": "Extras",
+      "review": "Revisar y Solicitar",
+      "package": "Paquete",
+      "extras": "Extras"
+    }
+  },
+  "runningTotal": {
+    "label": "Total"
+  },
+  "venue": {
+    "cardIncludes": "Incluye: Coordinación · 1.5 hrs · Mesa de coctel · Vino espumoso · Mesero · Bocina"
+  },
+  "badges": {
+    "PRIVATE": "PRIVADO",
+    "POPULAR": "POPULAR",
+    "MOST POPULAR": "MÁS POPULAR",
+    "BEST VALUE": "MEJOR VALOR",
+    "SIGNATURE": "EMBLEMÁTICO",
+    "EXCLUSIVE": "EXCLUSIVO",
+    "FIRST GIFT": "PRIMER REGALO",
+    "INTIMATE": "ÍNTIMO",
+    "PREMIUM": "PREMIUM"
+  },
+  "socialProof": {
+    "see": "Ver lo que otros eligen",
+    "hide": "Ocultar lo que otros eligen",
+    "avgSpend": "Gasto total promedio"
+  },
+  "neon": {
+    "chooseMessage": "Elige tu mensaje:"
+  },
+  "instrument": {
+    "choose": "Elige tu instrumento:"
+  },
+  "giantFrame": {
+    "chooseStyle": "Elige el estilo de tu estructura:",
+    "floralCount": "x{count} {plural} floral{plural}",
+    "floralSingular": "arreglo",
+    "floralPlural": "arreglos"
+  },
+  "structureFlower": {
+    "addCta": "Agregar Arreglo Floral",
+    "priceHint": "${single} individual · ${bulk} c/u al pedir 2 o más"
+  },
+  "custom": {
+    "changePath": "Cambiar camino",
+    "venue": {
+      "title": "Elige tu Locación",
+      "subtitle": "Cada locación incluye una mesa de coctel y vino espumoso. Cada lugar tiene sus propias inclusiones únicas — ver detalles abajo."
+    },
+    "centerpiece": {
+      "title": "Elige tu Pieza Decorativa",
+      "subtitle": "Este es el momento que recordarán para siempre. Se requiere al menos una pieza decorativa.",
+      "decoratives": "Decoraciones",
+      "activities": "Actividades"
+    },
+    "flowers": {
+      "title": "Flores y Detalles",
+      "subtitle": "Añade luces de bengala y toques florales románticos a tu montaje. Elige los que quieras, o continúa.",
+      "sparklersHeading": "Bengalas",
+      "flowersHeading": "Flores",
+      "sparklersName": "Bengalas Fuente",
+      "sparklersDesc": "Bengalas frías tipo fuente — un momento dramático e inolvidable",
+      "sparklers2More": "+2 más: +{price}",
+      "fallbackUnit": "arreglos"
+    },
+    "addons": {
+      "title": "Captura y Música",
+      "subtitle": "Añade fotografía, video, o música en vivo. Todo aquí es opcional.",
+      "captureHeading": "Captura el Momento",
+      "musicHeading": "Música en Vivo"
+    },
+    "enhancements": {
+      "body": "Agrega una estructura para realzar el momento.",
+      "dinnerPrompt": "¿Quieres ver mejoras adicionales para tu cena?",
+      "picnicPrompt": "¿Quieres ver mejoras adicionales para tu picnic?",
+      "dinnerHeading": "Mejoras de Cena",
+      "picnicHeading": "Mejoras de Picnic"
+    },
+    "hints": {
+      "pickNeonMsg": "Por favor selecciona un mensaje para tu letrero de neón arriba",
+      "pickStructureStyle": "Por favor selecciona un estilo de estructura para tu Estructura Decorada arriba",
+      "pickGiantFrameMsg": "Por favor selecciona un mensaje para el letrero de neón de tu Estructura Decorada arriba",
+      "pickInstrument": "Por favor elige un instrumento para tu Músico Solista arriba"
+    }
+  },
+  "disabled": {
+    "pickLocation": "Elige una locación",
+    "pickPackage": "Elige un paquete",
+    "pickStatementProp": "Elige una pieza decorativa",
+    "pickNeonMsg": "Elige un mensaje de neón",
+    "pickInstrument": "Elige un instrumento",
+    "enterPhone": "Ingresa tu teléfono para enviar",
+    "addTravelDates": "Agrega fechas de viaje para enviar",
+    "completeFields": "Completa los campos requeridos"
+  },
+  "review": {
+    "title": "Tu Propuesta Perfecta",
+    "estimatedTotal": "TOTAL ESTIMADO",
+    "reserveFrom": "Reserva desde",
+    "goldenHourTitle": "Programado para la hora dorada",
+    "goldenHourBody": "Después de una década planeando propuestas profesionales en Cancún, sabemos que el mejor momento para vivir algo inolvidable es el atardecer. Por eso siempre reservamos la tuya para esta hora especial.",
+    "photoUpsell": {
+      "headline": "📸 El 94% de nuestros clientes añade fotografía. ¿Quieres añadirla?",
+      "add30": "Agregar 30min ($295)",
+      "add60": "Agregar 60min ($350)"
+    },
+    "footer": {
+      "retainerHeadline": "📅 Tu paquete y fecha solo pueden reservarse con un anticipo",
+      "retainerBody": "Enviar una solicitud no garantiza una reservación. El equipo de Jill se pondrá en contacto para confirmar disponibilidad.",
+      "trust": {
+        "noFees": "Sin costos ocultos",
+        "experience": "1,500+ propuestas desde 2018",
+        "responsive": "El equipo de Jill responde en horas"
+      },
+      "disclaimer": "Los precios son estimados. El precio final se confirma con Jill y su equipo."
+    },
+    "similarSetups": "Montajes Similares de Nuestro Portafolio",
+    "similarSetupAlt": "Montaje similar {n}",
+    "toMakeSimilar": "Para que se vea similar, agrega:",
+    "similarFromPortfolio": "Un montaje similar de nuestro portafolio",
+    "yourSetup": "Tu Montaje",
+    "sunset": "Atardecer",
+    "alsoInclude": "El tuyo también incluirá:",
+    "summary": {
+      "venue": "Locación: {name}",
+      "venueSub": "Atardecer · 1.5 horas · Vino espumoso incluido",
+      "structureLabel": "Estructura: {name}",
+      "messageLabel": "Mensaje: \"{msg}\"",
+      "flowerArrSingular": "Arreglo Floral",
+      "flowerArrPlural": "Arreglos Florales",
+      "packageLabel": "Paquete {name}",
+      "packageIncludes": "El paquete incluye:"
+    }
+  },
+  "contact": {
+    "heading": "Tus datos de contacto y viaje",
+    "emailLabel": "Correo Electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "phoneLabel": "Número de Teléfono",
+    "phonePlaceholder": "Número de teléfono",
+    "travelLabel": "Fechas de Viaje",
+    "travelHint": "El rango completo de tu viaje — confirmaremos disponibilidad de atardecer dentro de estas fechas.",
+    "travelPlaceholder": "Selecciona tus fechas de llegada → salida",
+    "proposalDateLabel": "Fecha Preferida de Propuesta",
+    "optional": "(opcional)",
+    "proposalDatePlaceholderReady": "Elige un día dentro de tu viaje",
+    "proposalDatePlaceholderEmpty": "Agrega fechas de viaje primero",
+    "partnerNameLabel": "Nombre de Pila de tu Pareja",
+    "partnerNamePlaceholder": "p.ej., Sara",
+    "fillPhone": "Por favor llena tu número de teléfono arriba para enviar tu solicitud",
+    "fillTravelDates": "Por favor agrega tus fechas de viaje arriba para confirmar disponibilidad",
+    "fillRequired": "Por favor completa los campos requeridos arriba",
+    "fasterResponse": "¿Quieres una respuesta más rápida?",
+    "sendViaWhatsapp": "Enviar por WhatsApp",
+    "savePlan": "Guardar Mi Plan para Después",
+    "planSaved": "✓ Plan Guardado — Revisa tu Correo",
+    "startOver": "Empezar de Nuevo"
+  },
+  "savePlan": {
+    "title": "Guarda tu Plan",
+    "subtitle": "Te enviaremos por correo un enlace a tu propuesta personalizada. Regresa cuando quieras a editar o reservar.",
+    "nameLabel": "Tu Nombre",
+    "namePlaceholder": "p.ej., Marcos",
+    "cta": "Guardar y Enviarme el Plan",
+    "noSpam": "Sin spam. Solo tu plan de propuesta guardado.",
+    "savedTitle": "¡Plan Guardado!",
+    "savedBody": "Revisa tu bandeja{greeting}. Tu plan de propuesta personalizado va en camino.",
+    "savedFollowUp": "Jill normalmente responde en pocas horas si decides reservar.",
+    "backToPlan": "Volver a Mi Plan"
+  },
+  "premade": {
+    "list": {
+      "title": "Elige tu Paquete",
+      "subtitle": "Cada paquete está diseñado por Jill y su equipo con años de experiencia — todo lo que necesitas para una propuesta perfecta.",
+      "viewDetails": "Ver Detalles"
+    },
+    "detail": {
+      "included": "Qué Incluye",
+      "experience": "La Experiencia",
+      "exp": {
+        "venue": "Elige cualquiera de nuestras impresionantes locaciones — Playa, Laguna o Rooftop",
+        "coordination": "Coordinación completa del evento de principio a fin",
+        "duration": "1.5 horas de montaje privado",
+        "drinks": "Bebidas de celebración de cortesía",
+        "goldenHour": "Programado para la hora dorada para la iluminación más mágica"
+      }
+    },
+    "extras": {
+      "title": "Agregar Extras",
+      "subtitle": "Realza tu paquete con fotografía, video, o música en vivo. Todo aquí es opcional."
+    }
+  }
+}
