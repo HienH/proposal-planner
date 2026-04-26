@@ -205,6 +205,9 @@
     "fillRequired": "Please complete the required fields above",
     "fasterResponse": "Want a faster response?",
     "sendViaWhatsapp": "Send via WhatsApp",
+    "sending": "Sending...",
+    "sent": "Sent ✓",
+    "sendError": "Couldn't send — try WhatsApp instead",
     "savePlan": "Save My Plan for Later",
     "planSaved": "✓ Plan Saved — Check Your Email",
     "startOver": "Start Over"
@@ -215,10 +218,12 @@
     "nameLabel": "Your Name",
     "namePlaceholder": "e.g., Marcus",
     "cta": "Save & Email My Plan",
+    "sending": "Sending...",
+    "error": "Couldn't send the email. Please try again or message us via WhatsApp.",
     "noSpam": "No spam. Just your saved proposal plan.",
     "savedTitle": "Plan Saved!",
-    "savedBody": "Check your inbox{greeting}. Your custom proposal plan is on its way.",
-    "savedFollowUp": "Jill usually responds within a few hours if you decide to book.",
+    "savedBody": "Check your inbox{greeting} (and your junk/spam folder, just in case). Your custom proposal plan is on its way.",
+    "savedFollowUp": "Jill and her team usually respond within a few hours if you decide to book.",
     "backToPlan": "Back to My Plan"
   },
   "premade": {

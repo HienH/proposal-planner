@@ -5,14 +5,25 @@ export default function SavePlanModal({ visible, onClose, onSave }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [saved, setSaved] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(null);
   const { t } = useT();
 
   if (!visible) return null;
 
-  const handleSave = () => {
-    if (!email.includes("@")) return;
-    setSaved(true);
-    onSave({ email, name });
+  const handleSave = async () => {
+    if (!email.includes("@") || sending) return;
+    setSending(true);
+    setError(null);
+    try {
+      await onSave({ email, name });
+      setSaved(true);
+    } catch (err) {
+      console.error("Save plan email failed:", err);
+      setError(t("savePlan.error"));
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -84,15 +95,26 @@ export default function SavePlanModal({ visible, onClose, onSave }) {
             </div>
             <button
               onClick={handleSave}
+              disabled={sending || !email.includes("@")}
               style={{
-                width: "100%", padding: "16px", borderRadius: 30, border: "none", cursor: "pointer",
+                width: "100%", padding: "16px", borderRadius: 30, border: "none",
+                cursor: sending || !email.includes("@") ? "not-allowed" : "pointer",
                 background: email.includes("@") ? "linear-gradient(135deg,#C4944A,#D4AF37)" : "#D4C5B0",
                 color: "#fff", fontSize: 16, fontWeight: 700,
                 opacity: email.includes("@") ? 1 : 0.5, transition: "all 0.3s",
+                fontFamily: "inherit",
               }}
             >
-              {t("savePlan.cta")}
+              {sending ? t("savePlan.sending") : t("savePlan.cta")}
             </button>
+            {error && (
+              <p style={{
+                textAlign: "center", fontSize: 12, color: "#B85A50",
+                marginTop: 12, lineHeight: 1.5,
+              }}>
+                {error}
+              </p>
+            )}
             <p style={{ textAlign: "center", fontSize: 11, color: "#C4B8A8", marginTop: 12 }}>
               {t("savePlan.noSpam")}
             </p>

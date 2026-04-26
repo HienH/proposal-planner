@@ -1,9 +1,14 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
-import { COUNTRY_CODES, PHONE, BUSINESS_EMAIL } from "../data";
+import emailjs from "@emailjs/browser";
+import { COUNTRY_CODES, PHONE } from "../data";
 import { fmt } from "../utils";
 import useT from "../i18n/useT";
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 const DATE_LOCALE = { en: "en-US", es: "es-MX" };
 
@@ -198,11 +203,36 @@ export default function ContactForm({
   startOver,
 }) {
   const { t } = useT();
+  const [sendStatus, setSendStatus] = useState("idle");
   const onTravelChange = (from, to) => {
     setTravelStart(from);
     setTravelEnd(to);
     if (proposalDate && from && to && (proposalDate < from || proposalDate > to)) {
       setProposalDate(null);
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!inquiryReady || sendStatus === "sending" || sendStatus === "sent") return;
+    setSendStatus("sending");
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          subject: buildEmailSubject(),
+          message: buildMsg(),
+          reply_to: contactEmail,
+          from_phone: `${countryCode} ${contactPhone}`,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+      setSendStatus("sent");
+      setTimeout(() => setSendStatus("idle"), 6000);
+    } catch (err) {
+      console.error("EmailJS send failed:", err);
+      setSendStatus("error");
+      setTimeout(() => setSendStatus("idle"), 5000);
     }
   };
   return (
@@ -297,13 +327,6 @@ export default function ContactForm({
         padding: "16px 28px 28px", display: "flex", flexDirection: "column",
         gap: 12, alignItems: "center",
       }}>
-        <style>{`
-          .send-inquiry-desktop{display:none;}
-          @media(min-width:768px){
-            .send-inquiry-desktop{display:flex !important;}
-          }
-        `}</style>
-
         <div style={{
           padding: "14px 16px",
           background: "#FFF8EE", border: "1px solid #F0E6D0",
@@ -328,12 +351,10 @@ export default function ContactForm({
           </div>
         )}
 
-        <a
-          className="send-inquiry-desktop"
-          href={inquiryReady ? `mailto:${BUSINESS_EMAIL}?subject=${buildEmailSubject()}&body=${buildMsg()}` : undefined}
-          onClick={(e) => {
+        <button
+          type="button"
+          onClick={() => {
             if (!inquiryReady) {
-              e.preventDefault();
               const targetId = contactPhone.length < 4
                 ? "phone-input"
                 : (!travelStart || !travelEnd)
@@ -344,21 +365,32 @@ export default function ContactForm({
                 el.scrollIntoView({ behavior: "smooth", block: "center" });
                 setTimeout(() => { el.focus?.(); }, 400);
               }
+              return;
             }
+            handleSendEmail();
           }}
+          disabled={sendStatus === "sending" || sendStatus === "sent"}
           style={{
-            display: "none", alignItems: "center", justifyContent: "center", gap: 8,
-            padding: "16px 48px", borderRadius: 30, textDecoration: "none",
-            background: inquiryReady ? "linear-gradient(135deg,#C4944A,#D4AF37)" : "rgba(196,148,74,0.4)",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            padding: "16px 48px", borderRadius: 30, border: "none",
+            background:
+              sendStatus === "sent" ? "linear-gradient(135deg,#5BA67A,#3F8B5C)"
+              : sendStatus === "error" ? "linear-gradient(135deg,#D4736A,#B85A50)"
+              : inquiryReady ? "linear-gradient(135deg,#C4944A,#D4AF37)"
+              : "rgba(196,148,74,0.4)",
             color: "#fff", fontSize: 15, fontWeight: 700,
             boxShadow: inquiryReady ? "0 4px 20px rgba(196,148,74,0.35)" : "none",
             width: "100%", maxWidth: 380, textAlign: "center",
-            cursor: inquiryReady ? "pointer" : "not-allowed",
-            opacity: inquiryReady ? 1 : 0.5, transition: "all 0.3s",
+            cursor: sendStatus === "sending" || sendStatus === "sent" ? "default" : (inquiryReady ? "pointer" : "not-allowed"),
+            opacity: inquiryReady || sendStatus !== "idle" ? 1 : 0.5,
+            transition: "all 0.3s", fontFamily: "inherit",
           }}
         >
-          {t("common.sendInquiry")} →
-        </a>
+          {sendStatus === "sending" ? t("contact.sending")
+            : sendStatus === "sent" ? t("contact.sent")
+            : sendStatus === "error" ? t("contact.sendError")
+            : `${t("common.sendInquiry")} →`}
+        </button>
 
         <div style={{
           display: "flex", alignItems: "center", gap: 12,
@@ -372,7 +404,7 @@ export default function ContactForm({
         </div>
 
         <a
-          href={`https://api.whatsapp.com/send?phone=${PHONE}&text=${buildMsg()}`}
+          href={`https://api.whatsapp.com/send?phone=${PHONE}&text=${encodeURIComponent(buildMsg())}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import emailjs from "@emailjs/browser";
 import {
   VENUES, CENTERPIECES, ACTIVITIES, FLOWERS, STRUCTURES, WOW,
   SPARKLER_PRICES, SPARKLER_MAX, PORTFOLIO, ADDONS, NEON_MESSAGES,
@@ -8,6 +9,10 @@ import {
 import { fmt } from "../utils";
 import { useLanguage } from "../i18n/LanguageContext";
 import catalogEs from "../locales/catalog.es.json";
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID_SAVE = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_SAVE;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 const CATALOG_BY_LANG = { es: catalogEs };
 
@@ -359,8 +364,8 @@ export default function useProposalState() {
   // --- Message building ---
 
   const M = lang === "es" ? {
-    greetingPremade: "¡Hola Jill! Acabo de elegir un paquete de propuesta y estoy listo/a para hacerlo realidad 💍",
-    greetingCustom: "¡Hola Jill! Acabo de armar mi plan de propuesta y estoy listo/a para hacerlo realidad 💍",
+    greetingPremade: "¡Hola! Acabo de elegir un paquete de propuesta y estoy listo/a para hacerlo realidad 💍",
+    greetingCustom: "¡Hola! Acabo de armar mi plan de propuesta y estoy listo/a para hacerlo realidad 💍",
     package: "Paquete",
     includes: "Incluye:",
     addons: "🎶 Extras:",
@@ -383,8 +388,8 @@ export default function useProposalState() {
     subjectLead: "Solicitud de Propuesta",
     subjectFor: "para",
   } : {
-    greetingPremade: "Hey Jill! I just chose a proposal package and I'm ready to make it happen 💍",
-    greetingCustom: "Hey Jill! I just built my proposal plan and I'm ready to make it happen 💍",
+    greetingPremade: "Hey! I just chose a proposal package and I'm ready to make it happen 💍",
+    greetingCustom: "Hey! I just built my proposal plan and I'm ready to make it happen 💍",
     package: "Package",
     includes: "Includes:",
     addons: "🎶 Add-ons:",
@@ -418,7 +423,12 @@ export default function useProposalState() {
       const pkgName = pkg ? loc(lang, "packages", pkg.id, "name", pkg.name) : "";
       const pkgIncludes = pkg ? (loc(lang, "packages", pkg.id, "includes", null) || pkg.includes) : [];
 
-      let m = `${M.greetingPremade}\n\n📦 ${M.package}: ${pkgName} (${fmt(pkg?.price || 0)})\n`;
+      let m = `${M.greetingPremade}\n\n`;
+      if (travelStart && travelEnd) m += `${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
+      if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
+      if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
+      if (travelStart || proposalDate || partnerName) m += `\n`;
+      m += `📦 ${M.package}: ${pkgName} (${fmt(pkg?.price || 0)})\n`;
       if (pkg) {
         m += `\n${M.includes}\n`;
         pkgIncludes.forEach((item) => { m += `- ${item}\n`; });
@@ -436,13 +446,10 @@ export default function useProposalState() {
         });
       }
       m += `\n${M.estTotal} ${fmt(total)}\n`;
-      if (travelStart && travelEnd) m += `\n${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
-      if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
-      if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
       if (contactEmail) m += `\n${M.email} ${contactEmail}\n`;
       if (contactPhone) m += `${M.phone} ${countryCode} ${contactPhone}\n`;
       m += `\n${M.closing}`;
-      return encodeURIComponent(m);
+      return m;
     }
 
     const v = VENUES.find((x) => x.id === venue);
@@ -458,7 +465,12 @@ export default function useProposalState() {
     const all = [...ADDONS.music, ...ADDONS.capture];
     const sel = addons.map((id) => all.find((x) => x.id === id)).filter(Boolean);
 
-    let m = `${M.greetingCustom}\n\n${M.venue} ${vName} (${fmt(v?.price || 0)})\n`;
+    let m = `${M.greetingCustom}\n\n`;
+    if (travelStart && travelEnd) m += `${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
+    if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
+    if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
+    if (travelStart || proposalDate || partnerName) m += `\n`;
+    m += `${M.venue} ${vName} (${fmt(v?.price || 0)})\n`;
 
     if (selCenterpieces.length) {
       m += `\n${M.statementProp}\n`;
@@ -535,17 +547,14 @@ export default function useProposalState() {
       });
     }
     m += `\n${M.estTotal} ${fmt(total)}\n`;
-    if (travelStart && travelEnd) m += `\n${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
-    if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
-    if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
     if (contactEmail) m += `\n${M.email} ${contactEmail}\n`;
     if (contactPhone) m += `${M.phone} ${countryCode} ${contactPhone}\n`;
     m += `\n${M.closing}`;
-    return encodeURIComponent(m);
+    return m;
   };
 
   const buildEmailSubject = () =>
-    encodeURIComponent(`${M.subjectLead}${partnerName ? ` — ${M.subjectFor} ${partnerName}` : ""} — ${fmt(total)}`);
+    `${M.subjectLead}${partnerName ? ` — ${M.subjectFor} ${partnerName}` : ""} — ${fmt(total)}`;
 
   const inquiryReady = contactEmail.includes("@") && contactPhone.length >= 4 && !!travelStart && !!travelEnd;
 
@@ -597,11 +606,17 @@ export default function useProposalState() {
     }, 250);
   }, []);
 
-  const handleSavePlan = ({ email, name }) => {
-    console.log("LEAD CAPTURED:", {
-      email, name, venue, centerpieces, neonMsg, flowers,
-      structures, structureNeonMsg, giantFrameNeonMsg, wow, addons, total,
-    });
+  const handleSavePlan = async ({ email, name }) => {
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID_SAVE,
+      {
+        to_email: email,
+        name: name?.trim() || "there",
+        message: buildMsg(),
+      },
+      { publicKey: EMAILJS_PUBLIC_KEY }
+    );
     setPlanSaved(true);
   };
 

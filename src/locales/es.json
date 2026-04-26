@@ -205,6 +205,9 @@
     "fillRequired": "Por favor completa los campos requeridos arriba",
     "fasterResponse": "¿Quieres una respuesta más rápida?",
     "sendViaWhatsapp": "Enviar por WhatsApp",
+    "sending": "Enviando...",
+    "sent": "Enviado ✓",
+    "sendError": "No se pudo enviar — intenta por WhatsApp",
     "savePlan": "Guardar Mi Plan para Después",
     "planSaved": "✓ Plan Guardado — Revisa tu Correo",
     "startOver": "Empezar de Nuevo"
@@ -215,10 +218,12 @@
     "nameLabel": "Tu Nombre",
     "namePlaceholder": "p.ej., Marcos",
     "cta": "Guardar y Enviarme el Plan",
+    "sending": "Enviando...",
+    "error": "No se pudo enviar el correo. Inténtalo de nuevo o escríbenos por WhatsApp.",
     "noSpam": "Sin spam. Solo tu plan de propuesta guardado.",
     "savedTitle": "¡Plan Guardado!",
-    "savedBody": "Revisa tu bandeja{greeting}. Tu plan de propuesta personalizado va en camino.",
-    "savedFollowUp": "Jill normalmente responde en pocas horas si decides reservar.",
+    "savedBody": "Revisa tu bandeja{greeting} (y la carpeta de spam, por si acaso). Tu plan de propuesta personalizado va en camino.",
+    "savedFollowUp": "Jill y su equipo normalmente responden en pocas horas si decides reservar.",
     "backToPlan": "Volver a Mi Plan"
   },
   "premade": {
