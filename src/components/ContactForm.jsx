@@ -265,6 +265,22 @@ export default function ContactForm({
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
+            {t("contact.hotelNameLabel")} <span style={{ color: "#B0A090", fontWeight: 500 }}>{t("contact.optional")}</span>
+          </label>
+          <input
+            value={hotelName}
+            onChange={(e) => setHotelName(e.target.value)}
+            placeholder={t("contact.hotelNamePlaceholder")}
+            style={{
+              width: "100%", padding: "12px 16px", borderRadius: 10,
+              border: "2px solid #EDE8E0", fontSize: 14, fontFamily: "inherit",
+              background: "#FDFBF7", transition: "border 0.2s",
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
             {t("contact.emailLabel")} *
           </label>
           <input
@@ -309,22 +325,6 @@ export default function ContactForm({
           <div style={{ fontSize: 11, color: "#B0A090", marginTop: 4, lineHeight: 1.4 }}>
             {t("contact.travelHint")}
           </div>
-        </div>
-
-        <div style={{ marginBottom: 12 }}>
-          <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            {t("contact.hotelNameLabel")} <span style={{ color: "#B0A090", fontWeight: 500 }}>{t("contact.optional")}</span>
-          </label>
-          <input
-            value={hotelName}
-            onChange={(e) => setHotelName(e.target.value)}
-            placeholder={t("contact.hotelNamePlaceholder")}
-            style={{
-              width: "100%", padding: "12px 16px", borderRadius: 10,
-              border: "2px solid #EDE8E0", fontSize: 14, fontFamily: "inherit",
-              background: "#FDFBF7", transition: "border 0.2s",
-            }}
-          />
         </div>
 
         <div style={{ marginBottom: 12 }}>
