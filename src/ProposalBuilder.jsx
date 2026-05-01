@@ -21,7 +21,7 @@ export default function ProposalBuilder() {
     selectedPackage, setSelectedPackage, setPkgCarouselIdx,
     soloInstrument,
     contactPhone,
-    travelStart, travelEnd,
+    clientFullName,
     inquiryReady,
     venue,
   } = state;
@@ -173,20 +173,20 @@ export default function ProposalBuilder() {
             nextLabel={isReviewStep ? t("common.sendInquiry") : nextLabel}
             disabled={isReviewStep ? !inquiryReady : isDisabled}
             disabledHint={isReviewStep
-              ? (contactPhone.length < 4
+              ? (!clientFullName.trim()
+                ? t("disabled.enterFullName")
+                : contactPhone.length < 4
                 ? t("disabled.enterPhone")
-                : (!travelStart || !travelEnd)
-                ? t("disabled.addTravelDates")
                 : !inquiryReady
                 ? t("disabled.completeFields")
                 : "")
               : disabledReason}
             onDisabledClick={() => {
-              const targetId = contactPhone.length < 4
+              const targetId = !clientFullName.trim()
+                ? "fullname-input"
+                : contactPhone.length < 4
                 ? "phone-input"
-                : (!travelStart || !travelEnd)
-                ? "travel-input"
-                : "phone-input";
+                : "fullname-input";
               const el = document.getElementById(targetId);
               if (el) {
                 el.scrollIntoView({ behavior: "smooth", block: "center" });

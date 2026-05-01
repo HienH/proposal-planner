@@ -60,7 +60,7 @@ export default function useProposalState() {
   const [travelEnd, setTravelEnd] = useState(null);
   const [proposalDate, setProposalDate] = useState(null);
   const [hotelName, setHotelName] = useState("");
-  const [partnerName, setPartnerName] = useState("");
+  const [clientFullName, setClientFullName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
@@ -372,7 +372,8 @@ export default function useProposalState() {
     estTotal: "💰 Total Est.:",
     travelDates: "✈️ Fechas de Viaje:",
     preferredDate: "📅 Fecha Preferida de Propuesta:",
-    partnerName: "💕 Nombre de la pareja:",
+    clientName: "👤 Nombre del cliente:",
+    hotel: "🏨 Hotel:",
     email: "📧 Email:",
     phone: "📱 Teléfono:",
     closing: "¡Espero tu respuesta!",
@@ -396,7 +397,8 @@ export default function useProposalState() {
     estTotal: "💰 Est. Total:",
     travelDates: "✈️ Travel Dates:",
     preferredDate: "📅 Preferred Proposal Date:",
-    partnerName: "💕 Partner's name:",
+    clientName: "👤 Client name:",
+    hotel: "🏨 Hotel:",
     email: "📧 Email:",
     phone: "📱 Phone:",
     closing: "Looking forward to hearing from you!",
@@ -424,10 +426,11 @@ export default function useProposalState() {
       const pkgIncludes = pkg ? (loc(lang, "packages", pkg.id, "includes", null) || pkg.includes) : [];
 
       let m = `${M.greetingPremade}\n\n`;
+      if (clientFullName) m += `${M.clientName} ${clientFullName}\n`;
       if (travelStart && travelEnd) m += `${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
       if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
-      if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
-      if (travelStart || proposalDate || partnerName) m += `\n`;
+      if (hotelName) m += `${M.hotel} ${hotelName}\n`;
+      if (clientFullName || travelStart || proposalDate || hotelName) m += `\n`;
       m += `📦 ${M.package}: ${pkgName} (${fmt(pkg?.price || 0)})\n`;
       if (pkg) {
         m += `\n${M.includes}\n`;
@@ -466,10 +469,11 @@ export default function useProposalState() {
     const sel = addons.map((id) => all.find((x) => x.id === id)).filter(Boolean);
 
     let m = `${M.greetingCustom}\n\n`;
+    if (clientFullName) m += `${M.clientName} ${clientFullName}\n`;
     if (travelStart && travelEnd) m += `${M.travelDates} ${travelStart.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })} – ${travelEnd.toLocaleDateString(dateLocale, { month: "short", day: "numeric", year: "numeric" })}\n`;
     if (proposalDate) m += `${M.preferredDate} ${proposalDate.toLocaleDateString(dateLocale, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}\n`;
-    if (partnerName) m += `${M.partnerName} ${partnerName}\n`;
-    if (travelStart || proposalDate || partnerName) m += `\n`;
+    if (hotelName) m += `${M.hotel} ${hotelName}\n`;
+    if (clientFullName || travelStart || proposalDate || hotelName) m += `\n`;
     m += `${M.venue} ${vName} (${fmt(v?.price || 0)})\n`;
 
     if (selCenterpieces.length) {
@@ -554,9 +558,9 @@ export default function useProposalState() {
   };
 
   const buildEmailSubject = () =>
-    `${M.subjectLead}${partnerName ? ` — ${M.subjectFor} ${partnerName}` : ""} — ${fmt(total)}`;
+    `${M.subjectLead}${clientFullName ? ` — ${M.subjectFor} ${clientFullName}` : ""} — ${fmt(total)}`;
 
-  const inquiryReady = contactEmail.includes("@") && contactPhone.length >= 4 && !!travelStart && !!travelEnd;
+  const inquiryReady = clientFullName.trim().length > 0 && contactEmail.includes("@") && contactPhone.length >= 4;
 
   const canProceed = () => {
     if (planMode === "custom") {
@@ -594,7 +598,7 @@ export default function useProposalState() {
       setPkgCarouselIdx(0);
       setProposalDate(null);
       setHotelName("");
-      setPartnerName("");
+      setClientFullName("");
       setContactEmail("");
       setContactPhone("");
       setCountryCode("+1");
@@ -658,7 +662,7 @@ export default function useProposalState() {
     travelEnd, setTravelEnd,
     proposalDate, setProposalDate,
     hotelName, setHotelName,
-    partnerName, setPartnerName,
+    clientFullName, setClientFullName,
     contactEmail, setContactEmail,
     contactPhone, setContactPhone,
     countryCode, setCountryCode,

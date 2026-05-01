@@ -194,7 +194,8 @@ export default function ContactForm({
   travelStart, setTravelStart,
   travelEnd, setTravelEnd,
   proposalDate, setProposalDate,
-  partnerName, setPartnerName,
+  clientFullName, setClientFullName,
+  hotelName, setHotelName,
   inquiryReady,
   buildMsg, buildEmailSubject,
   showSave, setShowSave,
@@ -247,6 +248,23 @@ export default function ContactForm({
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
+            {t("contact.fullNameLabel")} *
+          </label>
+          <input
+            id="fullname-input"
+            value={clientFullName}
+            onChange={(e) => setClientFullName(e.target.value)}
+            placeholder={t("contact.fullNamePlaceholder")}
+            style={{
+              width: "100%", padding: "12px 16px", borderRadius: 10,
+              border: "2px solid #EDE8E0", fontSize: 14, fontFamily: "inherit",
+              background: "#FDFBF7", transition: "border 0.2s",
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
             {t("contact.emailLabel")} *
           </label>
           <input
@@ -285,12 +303,28 @@ export default function ContactForm({
 
         <div style={{ marginBottom: 12 }}>
           <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            {t("contact.travelLabel")} *
+            {t("contact.travelLabel")} <span style={{ color: "#B0A090", fontWeight: 500 }}>{t("contact.optional")}</span>
           </label>
           <TravelRangePicker start={travelStart} end={travelEnd} onChange={onTravelChange} />
           <div style={{ fontSize: 11, color: "#B0A090", marginTop: 4, lineHeight: 1.4 }}>
             {t("contact.travelHint")}
           </div>
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
+            {t("contact.hotelNameLabel")} <span style={{ color: "#B0A090", fontWeight: 500 }}>{t("contact.optional")}</span>
+          </label>
+          <input
+            value={hotelName}
+            onChange={(e) => setHotelName(e.target.value)}
+            placeholder={t("contact.hotelNamePlaceholder")}
+            style={{
+              width: "100%", padding: "12px 16px", borderRadius: 10,
+              border: "2px solid #EDE8E0", fontSize: 14, fontFamily: "inherit",
+              background: "#FDFBF7", transition: "border 0.2s",
+            }}
+          />
         </div>
 
         <div style={{ marginBottom: 12 }}>
@@ -303,22 +337,6 @@ export default function ContactForm({
             placeholder={travelStart && travelEnd ? t("contact.proposalDatePlaceholderReady") : t("contact.proposalDatePlaceholderEmpty")}
             minDate={travelStart || undefined}
             maxDate={travelEnd || undefined}
-          />
-        </div>
-
-        <div style={{ marginBottom: 12 }}>
-          <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#8B7355", marginBottom: 4 }}>
-            {t("contact.partnerNameLabel")}
-          </label>
-          <input
-            value={partnerName}
-            onChange={(e) => setPartnerName(e.target.value)}
-            placeholder={t("contact.partnerNamePlaceholder")}
-            style={{
-              width: "100%", padding: "12px 16px", borderRadius: 10,
-              border: "2px solid #EDE8E0", fontSize: 14, fontFamily: "inherit",
-              background: "#FDFBF7", transition: "border 0.2s",
-            }}
           />
         </div>
       </div>
@@ -343,10 +361,10 @@ export default function ContactForm({
 
         {!inquiryReady && (
           <div style={{ textAlign: "center", fontSize: 12, color: "#C4944A", lineHeight: 1.5, maxWidth: 340 }}>
-            {contactPhone.length < 4
+            {!clientFullName.trim()
+              ? t("contact.fillFullName")
+              : contactPhone.length < 4
               ? t("contact.fillPhone")
-              : (!travelStart || !travelEnd)
-              ? t("contact.fillTravelDates")
               : t("contact.fillRequired")}
           </div>
         )}
@@ -355,11 +373,11 @@ export default function ContactForm({
           type="button"
           onClick={() => {
             if (!inquiryReady) {
-              const targetId = contactPhone.length < 4
+              const targetId = !clientFullName.trim()
+                ? "fullname-input"
+                : contactPhone.length < 4
                 ? "phone-input"
-                : (!travelStart || !travelEnd)
-                ? "travel-input"
-                : "phone-input";
+                : "fullname-input";
               const el = document.getElementById(targetId);
               if (el) {
                 el.scrollIntoView({ behavior: "smooth", block: "center" });

@@ -34,7 +34,9 @@ export default function CustomFlow({ state }) {
     // Contact form props
     contactEmail, setContactEmail, contactPhone, setContactPhone,
     countryCode, setCountryCode, proposalDate, setProposalDate,
-    partnerName, setPartnerName, inquiryReady,
+    clientFullName, setClientFullName,
+    hotelName, setHotelName,
+    inquiryReady,
     buildMsg, buildEmailSubject,
     showSave, setShowSave, planSaved,
   } = state;

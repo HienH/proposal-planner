@@ -15,7 +15,9 @@ export default function PremadeFlow({ state }) {
     total,
     contactEmail, setContactEmail, contactPhone, setContactPhone,
     countryCode, setCountryCode, proposalDate, setProposalDate,
-    partnerName, setPartnerName, inquiryReady,
+    clientFullName, setClientFullName,
+    hotelName, setHotelName,
+    inquiryReady,
     buildMsg, buildEmailSubject,
     showSave, setShowSave, planSaved,
   } = state;

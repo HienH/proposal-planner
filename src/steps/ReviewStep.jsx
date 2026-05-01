@@ -16,7 +16,9 @@ export default function ReviewStep({ state }) {
     countryCode, setCountryCode,
     travelStart, setTravelStart, travelEnd, setTravelEnd,
     proposalDate, setProposalDate,
-    partnerName, setPartnerName, inquiryReady,
+    clientFullName, setClientFullName,
+    hotelName, setHotelName,
+    inquiryReady,
     buildMsg, buildEmailSubject,
     showSave, setShowSave, planSaved, startOver,
   } = state;
@@ -117,7 +119,8 @@ export default function ReviewStep({ state }) {
           travelStart={travelStart} setTravelStart={setTravelStart}
           travelEnd={travelEnd} setTravelEnd={setTravelEnd}
           proposalDate={proposalDate} setProposalDate={setProposalDate}
-          partnerName={partnerName} setPartnerName={setPartnerName}
+          clientFullName={clientFullName} setClientFullName={setClientFullName}
+          hotelName={hotelName} setHotelName={setHotelName}
           inquiryReady={inquiryReady}
           buildMsg={buildMsg} buildEmailSubject={buildEmailSubject}
           showSave={showSave} setShowSave={setShowSave}
