@@ -10,39 +10,18 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
     <>
     <style>{`
       @media(min-width:768px){
-        .running-total-bar{
-          position:static !important;
-          left:auto !important;
-          right:auto !important;
-          bottom:auto !important;
-          background:transparent !important;
-          box-shadow:none !important;
-          margin-top:20px !important;
-          padding:12px 0 !important;
-        }
-        .running-total-bar .back-btn{
-          border-color:#3B2412 !important;
-          color:#3B2412 !important;
-        }
-        .running-total-bar .total-label{
-          color:#8B7355 !important;
-        }
-        .running-total-bar .total-value{
-          color:#3B2412 !important;
-        }
-        .running-total-bar .disabled-hint{
-          color:#8B7355 !important;
-        }
-        .running-total-bar.review-step{
-          display:none !important;
-        }
+        .running-total-bar.review-step{display:none !important;}
       }
     `}</style>
     <div className={`running-total-bar${isReviewStep ? " review-step" : ""}`} style={{
       position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
       background: "linear-gradient(135deg,#3B2412,#5C3A1E)",
-      padding: "12px 20px", display: "flex", justifyContent: "space-between",
-      alignItems: "center", boxShadow: "0 -4px 24px rgba(0,0,0,0.3)", gap: 12,
+      padding: "12px 20px", boxShadow: "0 -4px 24px rgba(0,0,0,0.3)",
+    }}>
+    <div style={{
+      maxWidth: 920, margin: "0 auto",
+      display: "flex", justifyContent: "space-between",
+      alignItems: "center", gap: 12,
     }}>
       {showBack ? (
         <button
@@ -105,6 +84,7 @@ export default function RunningTotal({ total, visible, showBack, onBack, onNext,
           </button>
         </div>
       )}
+    </div>
     </div>
     </>
   );

@@ -106,7 +106,6 @@ export default function ProposalBuilder() {
           .addons-grid{max-width:700px !important;margin-left:auto !important;margin-right:auto !important;display:flex !important;gap:32px !important;align-items:flex-start !important;}
           .addons-grid>div{flex:1 !important;min-width:0 !important;}
           .enhancements-col{max-width:700px !important;margin-left:auto !important;margin-right:auto !important;}
-          .steps-container{padding-bottom:24px !important;}
         }
       `}</style>
 
