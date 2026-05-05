@@ -122,7 +122,7 @@ export const cld = (p) => `https://res.cloudinary.com/${CLOUD_NAME}/image/upload
 
 export const IMG = {
   // Landing — used on the "How would you like to plan?" mode picker
-  premadeCard:     cld("landing/premade-card.webp"),
+  premadeCard:     cld("packages/artist-7.webp"),
   customCard:      cld("landing/custom-card.webp"),
 
   // Hero / venues
