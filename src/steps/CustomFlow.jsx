@@ -90,6 +90,28 @@ export default function CustomFlow({ state }) {
             {t("custom.centerpiece.decoratives")}
           </h3>
           {CENTERPIECES.map((item) => {
+            if (item.id === "flower-structure") {
+              const sel = centerpieces.includes(item.id);
+              const neonSelected = structures.includes("structure-neon");
+              return (
+                <Fragment key={item.id}>
+                  <ToggleItem item={item} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
+                  {sel && (
+                    <div style={{ gridColumn: "1 / -1" }}>
+                      <div style={{ maxWidth: 320 }}>
+                        <NeonSignAddon
+                          selected={neonSelected}
+                          onToggle={() => toggleStructure("structure-neon")}
+                        />
+                        {neonSelected && (
+                          <NeonMessagePicker selected={structureNeonMsg} onSelect={setStructureNeonMsg} />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Fragment>
+              );
+            }
             if (item.id === "giant-frame-neon") {
               const sel = centerpieces.includes(item.id);
               const pickedOpt = item.structureOptions?.find((o) => o.id === giantFrameStructure);
@@ -101,12 +123,14 @@ export default function CustomFlow({ state }) {
                   <ToggleItem item={displayItem} selected={sel} onToggle={() => toggleCenterpiece(item.id)} />
                   {sel && (
                     <div style={{ gridColumn: "1 / -1" }}>
-                      <GiantFrameStructurePicker
-                        options={item.structureOptions}
-                        selected={giantFrameStructure}
-                        onSelect={setGiantFrameStructure}
-                      />
-                      <NeonMessagePicker selected={giantFrameNeonMsg} onSelect={setGiantFrameNeonMsg} />
+                      <div style={{ maxWidth: 480 }}>
+                        <GiantFrameStructurePicker
+                          options={item.structureOptions}
+                          selected={giantFrameStructure}
+                          onSelect={setGiantFrameStructure}
+                        />
+                        <NeonMessagePicker selected={giantFrameNeonMsg} onSelect={setGiantFrameNeonMsg} />
+                      </div>
                     </div>
                   )}
                 </Fragment>
@@ -423,6 +447,15 @@ export default function CustomFlow({ state }) {
             {t("custom.hints.pickGiantFrameMsg")}
           </div>
         )}
+        {centerpieces.includes("flower-structure") && structures.includes("structure-neon") && !structureNeonMsg && (
+          <div style={{
+            textAlign: "center", marginTop: 12, padding: "10px 16px",
+            background: "#FFF8EE", border: "1px solid #F0E6D0", borderRadius: 10,
+            fontSize: 13, color: "#8B6914", fontWeight: 600,
+          }}>
+            {t("custom.hints.pickNeonMsg")}
+          </div>
+        )}
 
         {/* <SocialProofCard data={SOCIAL_PROOF.centerpiece} /> */}
       </div>
@@ -431,6 +464,92 @@ export default function CustomFlow({ state }) {
 
   // Step 4: Flowers & Enhancements
   if (step === 4) {
+    const STAGE_IDS = ["carpet-candles", "moment-platform"];
+    const renderFlowerCard = (item) => {
+      const sel = flowers.includes(item.id);
+      const isQty = !!item.qty;
+      const qty = flowerQtys[item.id] || item.unitMin;
+      const price = isQty ? (sel ? qty * item.pricePerUnit : item.unitMin * item.pricePerUnit) : item.price;
+      const displayName = tCatalog("flowers", item.id, "name", item.name);
+      const displayDesc = tCatalog("flowers", item.id, "desc", item.desc);
+      const displayBadge = item.badge ? tCatalog("badges", item.badge, null, item.badge) : null;
+      const displayUnit = tCatalog("flowers", item.id, "bundleUnit", item.bundleUnit || t("custom.flowers.fallbackUnit"));
+
+      return (
+        <div
+          key={item.id}
+          onClick={() => { if (!isQty || !sel) toggleFlower(item.id); }}
+          style={{
+            display: "flex", alignItems: "center", gap: 12, padding: "14px 16px",
+            borderRadius: 14, cursor: "pointer",
+            background: sel ? "rgba(196,148,74,0.08)" : "#fff",
+            border: sel ? "2px solid #C4944A" : "2px solid #EDE8E0",
+            transition: "all 0.25s ease", position: "relative",
+          }}
+        >
+          {item.badge && !sel && (
+            <div style={{
+              position: "absolute", top: -8, right: 12,
+              background: item.badge === "FIRST GIFT" ? "#C0392B" : "#C4944A", color: "#fff", padding: "2px 8px",
+              borderRadius: 8, fontSize: 9, fontWeight: 700,
+            }}>
+              {displayBadge}
+            </div>
+          )}
+          <div style={{
+            width: 60, height: 60, borderRadius: 12, flexShrink: 0,
+            backgroundImage: `url(${item.img})`, backgroundSize: "cover", backgroundPosition: "center",
+          }} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
+                {isQty && sel
+                  ? (item.perBundle
+                    ? `${displayName} (${qty * item.perBundle} ${displayUnit})`
+                    : `${qty} ${displayName}`)
+                  : displayName}
+              </span>
+              <span style={{ fontWeight: 700, fontSize: 15, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
+                {fmt(price)}
+              </span>
+            </div>
+            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(displayDesc)}</p>
+            {isQty && sel && (
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={() => {
+                    const next = qty - item.unitStep;
+                    if (next < item.unitMin) toggleFlower(item.id);
+                    else adjustFlowerQty(item.id, -item.unitStep);
+                  }}
+                  style={{
+                    width: 32, height: 32, borderRadius: "50%", border: "2px solid #C4944A",
+                    background: "transparent", color: "#C4944A", fontSize: 18, fontWeight: 700,
+                    cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  −
+                </button>
+                <span style={{ fontSize: 16, fontWeight: 700, color: "#3B2412", minWidth: 36, textAlign: "center" }}>{qty}</span>
+                <button
+                  onClick={() => adjustFlowerQty(item.id, item.unitStep)}
+                  style={{
+                    width: 32, height: 32, borderRadius: "50%", border: "none",
+                    background: "#C4944A", color: "#fff", fontSize: 18, fontWeight: 700,
+                    cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            )}
+          </div>
+          {!isQty && <Checkbox checked={sel} />}
+          {isQty && !sel && <Checkbox checked={false} />}
+        </div>
+      );
+    };
+
     return (
       <div style={anim}>
         <SectionTitle title={t("custom.flowers.title")} subtitle={t("custom.flowers.subtitle")} />
@@ -512,90 +631,16 @@ export default function CustomFlow({ state }) {
           </h3>
         </div>
         <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
-          {FLOWERS.map((item) => {
-            const sel = flowers.includes(item.id);
-            const isQty = !!item.qty;
-            const qty = flowerQtys[item.id] || item.unitMin;
-            const price = isQty ? (sel ? qty * item.pricePerUnit : item.unitMin * item.pricePerUnit) : item.price;
-            const displayName = tCatalog("flowers", item.id, "name", item.name);
-            const displayDesc = tCatalog("flowers", item.id, "desc", item.desc);
-            const displayBadge = item.badge ? tCatalog("badges", item.badge, null, item.badge) : null;
-            const displayUnit = tCatalog("flowers", item.id, "bundleUnit", item.bundleUnit || t("custom.flowers.fallbackUnit"));
+          {FLOWERS.filter((item) => !STAGE_IDS.includes(item.id)).map(renderFlowerCard)}
+        </div>
 
-            return (
-              <div
-                key={item.id}
-                onClick={() => { if (!isQty || !sel) toggleFlower(item.id); }}
-                style={{
-                  display: "flex", alignItems: "center", gap: 12, padding: "14px 16px",
-                  borderRadius: 14, cursor: "pointer",
-                  background: sel ? "rgba(196,148,74,0.08)" : "#fff",
-                  border: sel ? "2px solid #C4944A" : "2px solid #EDE8E0",
-                  transition: "all 0.25s ease", position: "relative",
-                }}
-              >
-                {item.badge && !sel && (
-                  <div style={{
-                    position: "absolute", top: -8, right: 12,
-                    background: item.badge === "FIRST GIFT" ? "#C0392B" : "#C4944A", color: "#fff", padding: "2px 8px",
-                    borderRadius: 8, fontSize: 9, fontWeight: 700,
-                  }}>
-                    {displayBadge}
-                  </div>
-                )}
-                <div style={{
-                  width: 60, height: 60, borderRadius: 12, flexShrink: 0,
-                  backgroundImage: `url(${item.img})`, backgroundSize: "cover", backgroundPosition: "center",
-                }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontWeight: 600, fontSize: 14, color: "#3B2412" }}>
-                      {isQty && sel
-                        ? (item.perBundle
-                          ? `${displayName} (${qty * item.perBundle} ${displayUnit})`
-                          : `${qty} ${displayName}`)
-                        : displayName}
-                    </span>
-                    <span style={{ fontWeight: 700, fontSize: 15, color: "#C4944A", whiteSpace: "nowrap", marginLeft: 8 }}>
-                      {fmt(price)}
-                    </span>
-                  </div>
-                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#8B7355", lineHeight: 1.4 }}>{renderDesc(displayDesc)}</p>
-                  {isQty && sel && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => {
-                          const next = qty - item.unitStep;
-                          if (next < item.unitMin) toggleFlower(item.id);
-                          else adjustFlowerQty(item.id, -item.unitStep);
-                        }}
-                        style={{
-                          width: 32, height: 32, borderRadius: "50%", border: "2px solid #C4944A",
-                          background: "transparent", color: "#C4944A", fontSize: 18, fontWeight: 700,
-                          cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                        }}
-                      >
-                        −
-                      </button>
-                      <span style={{ fontSize: 16, fontWeight: 700, color: "#3B2412", minWidth: 36, textAlign: "center" }}>{qty}</span>
-                      <button
-                        onClick={() => adjustFlowerQty(item.id, item.unitStep)}
-                        style={{
-                          width: 32, height: 32, borderRadius: "50%", border: "none",
-                          background: "#C4944A", color: "#fff", fontSize: 18, fontWeight: 700,
-                          cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                  )}
-                </div>
-                {!isQty && <Checkbox checked={sel} />}
-                {isQty && !sel && <Checkbox checked={false} />}
-              </div>
-            );
-          })}
+        <div className="enhancements-col">
+          <h3 style={{ fontSize: 12, color: "#C4944A", fontWeight: 700, marginBottom: 10, marginTop: 24, textTransform: "uppercase", letterSpacing: 2 }}>
+            {t("custom.flowers.stageHeading")}
+          </h3>
+        </div>
+        <div className="item-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
+          {FLOWERS.filter((item) => STAGE_IDS.includes(item.id)).map(renderFlowerCard)}
         </div>
       </div>
     );

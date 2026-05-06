@@ -144,6 +144,8 @@ export const IMG = {
 
   // Flowers
   candleHeart:     cld("flowers/candle-heart.webp"),
+  carpetCandles:   cld("flowers/carpet-candles.webp"),
+  momentPlatform:  cld("packages/artist-7.webp"),
   bouquet:         cld("flowers/bouquet.webp"),
   petals:          cld("flowers/petals.webp"),
   arr4:            cld("flowers/flower-arrangement.webp"),
@@ -157,10 +159,8 @@ export const IMG = {
   giantFrame:      cld("unused/structures/giant-frame-structure.webp"),
   gazeboStructure: cld("structures/gazebo.webp"),
   metalStructure:  cld("structures/metal-heart-structure.webp"),
-  // No dedicated neon-sign product shot — using a rooftop scene that features one prominently.
-  // To swap: rename any other file to rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.jpg
-  neonSign:        cld("rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.webp"),
-  structureNeon:   cld("rooftop/rooftop-heart-design-flowers-neon-sign-custom-walkway-white-carpet.webp"),
+  neonSign:        cld("structures/neon-sign.webp"),
+  structureNeon:   cld("structures/neon-sign.webp"),
 
   // Activities
   picnic:          cld("activities/picnic.webp"),
@@ -218,6 +218,8 @@ export const FLOWERS = [
   { id: "standing-roses", name: "Standing Roses", pricePerUnit: 60, unitStep: 1, unitMin: 1, img: IMG.roses50, desc: "Roses in sand lining your walkway — 24 roses per bundle, $60 each", qty: true, perBundle: 24, bundleUnit: "roses" },
   { id: "hanging-roses", name: "Hanging Roses", price: 60, img: IMG.hangingRoses, desc: "24 cascading roses draped from your structure. **Only available with the Gazebo Structure.**" },
   { id: "candle-heart", name: "Candle Heart", price: 150, img: IMG.candleHeart, desc: "LED candles and rose petals — beautifully simple" },
+  { id: "carpet-candles", name: "Carpet & Candles", price: 50, img: IMG.carpetCandles, desc: "A 12 ft red or white carpet lined with 24 flameless LED candles — a cinematic, glowing walkway leading straight to the moment" },
+  { id: "moment-platform", name: "The Moment Platform", price: 250, img: IMG.momentPlatform, desc: "A bespoke two-tier half-moon platform — elevates your proposal with cinematic staging that gives the moment a true centerpiece" },
   { id: "bouquet", name: "Rose Bouquet", price: 99, img: IMG.bouquet, desc: "3 dozen fresh roses — the first gift after saying yes", badge: "FIRST GIFT" },
 ];
 

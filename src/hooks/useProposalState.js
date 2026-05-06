@@ -154,11 +154,12 @@ export default function useProposalState() {
 
   const toggleStructure = useCallback((id) => {
     const MAIN_IDS = ["wooden-frame", "gazebo-structure", "metal-structure"];
+    const flowerCarrier = centerpieces.includes("flower-structure");
     setStructures((p) => {
       let next = p.includes(id) ? p.filter((a) => a !== id) : [...p, id];
       if (MAIN_IDS.includes(id) && p.includes(id) && !next.includes(id)) {
         const anyMainLeft = MAIN_IDS.some((m) => next.includes(m));
-        if (!anyMainLeft && next.includes("structure-neon")) {
+        if (!anyMainLeft && !flowerCarrier && next.includes("structure-neon")) {
           next = next.filter((a) => a !== "structure-neon");
           setStructureNeonMsg(null);
         }
@@ -174,7 +175,7 @@ export default function useProposalState() {
         return n;
       });
     }
-  }, []);
+  }, [centerpieces]);
 
   const adjustStructureFlowerQty = useCallback((id, delta) => {
     setStructureFlowerQtys((q) => {
@@ -209,7 +210,15 @@ export default function useProposalState() {
         });
       }
     }
-  }, [centerpieces]);
+    if (id === "flower-structure" && wasOn) {
+      const MAIN_IDS = ["wooden-frame", "gazebo-structure", "metal-structure"];
+      const anyMainLeft = MAIN_IDS.some((m) => structures.includes(m));
+      if (!anyMainLeft && structures.includes("structure-neon")) {
+        setStructures((p) => p.filter((a) => a !== "structure-neon"));
+        setStructureNeonMsg(null);
+      }
+    }
+  }, [centerpieces, structures]);
 
   // --- Portfolio matching ---
 
