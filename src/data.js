@@ -145,7 +145,7 @@ export const IMG = {
   // Flowers
   candleHeart:     cld("flowers/candle-heart.webp"),
   carpetCandles:   cld("flowers/carpet-candles.webp"),
-  momentPlatform:  cld("packages/artist-7.webp"),
+  momentPlatform:  cld("packages/moment-platform.webp"),
   bouquet:         cld("flowers/bouquet.webp"),
   petals:          cld("flowers/petals.webp"),
   arr4:            cld("flowers/flower-arrangement.webp"),
